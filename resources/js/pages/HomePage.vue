@@ -3,7 +3,7 @@
         <h1>homepage</h1>
 
         <section>
-            <router-link to="courses-page">Expérience utilisateur</router-link>
+            <router-link to="/courses">Expérience utilisateur</router-link>
         </section>
     </div>
 </template>

@@ -11,4 +11,9 @@ class CoursesController extends Controller
         $courses = Courses::all();
         return response()->json($courses);
     }
+
+    public function getCourse($id) {
+        $course = Courses::find($id);
+        return response()->json($course);
+    }
 }

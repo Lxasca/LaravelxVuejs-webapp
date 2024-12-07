@@ -3,7 +3,9 @@
         <h1>Les Parcours :</h1>
 
         <section v-for="course in courses" :key="course.id">
-            <h3>{{ course.name }}</h3>
+            <router-link :to="{ name: 'course', params: { id: course.id } }">
+                {{ course.name }}
+            </router-link>
             <p>{{ course.description }}</p>
         </section>
     </div>
