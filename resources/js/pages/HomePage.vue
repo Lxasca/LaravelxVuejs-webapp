@@ -1,6 +1,10 @@
 <template>
     <div>
         <h1>homepage</h1>
+
+        <section>
+            <router-link to="courses-page">Expérience utilisateur</router-link>
+        </section>
     </div>
 </template>
 
