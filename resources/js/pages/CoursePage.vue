@@ -1,7 +1,12 @@
 <template>
-    <div>cours individuel</div>
-    <h1>{{ course.name }}</h1>
-    <p>{{ course.description }}</p>
+    <div>
+        <h1>Parcours {{ course.name }}</h1>
+        <p>{{ course.description }}</p>
+
+        <section v-for="level in levels" :key="level.id">
+            {{ level.name }}
+        </section>
+    </div>
 </template>
 
 <script>
@@ -12,6 +17,7 @@ export default {
     data() {
         return {
             course: {},
+            levels: [],
         };
     },
     mounted() {
@@ -21,15 +27,18 @@ export default {
         getCourseById() {
             const id = this.$route.params.id;
 
-            axios
-                .get(`/get-course/${id}`)
-                .then((response) => {
-                    console.log("response : ", response.data);
-                    this.course = response.data;
-                })
-                .catch((error) => {
-                    console.log("error : ", error);
-                });
+            axios.get(`/get-course/${id}`).then((response) => {
+                this.course = response.data;
+
+                this.getLevelsOfCourse();
+            });
+        },
+        getLevelsOfCourse() {
+            const id = this.$route.params.id;
+
+            axios.get(`/get-levels-of-course/${id}`).then((response) => {
+                this.levels = response.data;
+            });
         },
     },
 };
