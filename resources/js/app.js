@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import CoursesPage from "./pages/CoursesPage.vue";
 import CoursePage from "./pages/CoursePage.vue";
+import LevelPage from "./pages/LevelPage.vue";
 
 const routes = [
     { path: "/", component: HomePage },
@@ -12,6 +13,12 @@ const routes = [
         name: "course",
         path: "/course/:id",
         component: CoursePage,
+        props: true,
+    },
+    {
+        name: "level",
+        path: "/course/:id/level/:level_id",
+        component: LevelPage,
         props: true,
     },
 ];

@@ -5,6 +5,14 @@
 
         <section v-for="level in levels" :key="level.id">
             {{ level.name }}
+            <router-link
+                :to="{
+                    name: 'level',
+                    params: { id: course.id, level_id: level.id },
+                }"
+            >
+                Voir
+            </router-link>
         </section>
     </div>
 </template>

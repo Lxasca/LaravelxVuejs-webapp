@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('vocabularies', function (Blueprint $table) {
+            $table->id();
             $table->string('word')->nullable();
              // Relation avec Courses (Parcours)
             $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
