@@ -1,26 +1,30 @@
 <template>
-    <div>
-        <h1>{{ level.name }}</h1>
-
+    <learn-layout>
         <div>
-            <p>Les exercises</p>
-            <section v-for="exercise in exercises" :key="exercise.id">
-                Exercice n° {{ exercise.order }}
+            <h1>{{ level.name }}</h1>
 
-                <div v-if="exercise.type === 'vocabulary'">
-                    - Mot :
-                    {{ exercise.vocabulary.word }}
-                </div>
-            </section>
+            <div>
+                <p>Les exercises</p>
+                <section v-for="exercise in exercises" :key="exercise.id">
+                    Exercice n° {{ exercise.order }}
+
+                    <div v-if="exercise.type === 'vocabulary'">
+                        - Mot :
+                        {{ exercise.vocabulary.word }}
+                    </div>
+                </section>
+            </div>
         </div>
-    </div>
+    </learn-layout>
 </template>
 
 <script>
 import axios from "axios";
+import LearnLayout from "../layouts/LearnLayout.vue";
 
 export default {
     name: "LevelPage",
+    components: { LearnLayout },
     data() {
         return {
             level: {},
