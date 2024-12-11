@@ -5,7 +5,12 @@
         <div>
             <p>Les exercises</p>
             <section v-for="exercise in exercises" :key="exercise.id">
-                {{ exercise.type }}
+                Exercice n° {{ exercise.order }}
+
+                <div v-if="exercise.type === 'vocabulary'">
+                    - Mot :
+                    {{ exercise.vocabulary.word }}
+                </div>
             </section>
         </div>
     </div>

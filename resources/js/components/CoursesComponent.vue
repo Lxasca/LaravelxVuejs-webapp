@@ -1,11 +1,9 @@
 <template>
     <div>
-        <h1>Les Parcours :</h1>
+        <h3>Les Parcours :</h3>
 
         <section v-for="course in courses" :key="course.id">
-            <router-link :to="{ name: 'course', params: { id: course.id } }">
-                {{ course.name }}
-            </router-link>
+            <h4>{{ course.name }}</h4>
             <p>{{ course.description }}</p>
         </section>
     </div>
@@ -15,7 +13,7 @@
 import axios from "axios";
 
 export default {
-    name: "CoursesPage",
+    name: "CoursesComponent",
     data() {
         return {
             courses: [],

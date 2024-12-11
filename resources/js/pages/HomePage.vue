@@ -3,7 +3,9 @@
         <h1>homepage</h1>
 
         <section>
-            <router-link to="/courses">Expérience utilisateur</router-link>
+            <router-link to="/start"
+                >Démarrer l'expérience utilisateur</router-link
+            >
         </section>
     </div>
 </template>
