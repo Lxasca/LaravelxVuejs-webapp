@@ -18,6 +18,9 @@ Route::get('/get-level/{id}', [LevelsController::class, 'getLevel']);
 Route::get('/get-exercises-of-level/{id}', [LevelsController::class, 'getExercisesOfLevel']);
 // Affichage des mots de vocabulaires
 Route::get('/get-vocabularies/{course_id}/{level_id}', [VocabulariesController::class, 'getVocabularies']);
+// Affiche chaque Vocabularies dont l'id s trouve dans le tableau $vocabularieis de Exercises
+Route::get('/get-vocabulary/{id}', [VocabulariesController::class, 'getVocabulary']);
+
 
 
 Route::get('/{any}', function () {

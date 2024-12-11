@@ -17,6 +17,18 @@
                         - Mot :
                         {{ exercise.vocabulary.word }}
                     </div>
+
+                    <div v-else-if="exercise.type === 'vocabulary-multiple'">
+                        - Mots :
+                        <ul>
+                            <li
+                                v-for="vocabulary in vocabularyMultiple"
+                                :key="vocabulary.id"
+                            >
+                                {{ vocabulary.word }}
+                            </li>
+                        </ul>
+                    </div>
                 </section>
             </div>
         </div>
@@ -34,6 +46,7 @@ export default {
         return {
             level: {},
             exercises: [],
+            vocabularyMultiple: [],
         };
     },
     mounted() {
@@ -58,7 +71,28 @@ export default {
                 .get(`/get-exercises-of-level/${level_id}`)
                 .then((response) => {
                     this.exercises = response.data;
+
+                    this.getVocabularyMultiple(this.exercises);
                 });
+        },
+        getVocabularyMultiple(exercicesOfLevel) {
+            const filteredExercises = exercicesOfLevel.filter((exercise) => {
+                return (
+                    exercise.vocabularies && exercise.vocabularies.length > 0
+                );
+            });
+
+            filteredExercises.forEach((exercise) => {
+                const vocabulariesArray = JSON.parse(exercise.vocabularies); // on le transforme en objet pour foreach dessus, car reçu en chaine de caractère
+
+                vocabulariesArray.forEach((id) => {
+                    axios.get(`/get-vocabulary/${id}`).then((response) => {
+                        this.vocabularyMultiple.push(response.data);
+
+                        // On récupère chaque mot stocké dans le tableau, et pour chaque mot on le get puis on le push dans vocabularyMultiple pour l'afficher dans le v-for
+                    });
+                });
+            });
         },
     },
 };

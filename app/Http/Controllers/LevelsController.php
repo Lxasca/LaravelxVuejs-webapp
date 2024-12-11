@@ -15,7 +15,8 @@ class LevelsController extends Controller
     }
 
     public function getExercisesOfLevel($id) {
-        $exercises = Exercises::where('level_id', $id)->with('vocabulary')->get();
+        $exercises = Exercises::where('level_id', $id)->with('vocabulary')->orderBy('order', 'asc')->get();
+        
         return response()->json($exercises);
     }
 }
