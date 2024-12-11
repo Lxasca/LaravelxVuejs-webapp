@@ -6,6 +6,11 @@
             <div>
                 <p>Les exercises</p>
                 <section v-for="exercise in exercises" :key="exercise.id">
+                    <router-link
+                        :to="{ name: 'course', params: { id: level.id } }"
+                        >Fermer (retour au parcours)</router-link
+                    ><br />
+
                     Exercice n° {{ exercise.order }}
 
                     <div v-if="exercise.type === 'vocabulary'">

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\LevelsController;
+use App\Http\Controllers\VocabulariesController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,6 +16,8 @@ Route::get('/get-levels-of-course/{id}', [CoursesController::class, 'getLevelsOf
 Route::get('/get-level/{id}', [LevelsController::class, 'getLevel']);
 // Affichage des Exercises d'un Niveau donné
 Route::get('/get-exercises-of-level/{id}', [LevelsController::class, 'getExercisesOfLevel']);
+// Affichage des mots de vocabulaires
+Route::get('/get-vocabularies/{course_id}/{level_id}', [VocabulariesController::class, 'getVocabularies']);
 
 
 Route::get('/{any}', function () {

@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage.vue";
 import CoursePage from "./pages/CoursePage.vue";
 import LevelPage from "./pages/LevelPage.vue";
 import StartPage from "./pages/StartPage.vue";
+import DictionnaryPage from "./pages/DictionnaryPage.vue";
 
 const routes = [
     { path: "/", component: HomePage },
@@ -20,6 +21,12 @@ const routes = [
         path: "/course/:id/level/:level_id",
         component: LevelPage,
         props: true,
+    },
+    // dictionnaire
+    {
+        name: "dictionnary",
+        path: "/course/:id/level/:level_id/dictionnary",
+        component: DictionnaryPage,
     },
 ];
 
