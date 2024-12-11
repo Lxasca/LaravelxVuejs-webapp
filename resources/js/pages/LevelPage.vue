@@ -11,11 +11,16 @@
                         >Fermer (retour au parcours)</router-link
                     ><br />
 
-                    Exercice n° {{ exercise.order }}
+                    Exercice n° {{ exercise.order }} - Scénario
+                    {{ exercise.scenario }}
 
                     <div v-if="exercise.type === 'vocabulary'">
                         - Mot :
                         {{ exercise.vocabulary.word }}
+                        <span
+                            >et mot opposé n°1 :
+                            {{ exercise.vocabulary.word_opposite_1 }}</span
+                        >
                     </div>
 
                     <div v-else-if="exercise.type === 'vocabulary-multiple'">
@@ -26,9 +31,22 @@
                                 :key="vocabulary.id"
                             >
                                 {{ vocabulary.word }}
+                                <span
+                                    >et mot opposé n°1 :{{
+                                        vocabulary.word_opposite_1
+                                    }}</span
+                                >
                             </li>
                         </ul>
                     </div>
+
+                    <!-- ebauche exerciceis images / def -->
+                    <div
+                        v-if="
+                            exercise.type === 'vocabulary' ||
+                            exercise.type === 'vocabulary-multiple'
+                        "
+                    ></div>
                 </section>
             </div>
         </div>
