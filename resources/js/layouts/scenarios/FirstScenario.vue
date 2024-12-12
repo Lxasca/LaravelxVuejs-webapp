@@ -9,6 +9,21 @@
         {{ exercise.scenario }}
 
         <slot></slot>
+
+        <div class="exercice-suivant">
+            <router-link
+                :to="{
+                    name: 'exercise',
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: nextExerciseId,
+                    },
+                }"
+            >
+                Suivant
+            </router-link>
+        </div>
     </div>
 </template>
 
@@ -19,6 +34,11 @@ export default {
         exercise: {
             type: Object,
             required: true,
+        },
+    },
+    computed: {
+        nextExerciseId() {
+            return parseInt(this.$route.params.exercise_id) + 1;
         },
     },
 };
@@ -32,5 +52,11 @@ export default {
     padding-bottom: 100px;
 
     border-radius: 7.5px;
+}
+
+.exercice-suivant {
+    margin-top: 150px;
+    display: flex;
+    justify-content: center;
 }
 </style>

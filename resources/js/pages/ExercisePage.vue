@@ -44,6 +44,16 @@ export default {
     mounted() {
         this.getFirstExerciceOfLevel();
     },
+    // ici dès que l'user passe à l'exercice suivant (firstcnario.vue, button), pour que ça update le front lorsque le exercise_id change
+    // il faut faire un watch sur exercise_id
+    watch: {
+        "$route.params.exercise_id": {
+            immediate: true,
+            handler() {
+                this.getFirstExerciceOfLevel();
+            },
+        },
+    },
     methods: {
         getFirstExerciceOfLevel() {
             const exercise_id = this.$route.params.exercise_id;
