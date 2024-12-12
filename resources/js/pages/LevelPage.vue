@@ -3,6 +3,14 @@
         <div>
             <h1>{{ level.name }}</h1>
 
+            <router-link
+                :to="{
+                    name: 'exercise',
+                    params: { id: 1, level_id: 1, exercise_id: 1 },
+                }"
+                >Commencer le niveau</router-link
+            >
+
             <div>
                 <p>Les exercises</p>
                 <section v-for="exercise in exercises" :key="exercise.id">
@@ -15,12 +23,18 @@
                     {{ exercise.scenario }}
 
                     <div v-if="exercise.type === 'vocabulary'">
-                        - Mot :
-                        {{ exercise.vocabulary.word }}
-                        <span
-                            >et mot opposé n°1 :
-                            {{ exercise.vocabulary.word_opposite_1 }}</span
-                        >
+                        <div class="exercice">
+                            <!-- ebauche exerciceis images / def -->
+
+                            <span
+                                >Mot juste :
+                                {{ exercise.vocabulary.word }}</span
+                            >
+                            <span
+                                >Mot faux :
+                                {{ exercise.vocabulary.word_opposite_1 }}</span
+                            >
+                        </div>
                     </div>
 
                     <div v-else-if="exercise.type === 'vocabulary-multiple'">
@@ -39,14 +53,6 @@
                             </li>
                         </ul>
                     </div>
-
-                    <!-- ebauche exerciceis images / def -->
-                    <div
-                        v-if="
-                            exercise.type === 'vocabulary' ||
-                            exercise.type === 'vocabulary-multiple'
-                        "
-                    ></div>
                 </section>
             </div>
         </div>
@@ -104,16 +110,24 @@ export default {
                 const vocabulariesArray = JSON.parse(exercise.vocabularies); // on le transforme en objet pour foreach dessus, car reçu en chaine de caractère
 
                 vocabulariesArray.forEach((id) => {
+                    console.log("boucle : ", id);
                     axios.get(`/get-vocabulary/${id}`).then((response) => {
                         this.vocabularyMultiple.push(response.data);
+
+                        console.log("lea : ", response.data);
 
                         // On récupère chaque mot stocké dans le tableau, et pour chaque mot on le get puis on le push dans vocabularyMultiple pour l'afficher dans le v-for
                     });
                 });
             });
         },
+        methods: {
+            //
+        },
     },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/** CSS lorsque l'user sélectionne un choice **/
+</style>

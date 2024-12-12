@@ -19,4 +19,10 @@ class LevelsController extends Controller
         
         return response()->json($exercises);
     }
+
+    public function getFirstExerciseOfLevel($id) {
+        $exercise = Exercises::with('vocabulary')->find($id);
+        
+        return response()->json($exercise);
+    }
 }
