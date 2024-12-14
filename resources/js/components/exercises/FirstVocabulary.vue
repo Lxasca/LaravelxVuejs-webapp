@@ -11,6 +11,12 @@
                     name="choice"
                     :value="exercise.vocabulary.word"
                     v-model="selectedChoice"
+                    @click="
+                        saveForLoopLogic(
+                            exercise.vocabulary.word,
+                            exercise.correct_vocabulary
+                        )
+                    "
                     hidden
                 />
                 <span>{{ exercise.vocabulary.word }}</span>
@@ -23,6 +29,12 @@
                     name="choice"
                     :value="exercise.vocabulary.word_opposite_1"
                     v-model="selectedChoice"
+                    @click="
+                        saveForLoopLogic(
+                            exercise.vocabulary.word_opposite_1,
+                            exercise.correct_vocabulary
+                        )
+                    "
                     hidden
                 />
                 <span>{{ exercise.vocabulary.word_opposite_1 }}</span>
@@ -43,6 +55,13 @@
 
         <br /><br />
 
+        <!---
+        si le prochain exercise a un autre scénario que l'exercice actuel, ça veut dire qu'on rentre possiblement dans la loop
+        donc condition 1 : comparer le scénario du prochain exercice et l'actuel
+        si différent, condition 2 :
+        on récupère les items (un par un ^^) à false dans stockExercisesByScenario et on renvoie dessus
+        // grâce à hasFalse et stockExercisesByScenario
+        -->
         <router-link
             :to="{
                 name: 'exercise',
@@ -66,17 +85,43 @@ export default {
             type: Object,
             required: true,
         },
+        hasFalse: {
+            type: Boolean,
+            required: false,
+        },
+        stockExercisesByScenario: {
+            type: Array,
+            required: true,
+        },
     },
     data() {
         return {
             selectedChoice: null,
             isDisabled: false,
+            loop: null,
         };
     },
     computed: {
         nextExerciseId() {
             this.selectedChoice = null;
             return parseInt(this.$route.params.exercise_id) + 1;
+        },
+    },
+    methods: {
+        saveForLoopLogic(selectedValue, correctVocabulary) {
+            if (selectedValue === correctVocabulary) {
+                this.loop = true;
+            } else {
+                this.loop = false;
+            }
+
+            this.selectedChoice = selectedValue;
+            this.$emit("save-for-loop-logic", this.loop);
+
+            this.compareScenarioOfExercices();
+        },
+        compareScenarioOfExercices() {
+            //
         },
     },
 };

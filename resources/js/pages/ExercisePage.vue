@@ -1,7 +1,12 @@
 <template>
     <exercise-layout :exercise="exercise">
         <div v-if="exercise.type === 'vocabulary' && exercise.scenario == 1">
-            <first-vocabulary :exercise="exercise"></first-vocabulary>
+            <first-vocabulary
+                :exercise="exercise"
+                :hasFalse="hasFalse"
+                :stockExercisesByScenario="stockExercisesByScenario"
+                @save-for-loop-logic="verifLoopLogic($event)"
+            ></first-vocabulary>
         </div>
     </exercise-layout>
 </template>
@@ -17,10 +22,13 @@ export default {
     data() {
         return {
             exercise: {},
+            stockExercisesByScenario: [],
+            hasFalse: null,
         };
     },
     mounted() {
         this.getFirstExerciceOfLevel();
+        this.initLoopLogic();
     },
     // ici dès que l'user passe à l'exercice suivant (firstcnario.vue, button), pour que ça update le front lorsque le exercise_id change
     // il faut faire un watch sur exercise_id
@@ -49,6 +57,28 @@ export default {
                         radio.checked = false;
                     });
                 });
+        },
+        initLoopLogic() {
+            // on crée le tableau (depuis le mounted) qui va stocker tous les exercices d'une même salve avec scénario commun
+            this.stockExercisesByScenario = [];
+        },
+        verifLoopLogic(loop) {
+            const id = parseInt(this.$route.params.exercise_id);
+
+            const index = this.stockExercisesByScenario.findIndex(
+                (item) => item[0] === id
+            );
+
+            if (index !== -1) {
+                this.stockExercisesByScenario[index] = [id, loop];
+            } else {
+                this.stockExercisesByScenario.push([id, loop]);
+            }
+
+            // On check s'il y a un False
+            this.hasFalse = this.stockExercisesByScenario.some((item) =>
+                item.includes(false)
+            );
         },
     },
 };
