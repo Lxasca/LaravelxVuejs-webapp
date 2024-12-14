@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CoursesController;
+use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\LevelsController;
 use App\Http\Controllers\VocabulariesController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ Route::get('/get-vocabularies/{course_id}/{level_id}', [VocabulariesController::
 Route::get('/get-vocabulary/{id}', [VocabulariesController::class, 'getVocabulary']);
 //
 Route::get('/get-first-exercise-of-level/{id}', [LevelsController::class, 'getFirstExerciseOfLevel']);
+// Compare le scenario de l'exercise actif avec le scenario de l'exercice suivant
+Route::get('/compare-scenario-of-exercises/{id}', [ExercisesController::class, 'compareScenarioOfExercices']);
 
 
 

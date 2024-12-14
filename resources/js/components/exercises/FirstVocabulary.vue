@@ -62,22 +62,63 @@
         on récupère les items (un par un ^^) à false dans stockExercisesByScenario et on renvoie dessus
         // grâce à hasFalse et stockExercisesByScenario
         -->
-        <router-link
-            :to="{
-                name: 'exercise',
-                params: {
-                    id: 1,
-                    level_id: 1,
-                    exercise_id: nextExerciseId,
-                },
-            }"
-        >
-            Suivant
-        </router-link>
+        <div v-if="areScenariosEqual">
+            <!-- si les scénarios sont les mêmes, on passe juste à l'exercice suivant -->
+            <router-link
+                :to="{
+                    name: 'exercise',
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: nextExerciseId,
+                    },
+                }"
+            >
+                Suivant
+            </router-link>
+        </div>
+        <div v-else>
+            <!-- ici, on entre dans le cas où le prochain exercise à un autre scénario donc 
+            il faut verifier si le tableau stockExercisesByScenario a des exercices à false ou non
+            si tous les exercises sont à true, l'user passe à l'exercice suivant sans soucis
+            sinon il va être redirigé sur les exercices ratés jusqu'à ce qu'il les réussissent
+            -->
+
+            <!-- si l'user a fait au moins un erreur -->
+            <router-link
+                v-if="hasFalse"
+                :to="{
+                    name: 'exercise',
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: failedExerciseId,
+                    },
+                }"
+            >
+                Suivant (boucle)
+            </router-link>
+
+            <router-link
+                v-else
+                :to="{
+                    name: 'exercise',
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: nextExerciseId,
+                    },
+                }"
+            >
+                Suivant
+            </router-link>
+        </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "FirstVocabulary",
     props: {
@@ -99,12 +140,20 @@ export default {
             selectedChoice: null,
             isDisabled: false,
             loop: null,
+            areScenariosEqual: false,
         };
     },
     computed: {
         nextExerciseId() {
             this.selectedChoice = null;
             return parseInt(this.$route.params.exercise_id) + 1;
+        },
+        failedExerciseId() {
+            // on récup l'id du premier exercice du tableau raté
+            const firstFailedExerciseId = this.stockExercisesByScenario.find(
+                (item) => item[1] === false
+            );
+            return firstFailedExerciseId ? firstFailedExerciseId[0] : null;
         },
     },
     methods: {
@@ -121,7 +170,15 @@ export default {
             this.compareScenarioOfExercices();
         },
         compareScenarioOfExercices() {
-            //
+            const exercise_id = this.$route.params.exercise_id;
+
+            axios
+                .get(`/compare-scenario-of-exercises/${exercise_id}`)
+                .then((response) => {
+                    this.areScenariosEqual = response.data;
+                    // response.data vaut True si les deux exercises ont le même scénario
+                    // et False si ils ont des scénarios différents.
+                });
         },
     },
 };
