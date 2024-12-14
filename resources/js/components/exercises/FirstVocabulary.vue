@@ -3,7 +3,7 @@
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
 
-    <div class="choices">
+    <div :class="{ disabled: selectedChoice !== null }" class="choices">
         <div class="choice">
             <label>
                 <input
@@ -70,6 +70,7 @@ export default {
     data() {
         return {
             selectedChoice: null,
+            isDisabled: false,
         };
     },
     computed: {
@@ -111,5 +112,9 @@ div[class^="choice"] input[type="radio"]:checked + span {
 }
 .question img {
     width: 150px;
+}
+
+.disabled {
+    pointer-events: none;
 }
 </style>
