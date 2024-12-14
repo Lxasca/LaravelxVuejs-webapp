@@ -2,7 +2,6 @@
     <div class="question">
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
-    <!-- ebauche exerciceis images / def -->
 
     <div class="choices">
         <div class="choice">
@@ -31,10 +30,19 @@
         </div>
     </div>
 
-    <div
-        class="exercice-suivant"
-        v-if="selectedChoice === exercise.vocabulary.word"
-    >
+    <div class="exercice-suivant" v-if="selectedChoice">
+        <div v-if="selectedChoice == exercise.correct_vocabulary">
+            <h5>Réussie !</h5>
+        </div>
+        <div v-else>
+            <h5>
+                Raté ! Voici la solution correcte :
+                {{ exercise.correct_vocabulary }}
+            </h5>
+        </div>
+
+        <br /><br />
+
         <router-link
             :to="{
                 name: 'exercise',
@@ -66,6 +74,7 @@ export default {
     },
     computed: {
         nextExerciseId() {
+            this.selectedChoice = null;
             return parseInt(this.$route.params.exercise_id) + 1;
         },
     },
