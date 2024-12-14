@@ -3,7 +3,13 @@
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
 
-    <div :class="{ disabled: selectedChoice !== null }" class="choices">
+    <div
+        :class="{
+            disabled:
+                selectedChoice !== null && exercise.id != failedExerciseId,
+        }"
+        class="choices"
+    >
         <div class="choice">
             <label>
                 <input
@@ -42,7 +48,10 @@
         </div>
     </div>
 
-    <div class="exercice-suivant" v-if="selectedChoice">
+    <div
+        class="exercice-suivant"
+        v-if="selectedChoice && exercise.id != failedExerciseId"
+    >
         <div v-if="selectedChoice == exercise.correct_vocabulary">
             <h5>Réussie !</h5>
         </div>
@@ -96,7 +105,7 @@
                     },
                 }"
             >
-                Suivant (boucle)
+                Suivant (boucle) (failedExerciseId)
             </router-link>
 
             <router-link
@@ -106,11 +115,11 @@
                     params: {
                         id: 1,
                         level_id: 1,
-                        exercise_id: nextExerciseId,
+                        exercise_id: nextScenarioExerciseId,
                     },
                 }"
             >
-                Suivant
+                Suivant vers nextScenarioExerciseId
             </router-link>
         </div>
     </div>
@@ -147,6 +156,9 @@ export default {
         nextExerciseId() {
             this.selectedChoice = null;
             return parseInt(this.$route.params.exercise_id) + 1;
+        },
+        nextScenarioExerciseId() {
+            ////////////////////////////////////////////////////////////////////:
         },
         failedExerciseId() {
             // on récup l'id du premier exercice du tableau raté

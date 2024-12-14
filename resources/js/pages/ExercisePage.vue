@@ -44,6 +44,8 @@ export default {
         getFirstExerciceOfLevel() {
             const exercise_id = this.$route.params.exercise_id;
 
+            console.log("lea");
+
             axios
                 .get(`/get-first-exercise-of-level/${exercise_id}`)
                 .then((response) => {
