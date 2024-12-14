@@ -9,36 +9,16 @@
         {{ exercise.scenario }}
 
         <slot></slot>
-
-        <div class="exercice-suivant">
-            <router-link
-                :to="{
-                    name: 'exercise',
-                    params: {
-                        id: 1,
-                        level_id: 1,
-                        exercise_id: nextExerciseId,
-                    },
-                }"
-            >
-                Suivant
-            </router-link>
-        </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: "FirstScenario",
+    name: "ExerciseLayout",
     props: {
         exercise: {
             type: Object,
             required: true,
-        },
-    },
-    computed: {
-        nextExerciseId() {
-            return parseInt(this.$route.params.exercise_id) + 1;
         },
     },
 };
