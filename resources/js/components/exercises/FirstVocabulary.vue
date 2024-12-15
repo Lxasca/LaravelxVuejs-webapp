@@ -49,109 +49,20 @@
     </div>
 
     <div class="exercice-suivant" v-if="selectedChoice">
-        <section v-if="exercise.id === this.$route.params.exercise_id">
-            <div v-if="selectedChoice == exercise.correct_vocabulary">
-                <h5>Réussie !</h5>
-            </div>
-            <div v-else>
-                <h5>
-                    Raté ! Voici la solution correcte :
-                    {{ exercise.correct_vocabulary }}
-                </h5>
-            </div>
-
-            <br /><br />
-        </section>
-
-        <!---
-        Logique de Loop :
-        - L'utilisateur fais tous les exercices d'un scénario commun :
-        -> si il en rate au moins un : il entre dans la Loop et boucle sur les exercices ratés
-        -> si il les réussit tous, ou quand il les réussit tous (après la Loop) : il est redigié vers le prochain exercice, avec un scénario différent donc
-        -->
-
-        <div v-if="areScenariosEqual">
-            <!-- CAS GERE : si memes scenarios, on parcoure simplement les exercices-->
-            <router-link
-                :to="{
-                    name: 'exercise',
-                    params: {
-                        id: 1,
-                        level_id: 1,
-                        exercise_id: nextExerciseId,
-                    },
-                }"
-            >
-                Suivant
-            </router-link>
-        </div>
-
-        <!-- CAS A GERER : si loop sur un exercice, qu'il le réussit maintenat, faut pas redigier vers l'exo suivant mais 
-         - si autre exo raté, vers celui-ci
-         - si plus d'exo raté, vers l'exrcice next scenario
-         -->
-        <!-- solution var qui compte le nombre d'exo d'un même scénario, et ici on if si stockExercisesByScenario a autant d'instances
-          qu nombre d'exo avec ce même scénario, si sont toutes à true, on redirige vrs exercice next scenario sinon sur le prochain fail -->
-        <div v-if="countSameScenario && !hasFalse">
-            <router-link
-                :to="{
-                    name: 'exercise',
-                    params: {
-                        id: 1,
-                        level_id: 1,
-                        exercise_id: nextScenarioExerciseId,
-                    },
-                }"
-            >
-                Suivant vers nextScenarioExerciseId
-            </router-link>
-        </div>
-
-        <div v-if="!areScenariosEqual">
-            <!-- si les deux scénarios sont différents, donc dernier exercice d'une salve d'un scenario x suivi d'un exo scenario y-->
-            <!-- si il y a au moins une faute (hasFalse), on renvoie sur l'exo raté -->
-            <div v-if="hasFalse">
-                <!-- ICI CAS : dernier exo d'un scenario, avec au moins une erreur-->
-                <!--<router-link
-                    :to="{
-                        name: 'exercise',
-                        params: {
-                            id: 1,
-                            level_id: 1,
-                            exercise_id: failedExerciseId,
-                        },
-                    }"
-                >
-                    Suivant (boucle) (failedExerciseId)
-                </router-link>-->
-
-                <!-- ce router-link marche pas si ça concerne le dernier exo qui est fail, car ça redirige pas sur la même map
-                 ça se met pas à jour
-                 -->
-
-                <a
-                    href=""
-                    @click.prevent="redirectToFailedExercise(failedExerciseId)"
-                >
-                    Suivant (boucle) ({{ failedExerciseId }})
-                </a>
-            </div>
-            <div v-else>
-                <!-- CAS GERE : dernir exo d'un scenario, avec aucune erreur-->
-                <router-link
-                    :to="{
-                        name: 'exercise',
-                        params: {
-                            id: 1,
-                            level_id: 1,
-                            exercise_id: nextScenarioExerciseId,
-                        },
-                    }"
-                >
-                    Suivant vers nextScenarioExerciseId
-                </router-link>
-            </div>
-        </div>
+        <router-link
+            :to="{
+                name: 'exercise',
+                params: {
+                    id: 1,
+                    level_id: 1,
+                    exercise_id: countSameScenario
+                        ? failedExerciseId
+                        : nextExerciseId,
+                },
+            }"
+        >
+            Suivant
+        </router-link>
     </div>
 </template>
 
@@ -207,7 +118,18 @@ export default {
             const firstFailedExerciseId = this.stockExercisesByScenario.find(
                 (item) => item[1] === false
             );
-            return firstFailedExerciseId ? firstFailedExerciseId[0] : 0;
+
+            // nextScenarioxerciseId()
+            const lastExercise =
+                this.stockExercisesByScenario[
+                    this.stockExercisesByScenario.length - 1
+                ];
+
+            const nextExerciseId = lastExercise ? lastExercise[0] + 1 : 1;
+
+            return firstFailedExerciseId
+                ? firstFailedExerciseId[0]
+                : nextExerciseId;
         },
     },
     methods: {
