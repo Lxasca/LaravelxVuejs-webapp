@@ -26,5 +26,44 @@ class ExercisesController extends Controller
     
         return response()->json($areScenariosEqual);
     }
-    
+
+    public function countWithSameScenario($id)
+{
+    // Récupérer l'exercice actif
+    $currentExercise = Exercises::find($id);
+
+    $scenario = $currentExercise->scenario;
+    $order = $currentExercise->order;
+
+    // Initialiser le compteur
+    $count = 1; // Inclut l'exercice actuel
+
+    // Récupérer et compter les exercices avec le même scénario avant
+    $previousExercises = Exercises::where('order', '<', $order)
+        ->where('scenario', $scenario)
+        ->orderBy('order', 'desc')
+        ->get();
+
+    foreach ($previousExercises as $exercise) {
+        if ($exercise->scenario !== $scenario) {
+            break;
+        }
+        $count++;
+    }
+
+    // Récupérer et compter les exercices avec le même scénario après
+    $nextExercises = Exercises::where('order', '>', $order)
+        ->orderBy('order', 'asc')
+        ->get();
+
+    foreach ($nextExercises as $exercise) {
+        if ($exercise->scenario !== $scenario) {
+            break;
+        }
+        $count++;
+    }
+
+    return response()->json($count);
+}
+
 }

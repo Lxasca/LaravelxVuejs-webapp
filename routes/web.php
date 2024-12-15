@@ -25,6 +25,8 @@ Route::get('/get-vocabulary/{id}', [VocabulariesController::class, 'getVocabular
 Route::get('/get-first-exercise-of-level/{id}', [LevelsController::class, 'getFirstExerciseOfLevel']);
 // Compare le scenario de l'exercise actif avec le scenario de l'exercice suivant
 Route::get('/compare-scenario-of-exercises/{id}', [ExercisesController::class, 'compareScenarioOfExercices']);
+//
+Route::get('/count-with-same-scenario/{id}', [ExercisesController::class, 'countWithSameScenario']);
 
 
 
