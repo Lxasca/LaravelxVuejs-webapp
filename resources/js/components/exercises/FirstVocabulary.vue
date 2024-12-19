@@ -99,27 +99,11 @@ export default {
             this.selectedChoice = null;
             return parseInt(this.$route.params.exercise_id) + 1;
         },
-        nextScenarioExerciseId() {
-            this.selectedChoice = null;
-
-            const lastExercise =
-                this.stockExercisesByScenario[
-                    this.stockExercisesByScenario.length - 1
-                ];
-
-            const nextExerciseId = lastExercise ? lastExercise[0] + 1 : 1;
-
-            return nextExerciseId;
-        },
         failedExerciseId() {
             this.selectedChoice = null;
-
-            // on récup l'id du premier exercice du tableau raté
             const firstFailedExerciseId = this.stockExercisesByScenario.find(
                 (item) => item[1] === false
             );
-
-            // nextScenarioxerciseId()
             const lastExercise =
                 this.stockExercisesByScenario[
                     this.stockExercisesByScenario.length - 1
@@ -153,8 +137,6 @@ export default {
                 .get(`/compare-scenario-of-exercises/${exercise_id}`)
                 .then((response) => {
                     this.areScenariosEqual = response.data;
-                    // response.data vaut True si les deux exercises ont le même scénario
-                    // et False si ils ont des scénarios différents.
                 });
         },
         countWithSameScenario() {
@@ -163,8 +145,6 @@ export default {
             axios
                 .get(`/count-with-same-scenario/${exercise_id}`)
                 .then((response) => {
-                    // On vérifie si stockExercisesByScenario contient autant de sous-tableaux qu'il y a d'exercices 'liés' (order)
-                    // du même scénario qu l'exercice actuel
                     if (
                         this.stockExercisesByScenario.length === response.data
                     ) {
@@ -180,9 +160,9 @@ export default {
             this.$router.push({
                 name: "exercise",
                 params: {
-                    id: 1, // ID du niveau ou de l'exercice actuel
-                    level_id: 1, // ID du niveau
-                    exercise_id: failedExerciseId, // L'ID de l'exercice échoué
+                    id: 1,
+                    level_id: 1,
+                    exercise_id: failedExerciseId,
                 },
             });
         },
