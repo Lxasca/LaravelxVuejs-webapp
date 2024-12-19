@@ -6,7 +6,11 @@
     <div
         :class="{
             disabled:
-                selectedChoice !== null && exercise.id != failedExerciseId,
+                (selectedChoice !== null && exercise.id !== failedExerciseId) ||
+                (selectedChoice !== null && !countSameScenario) ||
+                (loop === false &&
+                    selectedChoice !== null &&
+                    failedExerciseId !== exercise.id),
         }"
         class="choices"
     >
@@ -49,20 +53,34 @@
     </div>
 
     <div class="exercice-suivant" v-if="selectedChoice">
-        <router-link
-            :to="{
-                name: 'exercise',
-                params: {
-                    id: 1,
-                    level_id: 1,
-                    exercise_id: countSameScenario
-                        ? failedExerciseId
-                        : nextExerciseId,
-                },
-            }"
+        <div
+            v-if="
+                selectedChoice == exercise.vocabulary.word_opposite_1 ||
+                selectedChoice == exercise.correct_vocabulary
+            "
         >
-            Suivant
-        </router-link>
+            <div>
+                <p v-if="selectedChoice == exercise.correct_vocabulary">
+                    Réussie !
+                </p>
+                <p v-else>Raté !</p>
+            </div>
+
+            <router-link
+                :to="{
+                    name: 'exercise',
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: countSameScenario
+                            ? failedExerciseId
+                            : nextExerciseId,
+                    },
+                }"
+            >
+                Suivant
+            </router-link>
+        </div>
     </div>
 </template>
 
