@@ -4,15 +4,21 @@
     </div>
 
     <div
+        class="choices"
         :class="{
             disabled:
-                (selectedChoice !== null && exercise.id !== failedExerciseId) ||
-                (selectedChoice !== null && !countSameScenario) ||
-                (loop === false &&
-                    selectedChoice !== null &&
-                    failedExerciseId !== exercise.id),
+                selectedChoice !== null &&
+                (selectedChoice == exercise.vocabulary.word_opposite_1 ||
+                    selectedChoice == exercise.correct_vocabulary) &&
+                !(
+                    stockExercisesByScenario.filter((item) => item[1] === false)
+                        .length === 1 &&
+                    stockExercisesByScenario.some(
+                        (item) => item[0] === exercise.id && item[1] === false
+                    ) &&
+                    countSameScenario
+                ),
         }"
-        class="choices"
     >
         <div class="choice">
             <label>
@@ -66,7 +72,21 @@
                 <p v-else>Raté !</p>
             </div>
 
+            <span
+                v-if="
+                    stockExercisesByScenario.filter((item) => item[1] === false)
+                        .length === 1 &&
+                    stockExercisesByScenario.some(
+                        (item) => item[0] === exercise.id && item[1] === false
+                    ) &&
+                    countSameScenario
+                "
+            >
+                Réessayer !
+            </span>
+
             <router-link
+                v-else
                 :to="{
                     name: 'exercise',
                     params: {
@@ -118,20 +138,40 @@ export default {
             return parseInt(this.$route.params.exercise_id) + 1;
         },
         failedExerciseId() {
-            this.selectedChoice = null;
-            const firstFailedExerciseId = this.stockExercisesByScenario.find(
+            const failedExercises = this.stockExercisesByScenario.filter(
                 (item) => item[1] === false
             );
+
+            const currentExerciseId = parseInt(this.$route.params.exercise_id);
+
+            if (failedExercises.length > 0) {
+                // Trouver l'index de l'exercice actuel dans les exercices ratés
+                const currentFailedIndex = failedExercises.findIndex(
+                    (item) => item[0] === currentExerciseId
+                );
+
+                // Si l'exercice actuel est dans la liste des exercices ratés
+                if (currentFailedIndex !== -1) {
+                    // Si un autre exercice raté suit dans la liste, retourner son ID
+                    if (currentFailedIndex + 1 < failedExercises.length) {
+                        return failedExercises[currentFailedIndex + 1][0];
+                    }
+
+                    // Sinon, recommencer à partir du premier exercice raté
+                    return failedExercises[0][0];
+                }
+
+                // Si l'exercice actuel n'est pas dans les exercices ratés, retourner le premier raté
+                return failedExercises[0][0];
+            }
+
+            // Si aucun exercice n'est raté, rediriger vers l'exercice du prochain scénario
             const lastExercise =
                 this.stockExercisesByScenario[
                     this.stockExercisesByScenario.length - 1
                 ];
 
-            const nextExerciseId = lastExercise ? lastExercise[0] + 1 : 1;
-
-            return firstFailedExerciseId
-                ? firstFailedExerciseId[0]
-                : nextExerciseId;
+            return lastExercise ? lastExercise[0] + 1 : 1;
         },
     },
     methods: {
