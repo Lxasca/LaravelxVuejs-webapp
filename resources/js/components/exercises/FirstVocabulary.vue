@@ -20,7 +20,7 @@
                 ),
         }"
     >
-        <div class="choice">
+        <div :class="['choice', !isLeft ? 'left' : 'right']">
             <label>
                 <input
                     type="radio"
@@ -38,7 +38,7 @@
                 <span>{{ exercise.vocabulary.word }}</span>
             </label>
         </div>
-        <div class="choice">
+        <div :class="['choice', !isLeft ? 'left' : 'right']">
             <label>
                 <input
                     type="radio"
@@ -130,6 +130,8 @@ export default {
             loop: null,
             areScenariosEqual: false,
             countSameScenario: null,
+            isLeft: true,
+            count: 0,
         };
     },
     computed: {
@@ -175,6 +177,10 @@ export default {
         },
     },
     methods: {
+        shuffleChoices() {
+            const choices = ["word", "word_opposite_1"]; // nom des choix
+            return choices.sort(() => Math.random() - 0.5); // mélange aléatoire
+        },
         saveForLoopLogic(selectedValue, correctVocabulary) {
             if (selectedValue === correctVocabulary) {
                 this.loop = true;
@@ -184,6 +190,11 @@ export default {
 
             this.selectedChoice = selectedValue;
             this.$emit("save-for-loop-logic", this.loop);
+
+            this.count++;
+            if (this.count % 2 === 0) {
+                this.isLeft = !this.isLeft;
+            }
 
             this.compareScenarioOfExercices();
             this.countWithSameScenario();
