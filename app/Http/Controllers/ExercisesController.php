@@ -28,42 +28,47 @@ class ExercisesController extends Controller
     }
 
     public function countWithSameScenario($id)
-{
-    // Récupérer l'exercice actif
-    $currentExercise = Exercises::find($id);
+    {
+        // Récupérer l'exercice actif
+        $currentExercise = Exercises::find($id);
 
-    $scenario = $currentExercise->scenario;
-    $order = $currentExercise->order;
+        $scenario = $currentExercise->scenario;
+        $order = $currentExercise->order;
 
-    // Initialiser le compteur
-    $count = 1; // Inclut l'exercice actuel
+        // Initialiser le compteur
+        $count = 1; // Inclut l'exercice actuel
 
-    // Récupérer et compter les exercices avec le même scénario avant
-    $previousExercises = Exercises::where('order', '<', $order)
-        ->where('scenario', $scenario)
-        ->orderBy('order', 'desc')
-        ->get();
+        // Récupérer et compter les exercices avec le même scénario avant
+        $previousExercises = Exercises::where('order', '<', $order)
+            ->where('scenario', $scenario)
+            ->orderBy('order', 'desc')
+            ->get();
 
-    foreach ($previousExercises as $exercise) {
-        if ($exercise->scenario !== $scenario) {
-            break;
+        foreach ($previousExercises as $exercise) {
+            if ($exercise->scenario !== $scenario) {
+                break;
+            }
+            $count++;
         }
-        $count++;
+
+        // Récupérer et compter les exercices avec le même scénario après
+        $nextExercises = Exercises::where('order', '>', $order)
+            ->orderBy('order', 'asc')
+            ->get();
+
+        foreach ($nextExercises as $exercise) {
+            if ($exercise->scenario !== $scenario) {
+                break;
+            }
+            $count++;
+        }
+
+        return response()->json($count);
     }
 
-    // Récupérer et compter les exercices avec le même scénario après
-    $nextExercises = Exercises::where('order', '>', $order)
-        ->orderBy('order', 'asc')
-        ->get();
-
-    foreach ($nextExercises as $exercise) {
-        if ($exercise->scenario !== $scenario) {
-            break;
-        }
-        $count++;
+    public function getExercise($id) {
+        $exercise = Exercises::find($id);
+        return response()->json($exercise);
     }
-
-    return response()->json($count);
-}
 
 }

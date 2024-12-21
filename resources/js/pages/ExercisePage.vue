@@ -11,11 +11,7 @@
         <div
             v-else-if="exercise.type === 'vocabulary' && exercise.scenario == 2"
         >
-            <second-vocabulary
-                :exercise="exercise"
-                :hasFalse="hasFalse"
-                :stockExercisesByScenario="stockExercisesByScenario"
-            ></second-vocabulary>
+            <second-vocabulary :exercise="exercise"></second-vocabulary>
         </div>
     </exercise-layout>
 </template>

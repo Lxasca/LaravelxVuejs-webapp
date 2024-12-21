@@ -1,42 +1,59 @@
 <template>
     <div>
-        <h3>Exercice texte à trou</h3>
-        <p>
-            <span v-for="(part, index) in sentenceParts" :key="index">
-                <span v-if="!part.isInput">{{ part.text }}</span>
-                <input
-                    v-else
-                    type="text"
-                    v-model="userAnswer"
-                    :placeholder="placeholderText"
-                />
-            </span>
-        </p>
-        <p>
-            <button @click="validateAnswer">Valider</button>
-            <button @click="provideHint">Aide</button>
-        </p>
+        <div :class="{ disabled: feedbackMessage }">
+            <div class="question">
+                <img v-if="exercise.image" :src="exercise.image" alt="" />
+            </div>
 
-        <div v-if="feedbackMessage">
-            <p>{{ feedbackMessage }}</p>
+            <p>
+                <span v-for="(part, index) in sentenceParts" :key="index">
+                    <span v-if="!part.isInput">{{ part.text }}</span>
+                    <input
+                        v-else
+                        type="text"
+                        v-model="userAnswer"
+                        :placeholder="placeholderText"
+                    />
+                </span>
+            </p>
+            <p>
+                <button v-if="userAnswer.length > 0" @click="validateAnswer">
+                    Valider
+                </button>
+                <button
+                    v-if="userAnswer.length < 1 || !feedbackMessage"
+                    @click="provideHint"
+                >
+                    Aide
+                </button>
+            </p>
+        </div>
 
-            <router-link
-                :to="{
-                    name: 'exercise',
-                    params: {
-                        id: 1,
-                        level_id: 1,
-                        exercise_id: exercise.id + 1,
-                    },
-                }"
-            >
-                Suivant (passer)
-            </router-link>
+        <div v-if="feedbackMessage !== null">
+            <div v-if="feedbackMessage">
+                <p>Réussie !</p>
+
+                <router-link
+                    :to="{
+                        name: 'exercise',
+                        params: {
+                            id: 1,
+                            level_id: 1,
+                            exercise_id: nextExerciseId,
+                        },
+                    }"
+                >
+                    Suivant (passer)
+                </router-link>
+            </div>
+            <p v-else>Raté ! Reessayer</p>
         </div>
     </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "SecondVocabulary",
     props: {
@@ -44,49 +61,80 @@ export default {
             type: Object,
             required: true,
         },
-        hasFalse: {
-            type: Boolean,
-            required: false,
-        },
-        stockExercisesByScenario: {
-            type: Array,
-            required: true,
-        },
     },
     data() {
         return {
             userAnswer: "",
-            feedbackMessage: "",
+            feedbackMessage: null,
+            sentenceParts: [],
+            currentExercise: null,
         };
     },
+    mounted() {
+        this.resetState();
+        this.updateSentenceParts();
+    },
+    watch: {
+        "$route.params.exercise_id": {
+            immediate: true,
+            handler() {
+                this.resetState();
+                this.updateSentenceParts();
+            },
+        },
+    },
     computed: {
-        sentenceParts() {
-            const wordToReplace = this.exercise.correct_vocabulary;
-            const parts = this.exercise.sentence.split(wordToReplace);
-            return parts.flatMap((part, index) => [
-                { text: part, isInput: false },
-                ...(index < parts.length - 1
-                    ? [{ text: "", isInput: true }]
-                    : []),
-            ]);
+        nextExerciseId() {
+            return parseInt(this.$route.params.exercise_id) + 1;
         },
         placeholderText() {
-            return "_ ".repeat(this.exercise.correct_vocabulary.length);
+            return "_ ".repeat(this.currentExercise.correct_vocabulary.length);
         },
     },
     methods: {
         validateAnswer() {
             if (
                 this.userAnswer.trim().toLowerCase() ===
-                this.exercise.correct_vocabulary.toLowerCase()
+                this.currentExercise.correct_vocabulary.toLowerCase()
             ) {
-                this.feedbackMessage = "Bonne réponse !";
+                this.feedbackMessage = true;
             } else {
-                this.feedbackMessage = "Mauvaise réponse, essayez encore.";
+                this.feedbackMessage = false;
             }
         },
         provideHint() {
-            this.userAnswer = this.exercise.correct_vocabulary.charAt(0);
+            this.userAnswer = this.currentExercise.correct_vocabulary.charAt(0);
+        },
+        resetState() {
+            this.feedbackMessage = null;
+            this.userAnswer = "";
+        },
+        updateSentenceParts() {
+            const exercise_id = parseInt(this.$route.params.exercise_id);
+
+            axios
+                .get(`/get-exercise/${exercise_id}`)
+                .then((response) => {
+                    this.currentExercise = response.data;
+                    const wordToReplace =
+                        this.currentExercise.correct_vocabulary.toLowerCase();
+
+                    const sentence =
+                        this.currentExercise.sentence.charAt(0).toUpperCase() +
+                        this.currentExercise.sentence.slice(1).toLowerCase();
+
+                    const parts = sentence.split(wordToReplace);
+
+                    this.sentenceParts = parts.flatMap((part, index) => [
+                        { text: part, isInput: false },
+                        ...(index < parts.length - 1
+                            ? [{ text: "", isInput: true }]
+                            : []),
+                    ]);
+                })
+                .catch((error) => {
+                    console.log("fuck ", error);
+                });
         },
     },
 };
@@ -101,5 +149,19 @@ input {
 
 input:focus {
     box-shadow: none;
+}
+
+.question {
+    display: flex;
+    justify-content: center;
+
+    margin-bottom: 100px;
+}
+.question img {
+    width: 150px;
+}
+
+.disabled {
+    pointer-events: none;
 }
 </style>

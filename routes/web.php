@@ -27,6 +27,8 @@ Route::get('/get-first-exercise-of-level/{id}', [LevelsController::class, 'getFi
 Route::get('/compare-scenario-of-exercises/{id}', [ExercisesController::class, 'compareScenarioOfExercices']);
 //
 Route::get('/count-with-same-scenario/{id}', [ExercisesController::class, 'countWithSameScenario']);
+//
+Route::get('/get-exercise/{id}', [ExercisesController::class, 'getExercise']);
 
 
 
