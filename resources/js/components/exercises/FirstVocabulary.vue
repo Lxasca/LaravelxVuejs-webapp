@@ -20,7 +20,7 @@
                 ),
         }"
     >
-        <div :class="['choice', !isLeft ? 'left' : 'right']">
+        <div v-if="randomNumber == 1" class="choice">
             <label>
                 <input
                     type="radio"
@@ -38,7 +38,7 @@
                 <span>{{ exercise.vocabulary.word }}</span>
             </label>
         </div>
-        <div :class="['choice', !isLeft ? 'left' : 'right']">
+        <div class="choice">
             <label>
                 <input
                     type="radio"
@@ -54,6 +54,24 @@
                     hidden
                 />
                 <span>{{ exercise.vocabulary.word_opposite_1 }}</span>
+            </label>
+        </div>
+        <div v-if="randomNumber == 2" class="choice">
+            <label>
+                <input
+                    type="radio"
+                    name="choice"
+                    :value="exercise.vocabulary.word"
+                    v-model="selectedChoice"
+                    @click="
+                        saveForLoopLogic(
+                            exercise.vocabulary.word,
+                            exercise.correct_vocabulary
+                        )
+                    "
+                    hidden
+                />
+                <span>{{ exercise.vocabulary.word }}</span>
             </label>
         </div>
     </div>
@@ -97,6 +115,7 @@
                             : nextExerciseId,
                     },
                 }"
+                @click="generateRandomNumber"
             >
                 Suivant
             </router-link>
@@ -130,9 +149,11 @@ export default {
             loop: null,
             areScenariosEqual: false,
             countSameScenario: null,
-            isLeft: true,
-            count: 0,
+            randomNumber: null,
         };
+    },
+    mounted() {
+        this.generateRandomNumber();
     },
     computed: {
         nextExerciseId() {
@@ -177,9 +198,8 @@ export default {
         },
     },
     methods: {
-        shuffleChoices() {
-            const choices = ["word", "word_opposite_1"]; // nom des choix
-            return choices.sort(() => Math.random() - 0.5); // mélange aléatoire
+        generateRandomNumber() {
+            this.randomNumber = Math.floor(Math.random() * 2) + 1;
         },
         saveForLoopLogic(selectedValue, correctVocabulary) {
             if (selectedValue === correctVocabulary) {
@@ -190,11 +210,6 @@ export default {
 
             this.selectedChoice = selectedValue;
             this.$emit("save-for-loop-logic", this.loop);
-
-            this.count++;
-            if (this.count % 2 === 0) {
-                this.isLeft = !this.isLeft;
-            }
 
             this.compareScenarioOfExercices();
             this.countWithSameScenario();
