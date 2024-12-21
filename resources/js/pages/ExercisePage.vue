@@ -8,6 +8,15 @@
                 @save-for-loop-logic="verifLoopLogic($event)"
             ></first-vocabulary>
         </div>
+        <div
+            v-else-if="exercise.type === 'vocabulary' && exercise.scenario == 2"
+        >
+            <second-vocabulary
+                :exercise="exercise"
+                :hasFalse="hasFalse"
+                :stockExercisesByScenario="stockExercisesByScenario"
+            ></second-vocabulary>
+        </div>
     </exercise-layout>
 </template>
 
@@ -15,10 +24,11 @@
 import axios from "axios";
 import ExerciseLayout from "../layouts/ExerciseLayout.vue";
 import FirstVocabulary from "../components/exercises/FirstVocabulary.vue";
+import SecondVocabulary from "../components/exercises/SecondVocabulary.vue";
 
 export default {
     name: "ExercisePage",
-    components: { ExerciseLayout, FirstVocabulary },
+    components: { ExerciseLayout, FirstVocabulary, SecondVocabulary },
     data() {
         return {
             exercise: {},
