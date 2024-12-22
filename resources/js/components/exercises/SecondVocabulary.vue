@@ -13,9 +13,18 @@
                         type="text"
                         v-model="userAnswer"
                         :placeholder="placeholderText"
+                        :maxlength="exercise.correct_vocabulary.length"
+                        @input="checkAnswer"
                     />
                 </span>
             </p>
+
+            <!-- nombre de lettres saisies vs. le nombre total -->
+            <p>
+                {{ userAnswer.length }} /
+                {{ exercise.correct_vocabulary.length }}
+            </p>
+
             <p>
                 <button v-if="userAnswer.length > 0" @click="validateAnswer">
                     Valider
@@ -168,6 +177,19 @@ export default {
         },
     },
     methods: {
+        checkAnswer() {
+            const correctWord =
+                this.currentExercise.correct_vocabulary.toLowerCase();
+            if (
+                this.userAnswer.toLowerCase() !==
+                correctWord.slice(0, this.userAnswer.length)
+            ) {
+                this.userAnswer = this.userAnswer.slice(
+                    0,
+                    this.userAnswer.length - 1
+                );
+            }
+        },
         validateAnswer() {
             if (
                 this.userAnswer.trim().toLowerCase() ===
