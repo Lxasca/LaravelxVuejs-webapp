@@ -34,11 +34,7 @@ export default {
             axios
                 .get(`/get-vocabularies/${course_id}/${level_id}`)
                 .then((response) => {
-                    console.log("succès : ", response.data);
                     this.vocabularies = response.data;
-                })
-                .catch((error) => {
-                    console.log("erreur : ", error);
                 });
         },
     },

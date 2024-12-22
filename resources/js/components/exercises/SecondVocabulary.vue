@@ -20,11 +20,87 @@
                 <button v-if="userAnswer.length > 0" @click="validateAnswer">
                     Valider
                 </button>
+
                 <button
-                    v-if="userAnswer.length < 1 || !feedbackMessage"
-                    @click="provideHint"
+                    v-if="
+                        userAnswer
+                            .slice(
+                                0,
+                                Math.ceil(
+                                    exercise.correct_vocabulary.length / 3
+                                )
+                            )
+                            .toLowerCase() !==
+                        exercise.correct_vocabulary
+                            .slice(
+                                0,
+                                Math.ceil(
+                                    exercise.correct_vocabulary.length / 3
+                                )
+                            )
+                            .toLowerCase()
+                    "
+                    @click="provideHintFirst"
                 >
-                    Aide
+                    Aide 1/3
+                </button>
+                <button
+                    v-if="
+                        userAnswer.length >=
+                            Math.ceil(
+                                (exercise.correct_vocabulary.length * 1) / 3
+                            ) &&
+                        userAnswer
+                            .slice(
+                                0,
+                                Math.ceil(
+                                    (exercise.correct_vocabulary.length * 2) / 3
+                                )
+                            )
+                            .toLowerCase() !==
+                            exercise.correct_vocabulary
+                                .slice(
+                                    0,
+                                    Math.ceil(
+                                        (exercise.correct_vocabulary.length *
+                                            2) /
+                                            3
+                                    )
+                                )
+                                .toLowerCase()
+                    "
+                    @click="provideHintSecond"
+                >
+                    Aide 2/3
+                </button>
+                <button
+                    v-if="
+                        userAnswer.length >=
+                            Math.ceil(
+                                (exercise.correct_vocabulary.length * 2) / 3
+                            ) &&
+                        userAnswer
+                            .slice(
+                                0,
+                                Math.ceil(
+                                    (exercise.correct_vocabulary.length * 3) / 3
+                                )
+                            )
+                            .toLowerCase() !==
+                            exercise.correct_vocabulary
+                                .slice(
+                                    0,
+                                    Math.ceil(
+                                        (exercise.correct_vocabulary.length *
+                                            3) /
+                                            3
+                                    )
+                                )
+                                .toLowerCase()
+                    "
+                    @click="provideHintThird"
+                >
+                    Aide 3/3
                 </button>
             </p>
         </div>
@@ -102,8 +178,19 @@ export default {
                 this.feedbackMessage = false;
             }
         },
-        provideHint() {
-            this.userAnswer = this.currentExercise.correct_vocabulary.charAt(0);
+        provideHintFirst() {
+            const word = this.currentExercise.correct_vocabulary;
+            const hintLength = Math.ceil(word.length / 3);
+            this.userAnswer = word.slice(0, hintLength);
+        },
+        provideHintSecond() {
+            const word = this.currentExercise.correct_vocabulary;
+            const hintLength = Math.ceil((word.length * 2) / 3);
+            this.userAnswer = word.slice(0, hintLength);
+        },
+        provideHintThird() {
+            const word = this.currentExercise.correct_vocabulary;
+            this.userAnswer = word;
         },
         resetState() {
             this.feedbackMessage = null;
@@ -112,29 +199,24 @@ export default {
         updateSentenceParts() {
             const exercise_id = parseInt(this.$route.params.exercise_id);
 
-            axios
-                .get(`/get-exercise/${exercise_id}`)
-                .then((response) => {
-                    this.currentExercise = response.data;
-                    const wordToReplace =
-                        this.currentExercise.correct_vocabulary.toLowerCase();
+            axios.get(`/get-exercise/${exercise_id}`).then((response) => {
+                this.currentExercise = response.data;
+                const wordToReplace =
+                    this.currentExercise.correct_vocabulary.toLowerCase();
 
-                    const sentence =
-                        this.currentExercise.sentence.charAt(0).toUpperCase() +
-                        this.currentExercise.sentence.slice(1).toLowerCase();
+                const sentence =
+                    this.currentExercise.sentence.charAt(0).toUpperCase() +
+                    this.currentExercise.sentence.slice(1).toLowerCase();
 
-                    const parts = sentence.split(wordToReplace);
+                const parts = sentence.split(wordToReplace);
 
-                    this.sentenceParts = parts.flatMap((part, index) => [
-                        { text: part, isInput: false },
-                        ...(index < parts.length - 1
-                            ? [{ text: "", isInput: true }]
-                            : []),
-                    ]);
-                })
-                .catch((error) => {
-                    console.log("fuck ", error);
-                });
+                this.sentenceParts = parts.flatMap((part, index) => [
+                    { text: part, isInput: false },
+                    ...(index < parts.length - 1
+                        ? [{ text: "", isInput: true }]
+                        : []),
+                ]);
+            });
         },
     },
 };

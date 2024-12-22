@@ -114,8 +114,6 @@ export default {
                     axios.get(`/get-vocabulary/${id}`).then((response) => {
                         this.vocabularyMultiple.push(response.data);
 
-                        console.log("lea : ", response.data);
-
                         // On récupère chaque mot stocké dans le tableau, et pour chaque mot on le get puis on le push dans vocabularyMultiple pour l'afficher dans le v-for
                     });
                 });
