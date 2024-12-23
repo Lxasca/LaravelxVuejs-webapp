@@ -1,5 +1,6 @@
 <template>
     <div>
+        
         <p>
             <span v-for="(part, index) in sentenceParts" :key="index">
                 <span v-if="part.isWord">
@@ -7,11 +8,35 @@
                         type="text"
                         v-model="part.value"
                         class="word-input"
-                        :placeholder="part.original"
+                        :class="{
+                            'border-red-500':
+                                part.value &&
+                                part.value.toLowerCase() !==
+                                    part.original.toLowerCase(),
+                        }"
                     />
+                    <!--:placeholder="part.original"-->
                 </span>
                 <span v-else>{{ part.text }}</span>
             </span>
+        </p>
+        <button @click="validateAnswers">Valider</button>
+        <p
+            v-if="resultMessage"
+            :class="{
+                'text-green-500': resultMessage === 'Réussi !',
+                'text-red-500': resultMessage === 'Raté !',
+            }"
+        >
+            {{ resultMessage }}
+
+            <router-link
+                :to="{ name: 'course', params: { id: this.$route.params.id } }"
+                v-if="resultMessage === 'Réussi !'"
+                class="btn btn-primary"
+            >
+                Terminer
+            </router-link>
         </p>
     </div>
 </template>
@@ -30,6 +55,7 @@ export default {
         return {
             arrayWords: [],
             sentenceParts: [],
+            resultMessage: "",
         };
     },
     mounted() {
@@ -49,8 +75,6 @@ export default {
                 this.arrayWords = responses.map(
                     (response) => response.data.word
                 );
-
-                console.log("arrayWords : ", this.arrayWords);
 
                 this.detectWordsInSentence();
             } catch (error) {
@@ -92,8 +116,44 @@ export default {
 
             this.sentenceParts = matches;
         },
+
+        validateAnswers() {
+            let isValid = true;
+            this.sentenceParts.forEach((part) => {
+                if (
+                    part.isWord &&
+                    part.value.toLowerCase() !== part.original.toLowerCase()
+                ) {
+                    isValid = false;
+                }
+            });
+
+            this.resultMessage = isValid ? "Réussi !" : "Raté !";
+        },
     },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.word-input {
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100px;
+}
+
+.text-green-500 {
+    color: green;
+}
+
+.text-red-500 {
+    color: red;
+}
+
+.border-green-500 {
+    border-color: green;
+}
+
+.border-red-500 {
+    border-color: red;
+}
+</style>
