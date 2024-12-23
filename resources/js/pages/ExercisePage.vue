@@ -13,6 +13,16 @@
         >
             <second-vocabulary :exercise="exercise"></second-vocabulary>
         </div>
+        <div
+            v-else-if="
+                exercise.type === 'vocabulary-multiple' &&
+                exercise.scenario == 2
+            "
+        >
+            <third-multiple-vocabulary
+                :exercise="exercise"
+            ></third-multiple-vocabulary>
+        </div>
     </exercise-layout>
 </template>
 
@@ -21,10 +31,16 @@ import axios from "axios";
 import ExerciseLayout from "../layouts/ExerciseLayout.vue";
 import FirstVocabulary from "../components/exercises/FirstVocabulary.vue";
 import SecondVocabulary from "../components/exercises/SecondVocabulary.vue";
+import ThirdMultipleVocabulary from "../components/exercises/ThirdMultipleVocabulary.vue";
 
 export default {
     name: "ExercisePage",
-    components: { ExerciseLayout, FirstVocabulary, SecondVocabulary },
+    components: {
+        ExerciseLayout,
+        FirstVocabulary,
+        SecondVocabulary,
+        ThirdMultipleVocabulary,
+    },
     data() {
         return {
             exercise: {},

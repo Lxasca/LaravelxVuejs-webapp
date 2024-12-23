@@ -110,7 +110,6 @@ export default {
                 const vocabulariesArray = JSON.parse(exercise.vocabularies); // on le transforme en objet pour foreach dessus, car reçu en chaine de caractère
 
                 vocabulariesArray.forEach((id) => {
-                    console.log("boucle : ", id);
                     axios.get(`/get-vocabulary/${id}`).then((response) => {
                         this.vocabularyMultiple.push(response.data);
 
