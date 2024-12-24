@@ -1,6 +1,5 @@
 <template>
     <div>
-        
         <p>
             <span v-for="(part, index) in sentenceParts" :key="index">
                 <span v-if="part.isWord">
@@ -31,11 +30,16 @@
             {{ resultMessage }}
 
             <router-link
-                :to="{ name: 'course', params: { id: this.$route.params.id } }"
-                v-if="resultMessage === 'Réussi !'"
-                class="btn btn-primary"
+                :to="{
+                    name: 'exercise',
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: nextExerciseId,
+                    },
+                }"
             >
-                Terminer
+                Suivant
             </router-link>
         </p>
     </div>
@@ -60,6 +64,11 @@ export default {
     },
     mounted() {
         this.getVocabulariesOfSentence();
+    },
+    computed: {
+        nextExerciseId() {
+            return parseInt(this.$route.params.exercise_id) + 1;
+        },
     },
     methods: {
         async getVocabulariesOfSentence() {

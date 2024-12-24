@@ -23,6 +23,9 @@
                 :exercise="exercise"
             ></third-multiple-vocabulary>
         </div>
+        <div v-else-if="exercise.type === 'grammar'">
+            <lesson-grammar :exercise="exercise"></lesson-grammar>
+        </div>
     </exercise-layout>
 </template>
 
@@ -32,6 +35,7 @@ import ExerciseLayout from "../layouts/ExerciseLayout.vue";
 import FirstVocabulary from "../components/exercises/FirstVocabulary.vue";
 import SecondVocabulary from "../components/exercises/SecondVocabulary.vue";
 import ThirdMultipleVocabulary from "../components/exercises/ThirdMultipleVocabulary.vue";
+import LessonGrammar from "../components/grammars/LessonGrammar.vue";
 
 export default {
     name: "ExercisePage",
@@ -40,6 +44,7 @@ export default {
         FirstVocabulary,
         SecondVocabulary,
         ThirdMultipleVocabulary,
+        LessonGrammar,
     },
     data() {
         return {
