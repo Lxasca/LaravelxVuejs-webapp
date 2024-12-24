@@ -29,18 +29,19 @@ class ExercisesController extends Controller
 
     public function countWithSameScenario($id)
     {
-        // Récupérer l'exercice actif
         $currentExercise = Exercises::find($id);
+
+        if (!$currentExercise) {
+            return response()->json(0); 
+        }
 
         $scenario = $currentExercise->scenario;
         $order = $currentExercise->order;
 
-        // Initialiser le compteur
-        $count = 1; // Inclut l'exercice actuel
+        $count = 1;
 
-        // Récupérer et compter les exercices avec le même scénario avant
+        // Récupère les exercices précédents (même scénario)
         $previousExercises = Exercises::where('order', '<', $order)
-            ->where('scenario', $scenario)
             ->orderBy('order', 'desc')
             ->get();
 
@@ -51,7 +52,7 @@ class ExercisesController extends Controller
             $count++;
         }
 
-        // Récupérer et compter les exercices avec le même scénario après
+        // Récupère les exercices suivants (même scénario)
         $nextExercises = Exercises::where('order', '>', $order)
             ->orderBy('order', 'asc')
             ->get();
@@ -66,9 +67,28 @@ class ExercisesController extends Controller
         return response()->json($count);
     }
 
+
     public function getExercise($id) {
         $exercise = Exercises::find($id);
         return response()->json($exercise);
     }
 
+    public function getPreviousExerciseScenario($id)
+    {
+        $currentExercise = Exercises::find($id);
+
+        if (!$currentExercise) {
+            return response()->json(['error' => 'Exercice non trouvé'], 404);
+        }
+
+        $previousExercise = Exercises::where('order', '<', $currentExercise->order)
+            ->orderBy('order', 'desc')
+            ->first();
+
+        if (!$previousExercise) {
+            return response()->json(['error' => 'Aucun exercice précédent'], 404);
+        }
+
+        return response()->json(['scenario' => $previousExercise->scenario]);
+    }
 }

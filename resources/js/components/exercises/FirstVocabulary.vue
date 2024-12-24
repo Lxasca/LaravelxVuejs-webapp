@@ -3,6 +3,8 @@
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
 
+    {{ stockExercisesByScenario }}
+
     <div
         class="choices"
         :class="{
@@ -17,6 +19,11 @@
                         (item) => item[0] === exercise.id && item[1] === false
                     ) &&
                     countSameScenario
+                ) &&
+                !(
+                    stockExercisesByScenario.find(
+                        (item) => item[0] === exercise.id
+                    )?.[1] === false && selectedChoice === null
                 ),
         }"
     >
@@ -154,6 +161,8 @@ export default {
     },
     mounted() {
         this.generateRandomNumber();
+
+        this.previous();
     },
     computed: {
         nextExerciseId() {
@@ -198,6 +207,24 @@ export default {
         },
     },
     methods: {
+        previous() {
+            const exercise_id = this.$route.params.exercise_id;
+
+            axios
+                .get(`/get-previous-exercise-scenario/${exercise_id}`)
+                .then((response) => {
+                    /**if (response.data.scenario !== this.exercise.scenario) {
+                        this.stockExercisesByScenario = [];
+                    }**/
+                    this.stockExercisesByScenario = [];
+                })
+                .catch((error) => {
+                    console.error(
+                        "Erreur lors de la récupération de l'exercice précédent:",
+                        error
+                    );
+                });
+        },
         generateRandomNumber() {
             this.randomNumber = Math.floor(Math.random() * 2) + 1;
         },
