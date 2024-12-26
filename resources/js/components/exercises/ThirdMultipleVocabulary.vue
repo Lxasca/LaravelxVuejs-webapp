@@ -9,9 +9,6 @@
                     width="150px"
                 />
             </div>
-            <div v-for="arrayWord in arrayWords" :key="arrayWord.id">
-                {{ arrayWord }}
-            </div>
         </section>
 
         <p>

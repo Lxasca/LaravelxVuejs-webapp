@@ -3,8 +3,6 @@
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
 
-    {{ stockExercisesByScenario }}
-
     <div
         class="choices"
         :class="{
@@ -119,7 +117,7 @@
                         level_id: 1,
                         exercise_id: countSameScenario
                             ? failedExerciseId
-                            : nextExerciseId,
+                            : nextExerciseIdValue,
                     },
                 }"
                 @click="generateRandomNumber"
@@ -157,18 +155,21 @@ export default {
             areScenariosEqual: false,
             countSameScenario: null,
             randomNumber: null,
+            nextExerciseIdValue: null,
         };
+    },
+    async created() {
+        await this.updateNextExerciseId();
+    },
+    watch: {
+        "$route.params.exercise_id": async function (newId) {
+            await this.updateNextExerciseId(); // Mettre à jour chaque fois que l'exercice change
+        },
     },
     mounted() {
         this.generateRandomNumber();
-
-        this.previous();
     },
     computed: {
-        nextExerciseId() {
-            this.selectedChoice = null;
-            return parseInt(this.$route.params.exercise_id) + 1;
-        },
         failedExerciseId() {
             const failedExercises = this.stockExercisesByScenario.filter(
                 (item) => item[1] === false
@@ -207,7 +208,26 @@ export default {
         },
     },
     methods: {
-        previous() {
+        async updateNextExerciseId() {
+            const currentExerciseId = parseInt(this.$route.params.exercise_id);
+            try {
+                const response = await axios.get(
+                    `/get-next-exercise-by-order/${currentExerciseId}`
+                );
+                if (response.data && response.data.id) {
+                    this.nextExerciseIdValue = response.data.id;
+                }
+            } catch (error) {
+                console.error(
+                    "Erreur lors de la récupération du prochain exercice :",
+                    error
+                );
+            }
+        },
+        nextExerciseId() {
+            return this.nextExerciseIdValue;
+        },
+        /**previous() {
             const exercise_id = this.$route.params.exercise_id;
 
             axios
@@ -216,15 +236,15 @@ export default {
                     /**if (response.data.scenario !== this.exercise.scenario) {
                         this.stockExercisesByScenario = [];
                     }**/
-                    this.stockExercisesByScenario = [];
+        /**this.stockExercisesByScenario = [];
                 })
                 .catch((error) => {
-                    console.error(
+                    /**console.log(
                         "Erreur lors de la récupération de l'exercice précédent:",
                         error
-                    );
-                });
-        },
+                    );**/
+        //});
+        //},
         generateRandomNumber() {
             this.randomNumber = Math.floor(Math.random() * 2) + 1;
         },

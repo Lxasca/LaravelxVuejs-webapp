@@ -29,6 +29,7 @@ Route::get('/compare-scenario-of-exercises/{id}', [ExercisesController::class, '
 Route::get('/count-with-same-scenario/{id}', [ExercisesController::class, 'countWithSameScenario']);
 //
 Route::get('/get-exercise/{id}', [ExercisesController::class, 'getExercise']);
+Route::get('/get-next-exercise-by-order/{id}', [ExercisesController::class, 'getNextExerciseByOrder']);
 //
 Route::get('/get-previous-exercise-scenario/{id}', [ExercisesController::class, 'getPreviousExerciseScenario']);
 

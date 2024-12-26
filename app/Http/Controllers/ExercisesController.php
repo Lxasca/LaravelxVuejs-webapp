@@ -73,6 +73,16 @@ class ExercisesController extends Controller
         return response()->json($exercise);
     }
 
+    public function getNextExerciseByOrder($id) {
+        $actualExercise = Exercises::find($id);
+
+        $exercise = Exercises::where('order', '>', $actualExercise->order)
+        ->orderBy('order', 'asc')
+        ->first();
+        
+        return response()->json($exercise);
+    }
+
     public function getPreviousExerciseScenario($id)
     {
         $currentExercise = Exercises::find($id);
