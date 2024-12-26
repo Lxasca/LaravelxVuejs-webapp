@@ -1,5 +1,19 @@
 <template>
     <div>
+        <!-- affichage des images -->
+        <section>
+            <div v-for="arrayImage in arrayImages" :key="arrayImage.id">
+                <img
+                    :src="arrayImage"
+                    alt="Image d'illustration"
+                    width="150px"
+                />
+            </div>
+            <div v-for="arrayWord in arrayWords" :key="arrayWord.id">
+                {{ arrayWord }}
+            </div>
+        </section>
+
         <p>
             <span v-for="(part, index) in sentenceParts" :key="index">
                 <span v-if="part.isWord">
@@ -58,6 +72,7 @@ export default {
     data() {
         return {
             arrayWords: [],
+            arrayImages: [],
             sentenceParts: [],
             resultMessage: "",
         };
@@ -83,6 +98,10 @@ export default {
 
                 this.arrayWords = responses.map(
                     (response) => response.data.word
+                );
+
+                this.arrayImages = responses.map(
+                    (response) => response.data.image
                 );
 
                 this.detectWordsInSentence();
