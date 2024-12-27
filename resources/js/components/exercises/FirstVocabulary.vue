@@ -76,7 +76,9 @@
                 <p v-if="selectedChoice == exercise.correct_vocabulary">
                     Réussie !
                 </p>
-                <p v-else>Raté !</p>
+                <p v-else>
+                    <span v-if="isDisabled">Raté !</span>
+                </p>
             </div>
 
             <router-link
@@ -210,7 +212,6 @@ export default {
                                 this.nextExercise = response.data.id;
                             });
 
-                        //this.stockExercisesByScenario = [];
                         this.$emit("empty-stock");
 
                         // bug ça redirige vers l'exercice 2 car on finit par réussie le 1, meme si le 2 est déjà réussi
