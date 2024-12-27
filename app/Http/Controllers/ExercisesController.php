@@ -127,9 +127,11 @@ class ExercisesController extends Controller
         // $lastExerciseOfScenario = exercice avec l'order le plus élevé qui a le même scenario que le currentExercise
         // on chercher à récupérer l'exercise suivant cet exercise, donc le premier exo du prochain scenario
 
-        $nextExercise = Exercises::where('order', '>', $lastExerciseInSequence->order)
+        $nextExercise = Exercises::where('order', '>', $currentOrder)
+        ->where('scenario', '!=', $currentScenario)
         ->orderBy('order', 'asc')
         ->first();
+
 
         return response()->json($nextExercise);
     }

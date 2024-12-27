@@ -172,9 +172,7 @@ export default {
                         // L'idée ici est de trouver l'exercice qui suit celui que l'utilisateur a terminé,
                         // en respectant l'ordre défini dans le scénario.
 
-                        // ici, l'user a fait au moins une fois tous les exercices car this.stockExercisesByScenario.length === totalExercises
-                        // et en plus il les a tous réussi, dans ce cas, on redirige vers l'exercice suivant par order
-
+                        console.log("id : ", id);
                         axios
                             .get(`/get-next-exercise-for-next-scenario/${id}`)
                             .then((response) => {
