@@ -6,6 +6,7 @@
                 :hasFalse="hasFalse"
                 :stockExercisesByScenario="stockExercisesByScenario"
                 @save-for-loop-logic="verifLoopLogic($event)"
+                @empty-stock="initLoopLogic"
             ></first-vocabulary>
         </div>
         <div

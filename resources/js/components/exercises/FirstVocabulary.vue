@@ -175,6 +175,12 @@ export default {
             axios.get(`/count-with-same-type/${id}`).then((response) => {
                 const totalExercises = response.data;
 
+                console.log(
+                    "nique ta mère : ",
+                    this.stockExercisesByScenario.length,
+                    totalExercises
+                );
+
                 if (this.stockExercisesByScenario.length !== totalExercises) {
                     // Cas normal, exercise suivant par order
                     // si l'utilisateur n'a pas encore terminé la première tentative pour chaque exercise de ce scenario
@@ -203,6 +209,9 @@ export default {
                             .then((response) => {
                                 this.nextExercise = response.data.id;
                             });
+
+                        //this.stockExercisesByScenario = [];
+                        this.$emit("empty-stock");
 
                         // bug ça redirige vers l'exercice 2 car on finit par réussie le 1, meme si le 2 est déjà réussi
                         // ici il faut donc rediriger vers le order + 1 de l'exercice avec un scenario différent de l'exercice actuel

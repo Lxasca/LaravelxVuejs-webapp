@@ -35,6 +35,7 @@ class ExercisesController extends Controller
             return response()->json(0); 
         }
 
+        $scenario = $currentExercise->scenario;
         $type = $currentExercise->type; // !
         $order = $currentExercise->order;
 
@@ -46,7 +47,7 @@ class ExercisesController extends Controller
             ->get();
 
         foreach ($previousExercises as $exercise) {
-            if ($exercise->type !== $type) { // !
+            if ($exercise->type !== $type || $exercise->scenario !== $scenario) { // !
                 break;
             }
             $count++;
@@ -58,7 +59,7 @@ class ExercisesController extends Controller
             ->get();
 
         foreach ($nextExercises as $exercise) {
-            if ($exercise->type !== $type) { // !
+            if ($exercise->type !== $type || $exercise->scenario !== $scenario) { // !
                 break;
             }
             $count++;
