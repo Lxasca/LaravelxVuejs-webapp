@@ -3,7 +3,12 @@
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
 
-    <div class="choices">
+    <div
+        class="choices"
+        :class="{
+            disabled: isDisabled,
+        }"
+    >
         <div v-if="randomNumber == 1" class="choice">
             <label>
                 <input
@@ -84,7 +89,22 @@
                     },
                 }"
                 @click="generateRandomNumber"
-                >Suivant - {{ nextExercise }}
+            >
+                <span
+                    v-if="
+                        stockExercisesByScenario.filter(
+                            (item) => item[1] === false
+                        ).length === 1 &&
+                        stockExercisesByScenario.some(
+                            (item) =>
+                                item[0] === exercise.id && item[1] === false
+                        ) &&
+                        countSameScenario
+                    "
+                >
+                    Réessayer !
+                </span>
+                <span v-else> Suivant </span>
             </router-link>
         </div>
     </div>
@@ -112,11 +132,12 @@ export default {
     data() {
         return {
             selectedChoice: null,
-            isDisabled: false,
             loop: null,
             randomNumber: null,
             //
             nextExercise: null,
+            isDisabled: false,
+            countSameScenario: false,
         };
     },
     mounted() {
@@ -125,6 +146,7 @@ export default {
     },
     methods: {
         generateRandomNumber() {
+            this.isDisabled = false;
             this.randomNumber = Math.floor(Math.random() * 2) + 1;
         },
         saveForLoopLogic(selectedValue, correctVocabulary) {
@@ -136,6 +158,8 @@ export default {
 
             this.selectedChoice = selectedValue;
             this.$emit("save-for-loop-logic", this.loop);
+
+            this.isDisabled = true;
 
             this.determineNextExercise();
         },
@@ -162,6 +186,7 @@ export default {
 
                 // ici l'user a terminé (au moins) la première tentative pour chaque exercise de ce scenario
                 if (this.stockExercisesByScenario.length === totalExercises) {
+                    this.countSameScenario = true;
                     // Si il a réussi tous les exercices => exercise suivant
                     if (
                         this.stockExercisesByScenario.every(
@@ -203,39 +228,6 @@ export default {
             // Ici, on doit vérifier si l'utilisateur a terminé tous les exercices du scénario,
             // qu'ils soient réussis ou ratés. Si l'utilisateur a raté un ou plusieurs exercices,
             // il doit être redirigé vers les exercices ratés.
-            const exercisesInScenario = this.stockExercisesByScenario.filter(
-                (exercise) => exercise.scenario === this.exercise.scenario
-            );
-            const failedExercises = exercisesInScenario.filter(
-                (exercise) => exercise.isFailed === true
-            );
-
-            // Si l'utilisateur a raté des exercices dans le même scénario
-            if (failedExercises.length > 0) {
-                this.nextExercise = failedExercises;
-                console.log("2 ici ?");
-                return this.nextExercise; // Rediriger l'utilisateur vers les exercices ratés
-            }
-
-            // Cas 3: Si l'utilisateur a réussi tous les exercices d'un scénario
-            // Dans ce cas, on redirige l'utilisateur vers le prochain exercice suivant dans l'ordre
-            // des exercices dans le même scénario.
-            const nextExerciseAfterCompletion =
-                this.stockExercisesByScenario.find(
-                    (exercise) =>
-                        exercise.scenario === this.exercise.scenario &&
-                        exercise.order === this.exercise.order + 1
-                );
-
-            // Si un exercice suivant est trouvé, on le renvoie
-            if (nextExerciseAfterCompletion) {
-                this.nextExercise = nextExerciseAfterCompletion;
-                console.log("3 ici ?");
-                return this.nextExercise;
-            }
-
-            // Si aucun exercice suivant n'est trouvé, cela signifie que l'utilisateur a terminé tous les exercices
-            return 99; // Aucun exercice suivant, fin de la série d'exercices
         },
     },
 };
