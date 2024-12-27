@@ -1,6 +1,20 @@
 <template>
-    <div class="question">
-        <img v-if="exercise.image" :src="exercise.image" alt="" />
+    <div style="display: flex; justify-content: center">
+        <div class="question">
+            <img v-if="exercise.image" :src="exercise.image" alt="" />
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-bottom: 125px">
+        <div class="container-exercise-i">
+            <section>
+                <p>Syrie</p>
+            </section>
+
+            <section>
+                <img src="../../../images/exercises/headphones.png" alt="" />
+            </section>
+        </div>
     </div>
 
     <div
@@ -243,7 +257,55 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+* {
+    font-family: "Roboto Condensed", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    letter-spacing: 1.2px;
+}
+
+.container-exercise-i {
+    margin-top: -28.5px;
+
+    background-color: #ae7cf6;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 10px;
+    width: 350px;
+    color: white;
+    cursor: default;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+        width: 35px;
+        margin-top: 5.5px;
+        cursor: pointer;
+    }
+}
+
+.question {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    width: 800px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #f8da61;
+
+    img {
+        width: 150px;
+        height: 150px;
+    }
+}
+/********/
 .choices {
     display: flex;
     justify-content: space-evenly;
@@ -255,24 +317,13 @@ div[class^="choice"] input[type="radio"] + span {
     padding-right: 50px;
 
     cursor: pointer;
-    border-radius: 7.5px;
+    border-radius: 10px;
 
     font-size: 20px;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 div[class^="choice"] input[type="radio"]:checked + span {
-    background-color: #262626;
-    color: #fbfbfb;
-}
-
-.question {
-    display: flex;
-    justify-content: center;
-
-    margin-bottom: 100px;
-}
-.question img {
-    width: 150px;
+    border: solid 3px #ae7cf6;
 }
 
 .disabled {
