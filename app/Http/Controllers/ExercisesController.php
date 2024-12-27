@@ -101,4 +101,37 @@ class ExercisesController extends Controller
 
         return response()->json(['scenario' => $previousExercise->scenario]);
     }
+
+    public function getNextExerciseForNextScenario($id)
+    {
+        $currentExercise = Exercises::find($id);
+        $currentScenario = $currentExercise->scenario;
+        $currentOrder = $currentExercise->order;
+    
+        $exercisesInOrder = Exercises::orderBy('order', 'asc')->get();
+    
+        $lastExerciseInSequence = null;
+    
+        // on parcourt les exercices pour trouver la suite d'exercices avec le même scénario
+        foreach ($exercisesInOrder as $exercise) {
+            if ($exercise->order > $currentOrder && $exercise->scenario === $currentScenario) {
+                $lastExerciseInSequence = $exercise;
+            }
+    
+            // et si on rencontre un exercice avec un scénario différent, on arrête la recherche de la suite
+            if ($exercise->scenario !== $currentScenario && $lastExerciseInSequence !== null) {
+                break;
+            }
+        }
+
+        // $lastExerciseOfScenario = exercice avec l'order le plus élevé qui a le même scenario que le currentExercise
+        // on chercher à récupérer l'exercise suivant cet exercise, donc le premier exo du prochain scenario
+
+        $nextExercise = Exercises::where('order', '>', $lastExerciseInSequence->order)
+        ->orderBy('order', 'asc')
+        ->first();
+
+        return response()->json($nextExercise);
+    }
+
 }

@@ -30,6 +30,7 @@ Route::get('/count-with-same-scenario/{id}', [ExercisesController::class, 'count
 //
 Route::get('/get-exercise/{id}', [ExercisesController::class, 'getExercise']);
 Route::get('/get-next-exercise-by-order/{id}', [ExercisesController::class, 'getNextExerciseByOrder']);
+Route::get('/get-next-exercise-for-next-scenario/{id}', [ExercisesController::class, 'getNextExerciseForNextScenario']);
 //
 Route::get('/get-previous-exercise-scenario/{id}', [ExercisesController::class, 'getPreviousExerciseScenario']);
 

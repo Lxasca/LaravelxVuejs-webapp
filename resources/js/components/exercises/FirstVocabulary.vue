@@ -80,11 +80,11 @@
                     params: {
                         id: 1,
                         level_id: 1,
-                        exercise_id: 2,
+                        exercise_id: nextExercise,
                     },
                 }"
                 @click="generateRandomNumber"
-            >
+                >Suivant - {{ nextExercise }}
             </router-link>
         </div>
     </div>
@@ -115,10 +115,13 @@ export default {
             isDisabled: false,
             loop: null,
             randomNumber: null,
+            //
+            nextExercise: null,
         };
     },
     mounted() {
         this.generateRandomNumber();
+        this.determineNextExercise();
     },
     methods: {
         generateRandomNumber() {
@@ -134,8 +137,107 @@ export default {
             this.selectedChoice = selectedValue;
             this.$emit("save-for-loop-logic", this.loop);
 
-            this.compareScenarioOfExercices();
-            this.countWithSameScenario();
+            this.determineNextExercise();
+        },
+        determineNextExercise() {
+            let id = this.$route.params.exercise_id;
+            // Laquestion c'est : comment on dédtermine si on est dans ce cas ou non
+            // uniqument dans le cas de figure ou tous les sous-tableaux de this.stockExercisesByScenario sont à true
+            // sauf que si on teste juste en vu "tous", ça va considérer true quand y a un eexercice sur un à true,
+            // donc faut bien récupérer le nombre total d'exercices avec un scénario précis dans une suite selon order
+            // c'est seulement si stockExercisesByScenario a autant de sous-tableaux que le nombre d'exercices total de ce scenario
+            // et que ces sous tableaux sont tous à true
+            axios.get(`/count-with-same-scenario/${id}`).then((response) => {
+                const totalExercises = response.data;
+
+                if (this.stockExercisesByScenario.length !== totalExercises) {
+                    // Cas normal, exercise suivant par order
+                    // si l'utilisateur n'a pas encore terminé la première tentative pour chaque exercise de ce scenario
+                    axios
+                        .get(`/get-next-exercise-by-order/${id}`)
+                        .then((response) => {
+                            this.nextExercise = response.data.id;
+                        });
+                }
+
+                // ici l'user a terminé (au moins) la première tentative pour chaque exercise de ce scenario
+                if (this.stockExercisesByScenario.length === totalExercises) {
+                    // Si il a réussi tous les exercices => exercise suivant
+                    if (
+                        this.stockExercisesByScenario.every(
+                            (array) => array[1] === true
+                        )
+                    ) {
+                        // Cas 1: On renvoie l'exercice suivant basé sur le champ 'order'
+                        // L'idée ici est de trouver l'exercice qui suit celui que l'utilisateur a terminé,
+                        // en respectant l'ordre défini dans le scénario.
+
+                        // ici, l'user a fait au moins une fois tous les exercices car this.stockExercisesByScenario.length === totalExercises
+                        // et en plus il les a tous réussi, dans ce cas, on redirige vers l'exercice suivant par order
+
+                        axios
+                            .get(`/get-next-exercise-for-next-scenario/${id}`)
+                            .then((response) => {
+                                this.nextExercise = response.data.id;
+                            });
+
+                        // bug ça redirige vers l'exercice 2 car on finit par réussie le 1, meme si le 2 est déjà réussi
+                        // ici il faut donc rediriger vers le order + 1 de l'exercice avec un scenario différent de l'exercice actuel
+                    } else {
+                        // Si il n'a pas réussi tous les exercices mais , on le redirige vers le premier exercice raté
+                        // donc à false dans le tableau
+                        const firstFailedExercise =
+                            this.stockExercisesByScenario.find(
+                                (array) => array[1] === false
+                            );
+                        if (firstFailedExercise) {
+                            this.nextExercise = firstFailedExercise[0]; // l'id du premier exercice raté
+                        }
+                    }
+                }
+            });
+
+            // Objectif : déterminer le prochain exercice en fonction de la progression de l'utilisateur
+
+            return this.nextExercise;
+
+            // Cas 2: L'utilisateur a terminé tous les exercices du même 'scenario'
+            // Ici, on doit vérifier si l'utilisateur a terminé tous les exercices du scénario,
+            // qu'ils soient réussis ou ratés. Si l'utilisateur a raté un ou plusieurs exercices,
+            // il doit être redirigé vers les exercices ratés.
+            const exercisesInScenario = this.stockExercisesByScenario.filter(
+                (exercise) => exercise.scenario === this.exercise.scenario
+            );
+            const failedExercises = exercisesInScenario.filter(
+                (exercise) => exercise.isFailed === true
+            );
+
+            // Si l'utilisateur a raté des exercices dans le même scénario
+            if (failedExercises.length > 0) {
+                this.nextExercise = failedExercises;
+                console.log("2 ici ?");
+                return this.nextExercise; // Rediriger l'utilisateur vers les exercices ratés
+            }
+
+            // Cas 3: Si l'utilisateur a réussi tous les exercices d'un scénario
+            // Dans ce cas, on redirige l'utilisateur vers le prochain exercice suivant dans l'ordre
+            // des exercices dans le même scénario.
+            const nextExerciseAfterCompletion =
+                this.stockExercisesByScenario.find(
+                    (exercise) =>
+                        exercise.scenario === this.exercise.scenario &&
+                        exercise.order === this.exercise.order + 1
+                );
+
+            // Si un exercice suivant est trouvé, on le renvoie
+            if (nextExerciseAfterCompletion) {
+                this.nextExercise = nextExerciseAfterCompletion;
+                console.log("3 ici ?");
+                return this.nextExercise;
+            }
+
+            // Si aucun exercice suivant n'est trouvé, cela signifie que l'utilisateur a terminé tous les exercices
+            return 99; // Aucun exercice suivant, fin de la série d'exercices
         },
     },
 };
