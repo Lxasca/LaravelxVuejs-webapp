@@ -10,7 +10,7 @@
                 params: {
                     id: 1,
                     level_id: 1,
-                    exercise_id: nextExerciseId,
+                    exercise_id: nextExercise,
                 },
             }"
         >
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
     name: "LessonGrammar",
     props: {
@@ -28,9 +30,29 @@ export default {
             required: true,
         },
     },
-    computed: {
-        nextExerciseId() {
-            return parseInt(this.$route.params.exercise_id) + 1;
+    data() {
+        return {
+            nextExercise: null,
+        };
+    },
+    mounted() {
+        this.determineNextExercise();
+    },
+    watch: {
+        "$route.params.exercise_id": {
+            immediate: true,
+            handler() {
+                this.determineNextExercise();
+            },
+        },
+    },
+    methods: {
+        determineNextExercise() {
+            let id = this.$route.params.exercise_id;
+
+            axios.get(`/get-next-exercise-by-order/${id}`).then((response) => {
+                this.nextExercise = response.data.id;
+            });
         },
     },
 };

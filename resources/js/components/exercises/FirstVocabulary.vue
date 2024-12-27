@@ -197,7 +197,6 @@ export default {
                         // L'idée ici est de trouver l'exercice qui suit celui que l'utilisateur a terminé,
                         // en respectant l'ordre défini dans le scénario.
 
-                        console.log("id : ", id);
                         axios
                             .get(`/get-next-exercise-for-next-scenario/${id}`)
                             .then((response) => {

@@ -124,7 +124,7 @@
                         params: {
                             id: 1,
                             level_id: 1,
-                            exercise_id: nextExerciseId,
+                            exercise_id: nextExercise,
                         },
                     }"
                 >
@@ -153,11 +153,13 @@ export default {
             feedbackMessage: null,
             sentenceParts: [],
             currentExercise: null,
+            nextExercise: null,
         };
     },
     mounted() {
         this.resetState();
         this.updateSentenceParts();
+        this.determineNextExercise();
     },
     watch: {
         "$route.params.exercise_id": {
@@ -165,18 +167,23 @@ export default {
             handler() {
                 this.resetState();
                 this.updateSentenceParts();
+                this.determineNextExercise();
             },
         },
     },
     computed: {
-        nextExerciseId() {
-            return parseInt(this.$route.params.exercise_id) + 1;
-        },
         placeholderText() {
             return "_ ".repeat(this.currentExercise.correct_vocabulary.length);
         },
     },
     methods: {
+        determineNextExercise() {
+            let id = this.$route.params.exercise_id;
+
+            axios.get(`/get-next-exercise-by-order/${id}`).then((response) => {
+                this.nextExercise = response.data.id;
+            });
+        },
         checkAnswer() {
             const correctWord =
                 this.currentExercise.correct_vocabulary.toLowerCase();
