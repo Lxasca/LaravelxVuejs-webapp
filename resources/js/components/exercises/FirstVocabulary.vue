@@ -3,28 +3,7 @@
         <img v-if="exercise.image" :src="exercise.image" alt="" />
     </div>
 
-    <div
-        class="choices"
-        :class="{
-            disabled:
-                selectedChoice !== null &&
-                (selectedChoice == exercise.vocabulary.word_opposite_1 ||
-                    selectedChoice == exercise.correct_vocabulary) &&
-                !(
-                    stockExercisesByScenario.filter((item) => item[1] === false)
-                        .length === 1 &&
-                    stockExercisesByScenario.some(
-                        (item) => item[0] === exercise.id && item[1] === false
-                    ) &&
-                    countSameScenario
-                ) &&
-                !(
-                    stockExercisesByScenario.find(
-                        (item) => item[0] === exercise.id
-                    )?.[1] === false && selectedChoice === null
-                ),
-        }"
-    >
+    <div class="choices">
         <div v-if="randomNumber == 1" class="choice">
             <label>
                 <input
@@ -95,34 +74,17 @@
                 <p v-else>Raté !</p>
             </div>
 
-            <span
-                v-if="
-                    stockExercisesByScenario.filter((item) => item[1] === false)
-                        .length === 1 &&
-                    stockExercisesByScenario.some(
-                        (item) => item[0] === exercise.id && item[1] === false
-                    ) &&
-                    countSameScenario
-                "
-            >
-                Réessayer !
-            </span>
-
             <router-link
-                v-else
                 :to="{
                     name: 'exercise',
                     params: {
                         id: 1,
                         level_id: 1,
-                        exercise_id: countSameScenario
-                            ? failedExerciseId
-                            : nextExerciseIdValue,
+                        exercise_id: 2,
                     },
                 }"
                 @click="generateRandomNumber"
             >
-                Suivant
             </router-link>
         </div>
     </div>
@@ -152,99 +114,13 @@ export default {
             selectedChoice: null,
             isDisabled: false,
             loop: null,
-            areScenariosEqual: false,
-            countSameScenario: null,
             randomNumber: null,
-            nextExerciseIdValue: null,
         };
-    },
-    async created() {
-        await this.updateNextExerciseId();
-    },
-    watch: {
-        "$route.params.exercise_id": async function (newId) {
-            await this.updateNextExerciseId(); // Mettre à jour chaque fois que l'exercice change
-        },
     },
     mounted() {
         this.generateRandomNumber();
     },
-    computed: {
-        failedExerciseId() {
-            const failedExercises = this.stockExercisesByScenario.filter(
-                (item) => item[1] === false
-            );
-
-            const currentExerciseId = parseInt(this.$route.params.exercise_id);
-
-            if (failedExercises.length > 0) {
-                // Trouver l'index de l'exercice actuel dans les exercices ratés
-                const currentFailedIndex = failedExercises.findIndex(
-                    (item) => item[0] === currentExerciseId
-                );
-
-                // Si l'exercice actuel est dans la liste des exercices ratés
-                if (currentFailedIndex !== -1) {
-                    // Si un autre exercice raté suit dans la liste, retourner son ID
-                    if (currentFailedIndex + 1 < failedExercises.length) {
-                        return failedExercises[currentFailedIndex + 1][0];
-                    }
-
-                    // Sinon, recommencer à partir du premier exercice raté
-                    return failedExercises[0][0];
-                }
-
-                // Si l'exercice actuel n'est pas dans les exercices ratés, retourner le premier raté
-                return failedExercises[0][0];
-            }
-
-            // Si aucun exercice n'est raté, rediriger vers l'exercice du prochain scénario
-            const lastExercise =
-                this.stockExercisesByScenario[
-                    this.stockExercisesByScenario.length - 1
-                ];
-
-            return lastExercise ? lastExercise[0] + 1 : 1;
-        },
-    },
     methods: {
-        async updateNextExerciseId() {
-            const currentExerciseId = parseInt(this.$route.params.exercise_id);
-            try {
-                const response = await axios.get(
-                    `/get-next-exercise-by-order/${currentExerciseId}`
-                );
-                if (response.data && response.data.id) {
-                    this.nextExerciseIdValue = response.data.id;
-                }
-            } catch (error) {
-                console.error(
-                    "Erreur lors de la récupération du prochain exercice :",
-                    error
-                );
-            }
-        },
-        nextExerciseId() {
-            return this.nextExerciseIdValue;
-        },
-        /**previous() {
-            const exercise_id = this.$route.params.exercise_id;
-
-            axios
-                .get(`/get-previous-exercise-scenario/${exercise_id}`)
-                .then((response) => {
-                    /**if (response.data.scenario !== this.exercise.scenario) {
-                        this.stockExercisesByScenario = [];
-                    }**/
-        /**this.stockExercisesByScenario = [];
-                })
-                .catch((error) => {
-                    /**console.log(
-                        "Erreur lors de la récupération de l'exercice précédent:",
-                        error
-                    );**/
-        //});
-        //},
         generateRandomNumber() {
             this.randomNumber = Math.floor(Math.random() * 2) + 1;
         },
@@ -260,42 +136,6 @@ export default {
 
             this.compareScenarioOfExercices();
             this.countWithSameScenario();
-        },
-        compareScenarioOfExercices() {
-            const exercise_id = this.$route.params.exercise_id;
-
-            axios
-                .get(`/compare-scenario-of-exercises/${exercise_id}`)
-                .then((response) => {
-                    this.areScenariosEqual = response.data;
-                });
-        },
-        countWithSameScenario() {
-            const exercise_id = this.$route.params.exercise_id;
-
-            axios
-                .get(`/count-with-same-scenario/${exercise_id}`)
-                .then((response) => {
-                    if (
-                        this.stockExercisesByScenario.length === response.data
-                    ) {
-                        this.countSameScenario = true;
-                    } else {
-                        this.countSameScenario = false;
-                    }
-                });
-        },
-        redirectToFailedExercise(failedExerciseId) {
-            this.selectedChoice = null;
-
-            this.$router.push({
-                name: "exercise",
-                params: {
-                    id: 1,
-                    level_id: 1,
-                    exercise_id: failedExerciseId,
-                },
-            });
         },
     },
 };
