@@ -27,7 +27,7 @@ class ExercisesController extends Controller
         return response()->json($areScenariosEqual);
     }
 
-    public function countWithSameScenario($id)
+    public function countWithSameType($id)
     {
         $currentExercise = Exercises::find($id);
 
@@ -35,7 +35,7 @@ class ExercisesController extends Controller
             return response()->json(0); 
         }
 
-        $scenario = $currentExercise->scenario;
+        $type = $currentExercise->type; // !
         $order = $currentExercise->order;
 
         $count = 1;
@@ -46,7 +46,7 @@ class ExercisesController extends Controller
             ->get();
 
         foreach ($previousExercises as $exercise) {
-            if ($exercise->scenario !== $scenario) {
+            if ($exercise->type !== $type) { // !
                 break;
             }
             $count++;
@@ -58,7 +58,7 @@ class ExercisesController extends Controller
             ->get();
 
         foreach ($nextExercises as $exercise) {
-            if ($exercise->scenario !== $scenario) {
+            if ($exercise->type !== $type) { // !
                 break;
             }
             $count++;

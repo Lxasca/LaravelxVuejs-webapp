@@ -26,7 +26,7 @@ Route::get('/get-first-exercise-of-level/{id}', [LevelsController::class, 'getFi
 // Compare le scenario de l'exercise actif avec le scenario de l'exercice suivant
 Route::get('/compare-scenario-of-exercises/{id}', [ExercisesController::class, 'compareScenarioOfExercices']);
 //
-Route::get('/count-with-same-scenario/{id}', [ExercisesController::class, 'countWithSameScenario']);
+Route::get('/count-with-same-type/{id}', [ExercisesController::class, 'countWithSameType']);
 //
 Route::get('/get-exercise/{id}', [ExercisesController::class, 'getExercise']);
 Route::get('/get-next-exercise-by-order/{id}', [ExercisesController::class, 'getNextExerciseByOrder']);

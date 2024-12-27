@@ -171,7 +171,8 @@ export default {
             // donc faut bien récupérer le nombre total d'exercices avec un scénario précis dans une suite selon order
             // c'est seulement si stockExercisesByScenario a autant de sous-tableaux que le nombre d'exercices total de ce scenario
             // et que ces sous tableaux sont tous à true
-            axios.get(`/count-with-same-scenario/${id}`).then((response) => {
+
+            axios.get(`/count-with-same-type/${id}`).then((response) => {
                 const totalExercises = response.data;
 
                 if (this.stockExercisesByScenario.length !== totalExercises) {
