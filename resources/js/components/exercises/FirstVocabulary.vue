@@ -5,10 +5,10 @@
         </div>
     </div>
 
-    <div style="display: flex; justify-content: center; margin-bottom: 125px">
+    <div style="display: flex; justify-content: center; margin-bottom: 40px">
         <div class="container-exercise-i">
             <section>
-                <p>Syrie</p>
+                <p>سوريا</p>
             </section>
 
             <section>
@@ -17,65 +17,98 @@
         </div>
     </div>
 
+    <div style="display: flex; justify-content: center">
+        <div
+            class="choices"
+            :class="{
+                disabled: isDisabled,
+            }"
+        >
+            <div v-if="randomNumber == 1" class="choice">
+                <label>
+                    <input
+                        type="radio"
+                        name="choice"
+                        :value="exercise.vocabulary.word"
+                        v-model="selectedChoice"
+                        @click="
+                            saveForLoopLogic(
+                                exercise.vocabulary.word,
+                                exercise.correct_vocabulary
+                            )
+                        "
+                        hidden
+                    />
+                    <span>{{ exercise.vocabulary.word }}</span>
+                </label>
+            </div>
+
+            <div class="choice">
+                <label>
+                    <input
+                        type="radio"
+                        name="choice"
+                        :value="exercise.vocabulary.word_opposite_1"
+                        v-model="selectedChoice"
+                        @click="
+                            saveForLoopLogic(
+                                exercise.vocabulary.word_opposite_1,
+                                exercise.correct_vocabulary
+                            )
+                        "
+                        hidden
+                    />
+                    <span>{{ exercise.vocabulary.word_opposite_1 }}</span>
+                </label>
+            </div>
+
+            <div v-if="randomNumber == 2" class="choice">
+                <label>
+                    <input
+                        type="radio"
+                        name="choice"
+                        :value="exercise.vocabulary.word"
+                        v-model="selectedChoice"
+                        @click="
+                            saveForLoopLogic(
+                                exercise.vocabulary.word,
+                                exercise.correct_vocabulary
+                            )
+                        "
+                        hidden
+                    />
+                    <span>{{ exercise.vocabulary.word }}</span>
+                </label>
+            </div>
+        </div>
+    </div>
+
     <div
-        class="choices"
-        :class="{
-            disabled: isDisabled,
-        }"
+        v-if="selectedChoice"
+        style="display: flex; justify-content: center; margin-top: -35px"
     >
-        <div v-if="randomNumber == 1" class="choice">
-            <label>
-                <input
-                    type="radio"
-                    name="choice"
-                    :value="exercise.vocabulary.word"
-                    v-model="selectedChoice"
-                    @click="
-                        saveForLoopLogic(
-                            exercise.vocabulary.word,
-                            exercise.correct_vocabulary
-                        )
-                    "
-                    hidden
-                />
-                <span>{{ exercise.vocabulary.word }}</span>
-            </label>
-        </div>
-        <div class="choice">
-            <label>
-                <input
-                    type="radio"
-                    name="choice"
-                    :value="exercise.vocabulary.word_opposite_1"
-                    v-model="selectedChoice"
-                    @click="
-                        saveForLoopLogic(
-                            exercise.vocabulary.word_opposite_1,
-                            exercise.correct_vocabulary
-                        )
-                    "
-                    hidden
-                />
-                <span>{{ exercise.vocabulary.word_opposite_1 }}</span>
-            </label>
-        </div>
-        <div v-if="randomNumber == 2" class="choice">
-            <label>
-                <input
-                    type="radio"
-                    name="choice"
-                    :value="exercise.vocabulary.word"
-                    v-model="selectedChoice"
-                    @click="
-                        saveForLoopLogic(
-                            exercise.vocabulary.word,
-                            exercise.correct_vocabulary
-                        )
-                    "
-                    hidden
-                />
-                <span>{{ exercise.vocabulary.word }}</span>
-            </label>
+        <div
+            v-if="
+                selectedChoice == exercise.vocabulary.word_opposite_1 ||
+                selectedChoice == exercise.correct_vocabulary
+            "
+        >
+            <div>
+                <p v-if="selectedChoice == exercise.correct_vocabulary">
+                    <img
+                        src="../../../images/exercises/checked.png"
+                        alt=""
+                        width="35px"
+                    />
+                </p>
+                <p v-else>
+                    <img
+                        src="../../../images/exercises/fail.png"
+                        alt=""
+                        width="35px"
+                    />
+                </p>
+            </div>
         </div>
     </div>
 
@@ -87,41 +120,40 @@
             "
         >
             <div>
-                <p v-if="selectedChoice == exercise.correct_vocabulary">
-                    Réussie !
-                </p>
-                <p v-else>
-                    <span v-if="isDisabled">Raté !</span>
-                </p>
+                <div class="container-next">
+                    <section>
+                        <router-link
+                            :to="{
+                                name: 'exercise',
+                                params: {
+                                    id: 1,
+                                    level_id: 1,
+                                    exercise_id: nextExercise,
+                                },
+                            }"
+                            style="text-decoration: none; color: white"
+                            @click="generateRandomNumber"
+                        >
+                            <p
+                                v-if="
+                                    stockExercisesByScenario.filter(
+                                        (item) => item[1] === false
+                                    ).length === 1 &&
+                                    stockExercisesByScenario.some(
+                                        (item) =>
+                                            item[0] === exercise.id &&
+                                            item[1] === false
+                                    ) &&
+                                    countSameScenario
+                                "
+                            >
+                                Réessayer !
+                            </p>
+                            <p v-else>Suivant</p>
+                        </router-link>
+                    </section>
+                </div>
             </div>
-
-            <router-link
-                :to="{
-                    name: 'exercise',
-                    params: {
-                        id: 1,
-                        level_id: 1,
-                        exercise_id: nextExercise,
-                    },
-                }"
-                @click="generateRandomNumber"
-            >
-                <span
-                    v-if="
-                        stockExercisesByScenario.filter(
-                            (item) => item[1] === false
-                        ).length === 1 &&
-                        stockExercisesByScenario.some(
-                            (item) =>
-                                item[0] === exercise.id && item[1] === false
-                        ) &&
-                        countSameScenario
-                    "
-                >
-                    Réessayer !
-                </span>
-                <span v-else> Suivant </span>
-            </router-link>
         </div>
     </div>
 </template>
@@ -159,8 +191,25 @@ export default {
     mounted() {
         this.generateRandomNumber();
         this.determineNextExercise();
+        window.addEventListener("keydown", this.handleKeydown);
+    },
+    beforeDestroy() {
+        window.removeEventListener("keydown", this.handleKeydown);
     },
     methods: {
+        handleKeydown(event) {
+            if (event.code === "Space") {
+                this.generateRandomNumber();
+                this.$router.push({
+                    name: "exercise",
+                    params: {
+                        id: 1,
+                        level_id: 1,
+                        exercise_id: this.nextExercise,
+                    },
+                });
+            }
+        },
         generateRandomNumber() {
             this.isDisabled = false;
             this.randomNumber = Math.floor(Math.random() * 2) + 1;
@@ -258,7 +307,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Neucha&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+
 * {
     font-family: "Roboto Condensed", serif;
     font-optical-sizing: auto;
@@ -266,6 +316,28 @@ export default {
     letter-spacing: 1.2px;
 }
 
+.container-next {
+    background-color: #ae7cf6;
+    //border: solid 2px #ae7cf6;
+    //border-left: solid 20px #ae7cf6;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 0.5px;
+    padding-bottom: 0.5px;
+    border-radius: 10px;
+    width: 750px;
+    cursor: pointer;
+    text-align: center;
+
+    p {
+        font-size: 16px;
+    }
+}
+
+.exercice-suivant {
+    margin-top: 40px;
+}
 .container-exercise-i {
     margin-top: -28.5px;
 
@@ -286,6 +358,10 @@ export default {
         width: 35px;
         margin-top: 5.5px;
         cursor: pointer;
+    }
+
+    p {
+        font-size: 18px;
     }
 }
 
@@ -308,7 +384,12 @@ export default {
 /********/
 .choices {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    width: 800px;
+    margin-top: 20px;
+}
+.choice {
+    align-items: center;
 }
 
 div[class^="choice"] input[type="radio"] + span {
@@ -319,11 +400,12 @@ div[class^="choice"] input[type="radio"] + span {
     cursor: pointer;
     border-radius: 10px;
 
-    font-size: 20px;
+    font-size: 18px;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border: solid 2px #fbfbfb;
 }
 div[class^="choice"] input[type="radio"]:checked + span {
-    border: solid 3px #ae7cf6;
+    border: solid 2px #f8da61;
 }
 
 .disabled {
