@@ -198,7 +198,7 @@ export default {
     },
     methods: {
         handleKeydown(event) {
-            if (event.code === "Space") {
+            if (event.code === "Space" && this.selectedChoice !== null) {
                 this.generateRandomNumber();
                 this.$router.push({
                     name: "exercise",

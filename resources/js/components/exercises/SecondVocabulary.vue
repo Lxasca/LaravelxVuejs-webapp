@@ -172,6 +172,7 @@ export default {
                 this.resetState();
                 this.updateSentenceParts();
                 this.determineNextExercise();
+                this.handleKeydown(event);
             },
         },
     },
@@ -182,19 +183,33 @@ export default {
     },
     methods: {
         handleKeydown(event) {
-            if (this.userAnswer.length > 0) {
-                if (event.code === "Space") {
-                    this.validateAnswer();
+            //console.log("le code : ", event.code);
+            //console.log("l'id : ", this.$route.params.exercise_id);
+            this.determineNextExercise();
+            //console.log("le next id : ", this.nextExercise);
+            /**console.log(
+                "this.userAnswer.trim().toLowerCase() => ",
+                this.userAnswer.trim().toLowerCase()
+            );
+            console.log(
+                "this.currentExercise.correct_vocabulary.toLowerCase() => ",
+                this.currentExercise !== null
+                    ? this.currentExercise.correct_vocabulary.toLowerCase()
+                    : "est null"
+            );**/
 
-                    if (this.feedbackMessage === true) {
-                        this.$router.push({
-                            name: "exercise",
-                            params: {
-                                id: 1,
-                                level_id: 1,
-                                exercise_id: this.nextExercise,
-                            },
-                        });
+            if (
+                event.code === "Space" &&
+                document.activeElement.tagName !== "INPUT"
+            ) {
+                if (this.currentExercise !== null) {
+                    if (
+                        this.userAnswer.trim().toLowerCase() ==
+                        this.currentExercise.correct_vocabulary.toLowerCase()
+                    ) {
+                        console.log("LEAAAAA");
+                    } else {
+                        console.log("j'en ai marrrrrrrrrrrrrrrrrrrrrrr");
                     }
                 }
             }
