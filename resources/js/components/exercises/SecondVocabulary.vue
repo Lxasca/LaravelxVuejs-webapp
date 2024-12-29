@@ -160,6 +160,10 @@ export default {
         this.resetState();
         this.updateSentenceParts();
         this.determineNextExercise();
+        window.addEventListener("keydown", this.handleKeydown);
+    },
+    beforeDestroy() {
+        window.removeEventListener("keydown", this.handleKeydown);
     },
     watch: {
         "$route.params.exercise_id": {
@@ -177,6 +181,24 @@ export default {
         },
     },
     methods: {
+        handleKeydown(event) {
+            if (this.userAnswer.length > 0) {
+                if (event.code === "Space") {
+                    this.validateAnswer();
+
+                    if (this.feedbackMessage === true) {
+                        this.$router.push({
+                            name: "exercise",
+                            params: {
+                                id: 1,
+                                level_id: 1,
+                                exercise_id: this.nextExercise,
+                            },
+                        });
+                    }
+                }
+            }
+        },
         determineNextExercise() {
             let id = this.$route.params.exercise_id;
 

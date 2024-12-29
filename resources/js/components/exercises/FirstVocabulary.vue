@@ -240,12 +240,6 @@ export default {
             axios.get(`/count-with-same-type/${id}`).then((response) => {
                 const totalExercises = response.data;
 
-                console.log(
-                    "nique ta mère : ",
-                    this.stockExercisesByScenario.length,
-                    totalExercises
-                );
-
                 if (this.stockExercisesByScenario.length !== totalExercises) {
                     // Cas normal, exercise suivant par order
                     // si l'utilisateur n'a pas encore terminé la première tentative pour chaque exercise de ce scenario
