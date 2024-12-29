@@ -73,11 +73,16 @@ export default {
             sentenceParts: [],
             resultMessage: "",
             nextExercise: null,
+            isValid: false,
         };
     },
     mounted() {
         this.getVocabulariesOfSentence();
         this.determineNextExercise();
+        window.addEventListener("keydown", this.handleKeydown);
+    },
+    beforeDestroy() {
+        window.removeEventListener("keydown", this.handleKeydown);
     },
     watch: {
         "$route.params.exercise_id": {
@@ -88,6 +93,25 @@ export default {
         },
     },
     methods: {
+        handleKeydown(event) {
+            if (
+                event.code === "Space" &&
+                document.activeElement.tagName !== "INPUT"
+            ) {
+                this.validateAnswers();
+
+                if (this.isValid === true) {
+                    this.$router.push({
+                        name: "exercise",
+                        params: {
+                            id: 1,
+                            level_id: 1,
+                            exercise_id: this.nextExercise,
+                        },
+                    });
+                }
+            }
+        },
         determineNextExercise() {
             let id = this.$route.params.exercise_id;
 
@@ -155,17 +179,17 @@ export default {
         },
 
         validateAnswers() {
-            let isValid = true;
+            this.isValid = true;
             this.sentenceParts.forEach((part) => {
                 if (
                     part.isWord &&
                     part.value.toLowerCase() !== part.original.toLowerCase()
                 ) {
-                    isValid = false;
+                    this.isValid = false;
                 }
             });
 
-            this.resultMessage = isValid ? "Réussi !" : "Raté !";
+            this.resultMessage = this.isValid ? "Réussi !" : "Raté !";
         },
     },
 };
