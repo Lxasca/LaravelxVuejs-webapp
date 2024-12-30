@@ -1,52 +1,47 @@
 <template>
-    <div style="display: flex; justify-content: center">
-        <div class="question">
-            <img v-if="exercise.image" :src="exercise.image" alt="" />
-        </div>
-    </div>
-
-    <div style="display: flex; justify-content: center; margin-bottom: 40px">
-        <div class="container-exercise-i">
-            <section>
-                <p>سوريا</p>
-            </section>
-
-            <section>
-                <img src="../../../images/exercises/headphones.png" alt="" />
-            </section>
-        </div>
-    </div>
-
-    <div style="display: flex; justify-content: center">
-        <div
-            class="choices"
-            :class="{
-                disabled: isDisabled,
-            }"
-        >
-            <div v-if="randomNumber == 1" class="choice">
-                <label>
-                    <input
-                        type="radio"
-                        name="choice"
-                        :value="exercise.vocabulary.word"
-                        v-model="selectedChoice"
-                        @click="
-                            saveForLoopLogic(
-                                exercise.vocabulary.word,
-                                exercise.correct_vocabulary
-                            )
-                        "
-                        hidden
-                    />
-                    <span>{{ exercise.vocabulary.word }}</span>
-                </label>
+    <div class="exercise-vocabulary">
+        <section class="d-flex-center">
+            <div class="container-question">
+                <img v-if="exercise.image" :src="exercise.image" />
             </div>
+        </section>
 
-            <div class="choice">
-                <label>
-                    <input
-                        type="radio"
+        <section class="d-flex-center" style="margin-bottom: 40px">
+            <div class="container-exercise-i">
+                <section>
+                    <p>سوريا</p>
+                </section>
+
+                <section>
+                    <img
+                        src="../../../images/exercises/headphones.png"
+                        alt=""
+                    />
+                </section>
+            </div>
+        </section>
+
+        <section class="d-flex-center">
+            <div
+                class="container-choices"
+                :class="{
+                    disabled: isDisabled,
+                }"
+            >
+                <container-choices
+                    v-if="randomNumber == 1"
+                    class="choice"
+                    :exercise="exercise"
+                    @save-for-loop-logic="
+                        saveForLoopLogic(
+                            exercise.vocabulary.word,
+                            exercise.correct_vocabulary
+                        )
+                    "
+                ></container-choices>
+
+                <div class="choice">
+                    <input-choice
                         name="choice"
                         :value="exercise.vocabulary.word_opposite_1"
                         v-model="selectedChoice"
@@ -56,102 +51,79 @@
                                 exercise.correct_vocabulary
                             )
                         "
-                        hidden
-                    />
-                    <span>{{ exercise.vocabulary.word_opposite_1 }}</span>
-                </label>
-            </div>
+                        :label="exercise.vocabulary.word_opposite_1"
+                    ></input-choice>
+                </div>
 
-            <div v-if="randomNumber == 2" class="choice">
-                <label>
-                    <input
-                        type="radio"
-                        name="choice"
-                        :value="exercise.vocabulary.word"
-                        v-model="selectedChoice"
-                        @click="
-                            saveForLoopLogic(
-                                exercise.vocabulary.word,
-                                exercise.correct_vocabulary
-                            )
-                        "
-                        hidden
-                    />
-                    <span>{{ exercise.vocabulary.word }}</span>
-                </label>
+                <container-choices
+                    v-if="randomNumber == 2"
+                    class="choice"
+                    :exercise="exercise"
+                    @save-for-loop-logic="
+                        saveForLoopLogic(
+                            exercise.vocabulary.word,
+                            exercise.correct_vocabulary
+                        )
+                    "
+                ></container-choices>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <div
-        v-if="selectedChoice"
-        style="display: flex; justify-content: center; margin-top: -35px"
-    >
-        <div
-            v-if="
-                selectedChoice == exercise.vocabulary.word_opposite_1 ||
-                selectedChoice == exercise.correct_vocabulary
-            "
-        >
-            <div>
-                <p v-if="selectedChoice == exercise.correct_vocabulary">
-                    <img
-                        src="../../../images/exercises/checked.png"
-                        alt=""
-                        width="35px"
-                    />
-                </p>
-                <p v-else>
-                    <img
-                        src="../../../images/exercises/fail.png"
-                        alt=""
-                        width="35px"
-                    />
-                </p>
-            </div>
-        </div>
-    </div>
+        <checked-fail
+            v-if="selectedChoice"
+            class="d-flex-center"
+            style="margin-top: -35px"
+            :exercise="exercise"
+            :selectedChoice="selectedChoice"
+        ></checked-fail>
 
-    <div class="exercice-suivant" v-if="selectedChoice">
-        <div
-            v-if="
-                selectedChoice == exercise.vocabulary.word_opposite_1 ||
-                selectedChoice == exercise.correct_vocabulary
-            "
-        >
-            <div>
+        <div class="exercice-suivant" v-if="selectedChoice">
+            <next-exercise
+                class="exercice-suivant"
+                v-if="selectedChoice"
+                :exercise="exercise"
+                :stockExercisesByScenario="stockExercisesByScenario"
+                :nextExercise="nextExercise"
+                :countSameScenario="countSameScenario"
+                @generate-random-number="generateRandomNumber"
+            ></next-exercise>
+
+            <div
+                v-if="
+                    selectedChoice == exercise.vocabulary.word_opposite_1 ||
+                    selectedChoice == exercise.correct_vocabulary
+                "
+            >
                 <div class="container-next">
-                    <section>
-                        <router-link
-                            :to="{
-                                name: 'exercise',
-                                params: {
-                                    id: 1,
-                                    level_id: 1,
-                                    exercise_id: nextExercise,
-                                },
-                            }"
-                            style="text-decoration: none; color: white"
-                            @click="generateRandomNumber"
+                    <router-link
+                        :to="{
+                            name: 'exercise',
+                            params: {
+                                id: 1,
+                                level_id: 1,
+                                exercise_id: nextExercise,
+                            },
+                        }"
+                        style="text-decoration: none; color: white"
+                        @click="generateRandomNumber"
+                    >
+                        <p
+                            v-if="
+                                stockExercisesByScenario.filter(
+                                    (item) => item[1] === false
+                                ).length === 1 &&
+                                stockExercisesByScenario.some(
+                                    (item) =>
+                                        item[0] === exercise.id &&
+                                        item[1] === false
+                                ) &&
+                                countSameScenario
+                            "
                         >
-                            <p
-                                v-if="
-                                    stockExercisesByScenario.filter(
-                                        (item) => item[1] === false
-                                    ).length === 1 &&
-                                    stockExercisesByScenario.some(
-                                        (item) =>
-                                            item[0] === exercise.id &&
-                                            item[1] === false
-                                    ) &&
-                                    countSameScenario
-                                "
-                            >
-                                Réessayer !
-                            </p>
-                            <p v-else>Suivant</p>
-                        </router-link>
-                    </section>
+                            Réessayer !
+                        </p>
+                        <p v-else>Suivant</p>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -160,9 +132,14 @@
 
 <script>
 import axios from "axios";
+import ContainerChoices from "./partials/first_vocabulary/ContainerChoices.vue";
+import InputChoice from "./partials/first_vocabulary/InputChoice.vue";
+import CheckedFail from "./partials/first_vocabulary/CheckedFail.vue";
+import NextExercise from "./partials/first_vocabulary/NextExercise.vue";
 
 export default {
     name: "FirstVocabulary",
+    components: { ContainerChoices, InputChoice, CheckedFail, NextExercise },
     props: {
         exercise: {
             type: Object,
@@ -300,7 +277,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Neucha&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
 
 * {
@@ -308,6 +285,15 @@ export default {
     font-optical-sizing: auto;
     font-style: normal;
     letter-spacing: 1.2px;
+}
+
+.exercise-vocabulary {
+    min-height: 500px;
+
+    .d-flex-center {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .container-next {
@@ -359,7 +345,7 @@ export default {
     }
 }
 
-.question {
+.container-question {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -376,7 +362,7 @@ export default {
     }
 }
 /********/
-.choices {
+.container-choices {
     display: flex;
     justify-content: space-between;
     width: 800px;
