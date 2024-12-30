@@ -43,7 +43,7 @@ export default {
     name: "NextExercise",
     props: {
         selectedChoice: {
-            type: [String, Number],
+            type: String,
             required: true,
         },
         exercise: {
@@ -70,3 +70,23 @@ export default {
     },
 };
 </script>
+<style scoped lang="scss">
+.container-next {
+    background-color: #ae7cf6;
+    //border: solid 2px #ae7cf6;
+    //border-left: solid 20px #ae7cf6;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 0.5px;
+    padding-bottom: 0.5px;
+    border-radius: 10px;
+    width: 750px;
+    cursor: pointer;
+    text-align: center;
+
+    p {
+        font-size: 16px;
+    }
+}
+</style>

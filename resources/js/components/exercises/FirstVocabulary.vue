@@ -1,26 +1,9 @@
 <template>
     <div class="exercise-vocabulary">
-        <section class="d-flex-center">
-            <div class="container-question">
-                <img v-if="exercise.image" :src="exercise.image" />
-            </div>
-        </section>
+        <!-- 1. Affichage de l'image du mot à trouver, du mot dans la langue de l'apprenant, et l'image de l'écouteur -->
+        <container-head :exercise="exercise"></container-head>
 
-        <section class="d-flex-center" style="margin-bottom: 40px">
-            <div class="container-exercise-i">
-                <section>
-                    <p>سوريا</p>
-                </section>
-
-                <section>
-                    <img
-                        src="../../../images/exercises/headphones.png"
-                        alt=""
-                    />
-                </section>
-            </div>
-        </section>
-
+        <!-- 2. Affichage des choix de réponses possibles avec le mot correct et le mot faux -->
         <section class="d-flex-center">
             <div
                 class="container-choices"
@@ -69,6 +52,7 @@
             </div>
         </section>
 
+        <!-- 3. Affichag du logo de succès ou d'échec entre les deux choix -->
         <checked-fail
             v-if="selectedChoice"
             class="d-flex-center"
@@ -77,56 +61,17 @@
             :selectedChoice="selectedChoice"
         ></checked-fail>
 
-        <div class="exercice-suivant" v-if="selectedChoice">
-            <next-exercise
-                class="exercice-suivant"
-                v-if="selectedChoice"
-                :exercise="exercise"
-                :stockExercisesByScenario="stockExercisesByScenario"
-                :nextExercise="nextExercise"
-                :countSameScenario="countSameScenario"
-                @generate-random-number="generateRandomNumber"
-            ></next-exercise>
-
-            <div
-                v-if="
-                    selectedChoice == exercise.vocabulary.word_opposite_1 ||
-                    selectedChoice == exercise.correct_vocabulary
-                "
-            >
-                <div class="container-next">
-                    <router-link
-                        :to="{
-                            name: 'exercise',
-                            params: {
-                                id: 1,
-                                level_id: 1,
-                                exercise_id: nextExercise,
-                            },
-                        }"
-                        style="text-decoration: none; color: white"
-                        @click="generateRandomNumber"
-                    >
-                        <p
-                            v-if="
-                                stockExercisesByScenario.filter(
-                                    (item) => item[1] === false
-                                ).length === 1 &&
-                                stockExercisesByScenario.some(
-                                    (item) =>
-                                        item[0] === exercise.id &&
-                                        item[1] === false
-                                ) &&
-                                countSameScenario
-                            "
-                        >
-                            Réessayer !
-                        </p>
-                        <p v-else>Suivant</p>
-                    </router-link>
-                </div>
-            </div>
-        </div>
+        <!-- 4. Affichage du bouton "Suivant" / "Réessayer" -->
+        <next-exercise
+            class="exercice-suivant"
+            v-if="selectedChoice"
+            :selectedChoice="selectedChoice"
+            :exercise="exercise"
+            :stockExercisesByScenario="stockExercisesByScenario"
+            :nextExercise="nextExercise"
+            :countSameScenario="countSameScenario"
+            @generate-random-number="generateRandomNumber"
+        ></next-exercise>
     </div>
 </template>
 
@@ -136,10 +81,17 @@ import ContainerChoices from "./partials/first_vocabulary/ContainerChoices.vue";
 import InputChoice from "./partials/first_vocabulary/InputChoice.vue";
 import CheckedFail from "./partials/first_vocabulary/CheckedFail.vue";
 import NextExercise from "./partials/first_vocabulary/NextExercise.vue";
+import ContainerHead from "./partials/first_vocabulary/ContainerHead.vue";
 
 export default {
     name: "FirstVocabulary",
-    components: { ContainerChoices, InputChoice, CheckedFail, NextExercise },
+    components: {
+        ContainerChoices,
+        InputChoice,
+        CheckedFail,
+        NextExercise,
+        ContainerHead,
+    },
     props: {
         exercise: {
             type: Object,
@@ -159,7 +111,6 @@ export default {
             selectedChoice: null,
             loop: null,
             randomNumber: null,
-            //
             nextExercise: null,
             isDisabled: false,
             countSameScenario: false,
@@ -277,118 +228,23 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Neucha&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
-
-* {
-    font-family: "Roboto Condensed", serif;
-    font-optical-sizing: auto;
-    font-style: normal;
-    letter-spacing: 1.2px;
-}
-
+<style lang="scss" scoped>
 .exercise-vocabulary {
     min-height: 500px;
 
-    .d-flex-center {
+    .container-choices {
         display: flex;
-        justify-content: center;
-    }
-}
-
-.container-next {
-    background-color: #ae7cf6;
-    //border: solid 2px #ae7cf6;
-    //border-left: solid 20px #ae7cf6;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-top: 0.5px;
-    padding-bottom: 0.5px;
-    border-radius: 10px;
-    width: 750px;
-    cursor: pointer;
-    text-align: center;
-
-    p {
-        font-size: 16px;
-    }
-}
-
-.exercice-suivant {
-    margin-top: 40px;
-}
-.container-exercise-i {
-    margin-top: -28.5px;
-
-    background-color: #ae7cf6;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    padding-left: 25px;
-    padding-right: 25px;
-    border-radius: 10px;
-    width: 350px;
-    color: white;
-    cursor: default;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    img {
-        width: 35px;
-        margin-top: 5.5px;
-        cursor: pointer;
+        justify-content: space-between;
+        width: 800px;
+        margin-top: 20px;
     }
 
-    p {
-        font-size: 18px;
+    .exercice-suivant {
+        margin-top: 40px;
     }
-}
 
-.container-question {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    width: 800px;
-    height: 200px;
-    border-radius: 10px;
-    background-color: #f8da61;
-
-    img {
-        width: 150px;
-        height: 150px;
+    .disabled {
+        pointer-events: none;
     }
-}
-/********/
-.container-choices {
-    display: flex;
-    justify-content: space-between;
-    width: 800px;
-    margin-top: 20px;
-}
-.choice {
-    align-items: center;
-}
-
-div[class^="choice"] input[type="radio"] + span {
-    padding: 35px;
-    padding-left: 50px;
-    padding-right: 50px;
-
-    cursor: pointer;
-    border-radius: 10px;
-
-    font-size: 18px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border: solid 2px #fbfbfb;
-}
-div[class^="choice"] input[type="radio"]:checked + span {
-    border: solid 2px #f8da61;
-}
-
-.disabled {
-    pointer-events: none;
 }
 </style>
