@@ -1,23 +1,31 @@
 <template>
     <div>
         <div :class="{ disabled: feedbackMessage }">
-            <div class="question">
-                <img v-if="exercise.image" :src="exercise.image" alt="" />
-            </div>
+            <!-- 1. Affichage de l'image du mot à trouver, du mot dans la langue de l'apprenant, et l'image de l'écouteur -->
+            <container-head :exercise="exercise"></container-head>
 
-            <p>
-                <span v-for="(part, index) in sentenceParts" :key="index">
-                    <span v-if="!part.isInput">{{ part.text }}</span>
-                    <input
-                        v-else
-                        type="text"
-                        v-model="userAnswer"
-                        :placeholder="placeholderText"
-                        :maxlength="exercise.correct_vocabulary.length"
-                        @input="checkAnswer"
-                    />
-                </span>
-            </p>
+            <!-- 2. Affichage de la phrase avec l'input pour le mot à trouvé -->
+            <div
+                style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                "
+            >
+                <p class="answer">
+                    <span v-for="(part, index) in sentenceParts" :key="index">
+                        <span v-if="!part.isInput">{{ part.text }}</span>
+                        <input
+                            v-else
+                            type="text"
+                            v-model="userAnswer"
+                            :placeholder="placeholderText"
+                            :maxlength="exercise.correct_vocabulary.length"
+                            @input="checkAnswer"
+                        />
+                    </span>
+                </p>
+            </div>
 
             <!-- nombre de lettres saisies vs. le nombre total -->
             <p>
@@ -138,9 +146,11 @@
 
 <script>
 import axios from "axios";
+import ContainerHead from "./partials/first_vocabulary/ContainerHead.vue";
 
 export default {
     name: "SecondVocabulary",
+    components: { ContainerHead },
     props: {
         exercise: {
             type: Object,
@@ -289,10 +299,29 @@ export default {
 </script>
 
 <style scoped>
+.answer {
+    text-align: center;
+    padding-top: 25px;
+
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    width: 796px;
+    height: 50px;
+    border-radius: 10px;
+    border: solid 2px #f8da61;
+
+    font-size: 22px;
+}
+
 input {
     border: none;
     outline: none;
     text-align: center;
+    font-size: 22px;
+    background-color: transparent;
+    color: #ae7cf6;
+}
+input::placeholder {
+    color: #ae7cf6;
 }
 
 input:focus {
