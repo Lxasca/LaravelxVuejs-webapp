@@ -27,55 +27,75 @@
                 </p>
             </div>
 
-            <!-- nombre de lettres saisies vs. le nombre total -->
-            <p>
-                {{ userAnswer.length }} /
-                {{ exercise.correct_vocabulary.length }}
-            </p>
-
-            <p>
-                <button v-if="userAnswer.length > 0" @click="validateAnswer">
-                    Valider
-                </button>
-
-                <button
-                    v-if="
-                        userAnswer
-                            .slice(
-                                0,
-                                Math.ceil(
-                                    exercise.correct_vocabulary.length / 3
-                                )
-                            )
-                            .toLowerCase() !==
-                        exercise.correct_vocabulary
-                            .slice(
-                                0,
-                                Math.ceil(
-                                    exercise.correct_vocabulary.length / 3
-                                )
-                            )
-                            .toLowerCase()
+            <!-- Affichage du nombre de lettres saisies vs. le nombre total de lettres du mot à trouver -->
+            <div
+                style="
+                    display: flex;
+                    justify-content: right;
+                    margin-top: -86.5px;
+                    padding-right: 275px;
+                "
+            >
+                <section
+                    style="
+                        background-color: #ae7cf6;
+                        border-radius: 10px;
+                        padding: 0px;
+                        padding-left: 20px;
+                        padding-right: 20px;
+                        color: white;
                     "
-                    @click="provideHintFirst"
                 >
-                    Aide 1/3
-                </button>
-                <button
-                    v-if="
-                        userAnswer.length >=
-                            Math.ceil(
-                                (exercise.correct_vocabulary.length * 1) / 3
-                            ) &&
-                        userAnswer
-                            .slice(
-                                0,
-                                Math.ceil(
-                                    (exercise.correct_vocabulary.length * 2) / 3
+                    <p>
+                        {{ userAnswer.length }} /
+                        {{ exercise.correct_vocabulary.length }}
+                    </p>
+                </section>
+            </div>
+
+            <div
+                style="
+                    display: flex;
+                    justify-content: left;
+                    margin-top: -59px;
+                    padding-left: 289px;
+                "
+            >
+                <p>
+                    <button
+                        v-if="
+                            userAnswer
+                                .slice(
+                                    0,
+                                    Math.ceil(
+                                        exercise.correct_vocabulary.length / 3
+                                    )
                                 )
-                            )
-                            .toLowerCase() !==
+                                .toLowerCase() !==
                             exercise.correct_vocabulary
+                                .slice(
+                                    0,
+                                    Math.ceil(
+                                        exercise.correct_vocabulary.length / 3
+                                    )
+                                )
+                                .toLowerCase()
+                        "
+                        @click="provideHintFirst"
+                    >
+                        <img
+                            src="../../../images/exercises/help1.png"
+                            alt="Aide 1/3"
+                            width="35px"
+                        />
+                    </button>
+                    <button
+                        v-if="
+                            userAnswer.length >=
+                                Math.ceil(
+                                    (exercise.correct_vocabulary.length * 1) / 3
+                                ) &&
+                            userAnswer
                                 .slice(
                                     0,
                                     Math.ceil(
@@ -84,27 +104,34 @@
                                             3
                                     )
                                 )
-                                .toLowerCase()
-                    "
-                    @click="provideHintSecond"
-                >
-                    Aide 2/3
-                </button>
-                <button
-                    v-if="
-                        userAnswer.length >=
-                            Math.ceil(
-                                (exercise.correct_vocabulary.length * 2) / 3
-                            ) &&
-                        userAnswer
-                            .slice(
-                                0,
+                                .toLowerCase() !==
+                                exercise.correct_vocabulary
+                                    .slice(
+                                        0,
+                                        Math.ceil(
+                                            (exercise.correct_vocabulary
+                                                .length *
+                                                2) /
+                                                3
+                                        )
+                                    )
+                                    .toLowerCase()
+                        "
+                        @click="provideHintSecond"
+                    >
+                        <img
+                            src="../../../images/exercises/help2.png"
+                            alt="Aide 2/3"
+                            width="35px"
+                        />
+                    </button>
+                    <button
+                        v-if="
+                            userAnswer.length >=
                                 Math.ceil(
-                                    (exercise.correct_vocabulary.length * 3) / 3
-                                )
-                            )
-                            .toLowerCase() !==
-                            exercise.correct_vocabulary
+                                    (exercise.correct_vocabulary.length * 2) / 3
+                                ) &&
+                            userAnswer
                                 .slice(
                                     0,
                                     Math.ceil(
@@ -113,13 +140,33 @@
                                             3
                                     )
                                 )
-                                .toLowerCase()
-                    "
-                    @click="provideHintThird"
-                >
-                    Aide 3/3
-                </button>
-            </p>
+                                .toLowerCase() !==
+                                exercise.correct_vocabulary
+                                    .slice(
+                                        0,
+                                        Math.ceil(
+                                            (exercise.correct_vocabulary
+                                                .length *
+                                                3) /
+                                                3
+                                        )
+                                    )
+                                    .toLowerCase()
+                        "
+                        @click="provideHintThird"
+                    >
+                        <img
+                            src="../../../images/exercises/help3.png"
+                            alt="Aide 3/3"
+                            width="35px"
+                        />
+                    </button>
+                </p>
+            </div>
+
+            <button v-if="userAnswer.length > 0" @click="validateAnswer">
+                Valider
+            </button>
         </div>
 
         <div v-if="feedbackMessage !== null">
@@ -298,7 +345,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .answer {
     text-align: center;
     padding-top: 25px;
@@ -340,5 +387,14 @@ input:focus {
 
 .disabled {
     pointer-events: none;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+
+    img {
+        cursor: pointer;
+    }
 }
 </style>
