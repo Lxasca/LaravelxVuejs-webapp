@@ -16,7 +16,6 @@
                     },
                 }"
                 style="text-decoration: none; color: white"
-                @click="generateRandomNumber"
             >
                 <p
                     v-if="

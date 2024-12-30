@@ -8,7 +8,7 @@
     <section class="d-flex-center" style="margin-bottom: 40px">
         <div class="container-exercise-i">
             <section>
-                <p>سوريا</p>
+                <p>{{ exercise.vocabulary.traduction_arabic }}</p>
             </section>
 
             <section>
@@ -38,7 +38,7 @@ export default {
 
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     width: 800px;
-    height: 200px;
+    height: 230px;
     border-radius: 10px;
     background-color: #f8da61;
 
@@ -49,7 +49,7 @@ export default {
 }
 
 .container-exercise-i {
-    margin-top: -28.5px;
+    margin-top: -45px;
 
     background-color: #ae7cf6;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -71,7 +71,7 @@ export default {
     }
 
     p {
-        font-size: 18px;
+        font-size: 25px;
     }
 }
 </style>
