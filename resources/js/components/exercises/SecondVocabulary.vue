@@ -181,7 +181,6 @@ export default {
             if (newVal.length === this.exercise.correct_vocabulary.length) {
                 this.validateAnswer();
             }
-            if (this.feedbackMessage) return false;
         },
     },
     computed: {
@@ -195,33 +194,26 @@ export default {
                 event.preventDefault(); // on blocque l'événement clavier pour que l'user puisse pas modifier sa réponse si juste
             }
 
-            //console.log("le code : ", event.code);
-            //console.log("l'id : ", this.$route.params.exercise_id);
-            this.determineNextExercise();
-            //console.log("le next id : ", this.nextExercise);
-            /**console.log(
-                "this.userAnswer.trim().toLowerCase() => ",
-                this.userAnswer.trim().toLowerCase()
-            );
-            console.log(
-                "this.currentExercise.correct_vocabulary.toLowerCase() => ",
-                this.currentExercise !== null
-                    ? this.currentExercise.correct_vocabulary.toLowerCase()
-                    : "est null"
-            );**/
+            if (event.key === " ") {
+                event.preventDefault();
+            }
 
-            if (
-                event.code === "Space" &&
-                document.activeElement.tagName !== "INPUT"
-            ) {
+            if (event.code === "Space") {
                 if (this.currentExercise !== null) {
                     if (
                         this.userAnswer.trim().toLowerCase() ==
                         this.currentExercise.correct_vocabulary.toLowerCase()
                     ) {
-                        console.log("LEAAAAA");
-                    } else {
-                        console.log("j'en ai marrrrrrrrrrrrrrrrrrrrrrr");
+                        this.determineNextExercise();
+
+                        this.$router.push({
+                            name: "exercise",
+                            params: {
+                                id: 1,
+                                level_id: 1,
+                                exercise_id: this.nextExercise,
+                            },
+                        });
                     }
                 }
             }
