@@ -65,22 +65,8 @@
                 <p>
                     <button
                         v-if="
-                            userAnswer
-                                .slice(
-                                    0,
-                                    Math.ceil(
-                                        exercise.correct_vocabulary.length / 3
-                                    )
-                                )
-                                .toLowerCase() !==
-                            exercise.correct_vocabulary
-                                .slice(
-                                    0,
-                                    Math.ceil(
-                                        exercise.correct_vocabulary.length / 3
-                                    )
-                                )
-                                .toLowerCase()
+                            userAnswer.length <
+                            Math.ceil(exercise.correct_vocabulary.length / 3)
                         "
                         @click="provideHintFirst"
                     >
@@ -91,32 +77,11 @@
                         />
                     </button>
                     <button
-                        v-if="
-                            userAnswer.length >=
-                                Math.ceil(
-                                    (exercise.correct_vocabulary.length * 1) / 3
-                                ) &&
-                            userAnswer
-                                .slice(
-                                    0,
-                                    Math.ceil(
-                                        (exercise.correct_vocabulary.length *
-                                            2) /
-                                            3
-                                    )
-                                )
-                                .toLowerCase() !==
-                                exercise.correct_vocabulary
-                                    .slice(
-                                        0,
-                                        Math.ceil(
-                                            (exercise.correct_vocabulary
-                                                .length *
-                                                2) /
-                                                3
-                                        )
-                                    )
-                                    .toLowerCase()
+                        v-else-if="
+                            userAnswer.length <
+                            Math.ceil(
+                                (exercise.correct_vocabulary.length * 2) / 3
+                            )
                         "
                         @click="provideHintSecond"
                     >
@@ -127,10 +92,10 @@
                         />
                     </button>
                     <button
-                        v-if="
-                            userAnswer.length >=
+                        v-else-if="
+                            userAnswer.length <
                             Math.ceil(
-                                (exercise.correct_vocabulary.length * 2) / 3
+                                (exercise.correct_vocabulary.length * 3) / 3
                             )
                         "
                         @click="provideHintThird"
@@ -145,18 +110,21 @@
             </div>
         </div>
 
-        <div v-if="feedbackMessage !== null">
-            <div>
+        <div v-if="feedbackMessage !== null" class="d-flex-center">
+            <div
+                class="d-flex-center"
+                style="align-items: center; margin-top: 80px"
+            >
                 <!-- 3. Affichag du logo de succès ou d'échec entre les deux choix -->
                 <checked-fail
                     class="d-flex-center"
-                    style="margin-left: 15px; margin-top: 32.5px"
                     :exercise="exercise"
                     :feedbackMessage="feedbackMessage"
                 ></checked-fail>
 
+                <span style="padding: 10px"></span>
+
                 <next-exercise
-                    style="margin-top: 25px"
                     class="d-flex-center"
                     :exercise="exercise"
                     :nextExercise="nextExercise"
@@ -262,7 +230,7 @@ export default {
             });
         },
         checkAnswer() {
-            const correctWord =
+            /**const correctWord =
                 this.currentExercise.correct_vocabulary.toLowerCase();
             if (
                 this.userAnswer.toLowerCase() !==
@@ -272,7 +240,7 @@ export default {
                     0,
                     this.userAnswer.length - 1
                 );
-            }
+            }**/
         },
         validateAnswer() {
             if (

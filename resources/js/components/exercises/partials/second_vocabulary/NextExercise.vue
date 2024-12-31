@@ -2,6 +2,7 @@
     <div>
         <div class="container-next">
             <router-link
+                v-if="feedbackMessage"
                 :to="{
                     name: 'exercise',
                     params: {
@@ -12,9 +13,9 @@
                 }"
                 style="text-decoration: none; color: white"
             >
-                <p v-if="feedbackMessage">Suivant</p>
-                <p v-else>Réessayer</p>
+                <p>Suivant</p>
             </router-link>
+            <p v-else style="text-decoration: none; color: white">Réessayer</p>
         </div>
     </div>
 </template>
@@ -48,10 +49,11 @@ export default {
     padding-top: 0.5px;
     padding-bottom: 0.5px;
     border-radius: 10px;
-    width: 750px;
-    margin-left: 5px;
     cursor: pointer;
     text-align: center;
+
+    width: 710px;
+    margin-right: 9px;
 
     p {
         font-size: 16px;
