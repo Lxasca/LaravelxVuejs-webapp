@@ -10,6 +10,7 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    margin-top: -25px;
                 "
             >
                 <p class="answer">
@@ -128,30 +129,9 @@
                     <button
                         v-if="
                             userAnswer.length >=
-                                Math.ceil(
-                                    (exercise.correct_vocabulary.length * 2) / 3
-                                ) &&
-                            userAnswer
-                                .slice(
-                                    0,
-                                    Math.ceil(
-                                        (exercise.correct_vocabulary.length *
-                                            3) /
-                                            3
-                                    )
-                                )
-                                .toLowerCase() !==
-                                exercise.correct_vocabulary
-                                    .slice(
-                                        0,
-                                        Math.ceil(
-                                            (exercise.correct_vocabulary
-                                                .length *
-                                                3) /
-                                                3
-                                        )
-                                    )
-                                    .toLowerCase()
+                            Math.ceil(
+                                (exercise.correct_vocabulary.length * 2) / 3
+                            )
                         "
                         @click="provideHintThird"
                     >
@@ -163,30 +143,26 @@
                     </button>
                 </p>
             </div>
-
-            <button v-if="userAnswer.length > 0" @click="validateAnswer">
-                Valider
-            </button>
         </div>
 
         <div v-if="feedbackMessage !== null">
-            <div v-if="feedbackMessage">
-                <p>Réussie !</p>
+            <div>
+                <!-- 3. Affichag du logo de succès ou d'échec entre les deux choix -->
+                <checked-fail
+                    class="d-flex-center"
+                    style="margin-left: 15px; margin-top: 32.5px"
+                    :exercise="exercise"
+                    :feedbackMessage="feedbackMessage"
+                ></checked-fail>
 
-                <router-link
-                    :to="{
-                        name: 'exercise',
-                        params: {
-                            id: 1,
-                            level_id: 1,
-                            exercise_id: nextExercise,
-                        },
-                    }"
-                >
-                    Suivant (passer)
-                </router-link>
+                <next-exercise
+                    style="margin-top: 25px"
+                    class="d-flex-center"
+                    :exercise="exercise"
+                    :nextExercise="nextExercise"
+                    :feedbackMessage="feedbackMessage"
+                ></next-exercise>
             </div>
-            <p v-else>Raté ! Reessayer</p>
         </div>
     </div>
 </template>
@@ -194,10 +170,12 @@
 <script>
 import axios from "axios";
 import ContainerHead from "./partials/first_vocabulary/ContainerHead.vue";
+import CheckedFail from "./partials/second_vocabulary/CheckedFail.vue";
+import NextExercise from "./partials/second_vocabulary/NextExercise.vue";
 
 export default {
     name: "SecondVocabulary",
-    components: { ContainerHead },
+    components: { ContainerHead, CheckedFail, NextExercise },
     props: {
         exercise: {
             type: Object,
@@ -231,6 +209,11 @@ export default {
                 this.determineNextExercise();
                 this.handleKeydown(event);
             },
+        },
+        userAnswer(newVal) {
+            if (newVal.length === this.exercise.correct_vocabulary.length) {
+                this.validateAnswer();
+            }
         },
     },
     computed: {
