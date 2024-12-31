@@ -57,12 +57,21 @@
             <div
                 style="
                     display: flex;
-                    justify-content: left;
-                    margin-top: -59px;
-                    padding-left: 289px;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 47.5px;
                 "
             >
-                <p>
+                <!-- 3. Affichag du logo de succès ou d'échec entre les deux choix -->
+                <checked-fail
+                    v-if="feedbackMessage !== null"
+                    class="d-flex-center"
+                    :exercise="exercise"
+                    :feedbackMessage="feedbackMessage"
+                    :userAnswer="userAnswer"
+                ></checked-fail>
+
+                <section>
                     <button
                         v-if="
                             userAnswer.length <
@@ -106,31 +115,21 @@
                             width="35px"
                         />
                     </button>
-                </p>
+                </section>
             </div>
         </div>
 
-        <div v-if="feedbackMessage !== null" class="d-flex-center">
-            <div
+        <div
+            v-if="feedbackMessage !== null"
+            class="d-flex-center"
+            style="margin-top: 25px"
+        >
+            <next-exercise
                 class="d-flex-center"
-                style="align-items: center; margin-top: 80px"
-            >
-                <!-- 3. Affichag du logo de succès ou d'échec entre les deux choix -->
-                <checked-fail
-                    class="d-flex-center"
-                    :exercise="exercise"
-                    :feedbackMessage="feedbackMessage"
-                ></checked-fail>
-
-                <span style="padding: 10px"></span>
-
-                <next-exercise
-                    class="d-flex-center"
-                    :exercise="exercise"
-                    :nextExercise="nextExercise"
-                    :feedbackMessage="feedbackMessage"
-                ></next-exercise>
-            </div>
+                :exercise="exercise"
+                :nextExercise="nextExercise"
+                :feedbackMessage="feedbackMessage"
+            ></next-exercise>
         </div>
     </div>
 </template>

@@ -7,7 +7,7 @@
             width="35px"
         />
         <img
-            v-else
+            v-else-if="userAnswer.length == exercise.correct_vocabulary.length"
             src="../../../../../images/exercises/fail.png"
             alt=""
             width="35px"
@@ -25,6 +25,9 @@ export default {
         },
         feedbackMessage: {
             type: Boolean,
+        },
+        userAnswer: {
+            type: String,
         },
     },
 };

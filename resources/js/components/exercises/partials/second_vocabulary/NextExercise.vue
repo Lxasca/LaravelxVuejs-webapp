@@ -52,8 +52,8 @@ export default {
     cursor: pointer;
     text-align: center;
 
-    width: 710px;
-    margin-right: 9px;
+    width: 750px;
+    margin-left: 2.5px;
 
     p {
         font-size: 16px;
