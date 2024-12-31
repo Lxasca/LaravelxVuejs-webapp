@@ -196,15 +196,15 @@ export default {
 
             if (event.key === " ") {
                 event.preventDefault();
-            }
 
-            if (event.code === "Space") {
                 if (this.currentExercise !== null) {
+                    this.determineNextExercise();
+
                     if (
                         this.userAnswer.trim().toLowerCase() ==
                         this.currentExercise.correct_vocabulary.toLowerCase()
                     ) {
-                        this.determineNextExercise();
+                        this.userAnswer = "";
 
                         this.$router.push({
                             name: "exercise",
@@ -224,19 +224,11 @@ export default {
             axios.get(`/get-next-exercise-by-order/${id}`).then((response) => {
                 this.nextExercise = response.data.id;
             });
+
+            return this.nextExercise;
         },
-        checkAnswer() {
-            /**const correctWord =
-                this.currentExercise.correct_vocabulary.toLowerCase();
-            if (
-                this.userAnswer.toLowerCase() !==
-                correctWord.slice(0, this.userAnswer.length)
-            ) {
-                this.userAnswer = this.userAnswer.slice(
-                    0,
-                    this.userAnswer.length - 1
-                );
-            }**/
+        checkAnswer(event) {
+            this.userAnswer = event.target.value;
         },
         validateAnswer() {
             if (
@@ -264,7 +256,6 @@ export default {
         },
         resetState() {
             this.feedbackMessage = null;
-            this.userAnswer = "";
         },
         updateSentenceParts() {
             const exercise_id = parseInt(this.$route.params.exercise_id);
