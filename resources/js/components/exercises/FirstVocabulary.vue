@@ -242,9 +242,5 @@ export default {
     .exercice-suivant {
         margin-top: 40px;
     }
-
-    .disabled {
-        pointer-events: none;
-    }
 }
 </style>

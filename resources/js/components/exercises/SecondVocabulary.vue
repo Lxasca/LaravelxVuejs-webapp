@@ -181,6 +181,7 @@ export default {
             if (newVal.length === this.exercise.correct_vocabulary.length) {
                 this.validateAnswer();
             }
+            if (this.feedbackMessage) return false;
         },
     },
     computed: {
@@ -190,6 +191,10 @@ export default {
     },
     methods: {
         handleKeydown(event) {
+            if (this.feedbackMessage && event.key !== " ") {
+                event.preventDefault(); // on blocque l'événement clavier pour que l'user puisse pas modifier sa réponse si juste
+            }
+
             //console.log("le code : ", event.code);
             //console.log("l'id : ", this.$route.params.exercise_id);
             this.determineNextExercise();

@@ -44,4 +44,9 @@ div[class^="choice"] input[type="radio"] + span {
 div[class^="choice"] input[type="radio"]:checked + span {
     border: solid 2px #f8da61;
 }
+
+/** disabled un exercice pour ne pas que l'user puisse changer sa réponse **/
+.disabled {
+    pointer-events: none;
+}
 </style>
