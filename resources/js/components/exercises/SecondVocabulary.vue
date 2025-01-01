@@ -5,14 +5,7 @@
             <container-head :exercise="exercise"></container-head>
 
             <!-- 2. Affichage de la phrase avec l'input pour le mot à trouvé -->
-            <div
-                style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-top: -25px;
-                "
-            >
+            <div id="section-sentenceParts">
                 <p class="answer">
                     <span v-for="(part, index) in sentenceParts" :key="index">
                         <span v-if="!part.isInput">{{ part.text }}</span>
@@ -28,25 +21,9 @@
                 </p>
             </div>
 
-            <!-- Affichage du nombre de lettres saisies vs. le nombre total de lettres du mot à trouver -->
-            <div
-                style="
-                    display: flex;
-                    justify-content: right;
-                    margin-top: -86.5px;
-                    padding-right: 275px;
-                "
-            >
-                <section
-                    style="
-                        background-color: #ae7cf6;
-                        border-radius: 10px;
-                        padding: 0px;
-                        padding-left: 20px;
-                        padding-right: 20px;
-                        color: white;
-                    "
-                >
+            <!-- 3. Affichage du nombre de lettres saisies vs. le nombre total de lettres du mot à trouver -->
+            <div id="section-counterLetters">
+                <section id="sous-section-counterLetters">
                     <p>
                         {{ userAnswer.length }} /
                         {{ exercise.correct_vocabulary.length }}
@@ -54,14 +31,7 @@
                 </section>
             </div>
 
-            <div
-                style="
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    margin-top: 47.5px;
-                "
-            >
+            <div id="section-checkedFail">
                 <!-- 3. Affichag du logo de succès ou d'échec entre les deux choix -->
                 <checked-fail
                     v-if="feedbackMessage !== null"
@@ -338,5 +308,31 @@ button {
     img {
         cursor: pointer;
     }
+}
+#section-sentenceParts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -25px;
+}
+#section-counterLetters {
+    display: flex;
+    justify-content: right;
+    margin-top: -86.5px;
+    padding-right: 275px;
+}
+#sous-section-counterLetters {
+    background-color: #ae7cf6;
+    border-radius: 10px;
+    padding: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+}
+#section-checkedFail {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 47.5px;
 }
 </style>
