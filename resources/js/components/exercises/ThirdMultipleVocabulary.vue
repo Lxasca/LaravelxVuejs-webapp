@@ -7,25 +7,29 @@
             :arrayTraductions="arrayTraductions"
         ></container-head>
 
-        <p class="answer">
-            <span v-for="(part, index) in sentenceParts" :key="index">
-                <span v-if="part.isWord">
-                    <input
-                        type="text"
-                        v-model="part.value"
-                        class="word-input"
-                        :class="{
-                            'border-red-500':
-                                part.value &&
-                                part.value.toLowerCase() !==
-                                    part.original.toLowerCase(),
-                        }"
-                    />
-                    <!--:placeholder="part.original"-->
+        <div class="d-flex-center">
+            <p class="answer">
+                <span v-for="(part, index) in sentenceParts" :key="index">
+                    <span v-if="part.isWord">
+                        <input
+                            type="text"
+                            v-model="part.value"
+                            :placeholder="placeholderText(part.original)"
+                            class="word-input"
+                            :class="{
+                                'border-red-500':
+                                    part.value &&
+                                    part.value.toLowerCase() !==
+                                        part.original.toLowerCase(),
+                            }"
+                        />
+                        <!--:placeholder="part.original"-->
+                    </span>
+                    <span v-else>{{ part.text }}</span>
                 </span>
-                <span v-else>{{ part.text }}</span>
-            </span>
-        </p>
+            </p>
+        </div>
+
         <button @click="validateAnswers">Valider</button>
         <p
             v-if="resultMessage"
@@ -74,6 +78,11 @@ export default {
             isValid: false,
             arrayTraductions: [],
         };
+    },
+    computed: {
+        placeholderText() {
+            return (val) => (val ? "_ ".repeat(val.length).trim() : "");
+        },
     },
     mounted() {
         this.getVocabulariesOfSentence();
