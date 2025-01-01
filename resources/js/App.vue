@@ -23,6 +23,43 @@ export default {
     display: flex;
     justify-content: center;
 }
+.d-flex-evenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+.d-flex-between {
+    display: flex;
+    justify-content: space-between;
+}
+
+input {
+    border: none !important;
+    outline: none;
+    text-align: center;
+    font-size: 22px;
+    background-color: transparent;
+    color: #ae7cf6;
+}
+input::placeholder {
+    color: #ae7cf6;
+}
+
+input:focus {
+    box-shadow: none;
+}
+
+.answer {
+    text-align: center;
+    padding-top: 25px;
+
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    width: 796px;
+    height: 50px;
+    border-radius: 10px;
+    border: solid 2px #f8da61;
+
+    font-size: 22px;
+}
 
 .choice {
     align-items: center;

@@ -1,17 +1,13 @@
 <template>
     <div>
-        <!-- affichage des images -->
-        <section>
-            <div v-for="arrayImage in arrayImages" :key="arrayImage.id">
-                <img
-                    :src="arrayImage"
-                    alt="Image d'illustration"
-                    width="150px"
-                />
-            </div>
-        </section>
+        <!-- 1. Affichage du header de l'exercice : images et vocabulaires -->
+        <container-head
+            :exercise="exercise"
+            :arrayImages="arrayImages"
+            :arrayTraductions="arrayTraductions"
+        ></container-head>
 
-        <p>
+        <p class="answer">
             <span v-for="(part, index) in sentenceParts" :key="index">
                 <span v-if="part.isWord">
                     <input
@@ -58,8 +54,10 @@
 
 <script>
 import axios from "axios";
+import ContainerHead from "./partials/third_vocabulary/ContainerHead.vue";
 export default {
     name: "ThirdMultiple",
+    components: { ContainerHead },
     props: {
         exercise: {
             type: Object,
@@ -74,6 +72,7 @@ export default {
             resultMessage: "",
             nextExercise: null,
             isValid: false,
+            arrayTraductions: [],
         };
     },
     mounted() {
@@ -135,6 +134,10 @@ export default {
 
                 this.arrayImages = responses.map(
                     (response) => response.data.image
+                );
+
+                this.arrayTraductions = responses.map(
+                    (response) => response.data.traduction_arabic
                 );
 
                 this.detectWordsInSentence();

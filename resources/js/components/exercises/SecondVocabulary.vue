@@ -271,22 +271,6 @@ export default {
     font-size: 22px;
 }
 
-input {
-    border: none;
-    outline: none;
-    text-align: center;
-    font-size: 22px;
-    background-color: transparent;
-    color: #ae7cf6;
-}
-input::placeholder {
-    color: #ae7cf6;
-}
-
-input:focus {
-    box-shadow: none;
-}
-
 .question {
     display: flex;
     justify-content: center;
