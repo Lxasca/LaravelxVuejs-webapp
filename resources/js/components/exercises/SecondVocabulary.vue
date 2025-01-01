@@ -201,8 +201,9 @@ export default {
                     this.determineNextExercise();
 
                     if (
+                        this.userAnswer.trim().toLowerCase() != null &&
                         this.userAnswer.trim().toLowerCase() ==
-                        this.currentExercise.correct_vocabulary.toLowerCase()
+                            this.currentExercise.correct_vocabulary.toLowerCase()
                     ) {
                         this.userAnswer = "";
 
@@ -214,6 +215,8 @@ export default {
                                 exercise_id: this.nextExercise,
                             },
                         });
+                    } else {
+                        this.userAnswer = "";
                     }
                 }
             }
@@ -223,6 +226,7 @@ export default {
 
             axios.get(`/get-next-exercise-by-order/${id}`).then((response) => {
                 this.nextExercise = response.data.id;
+                this.userAnswer = "";
             });
 
             return this.nextExercise;
