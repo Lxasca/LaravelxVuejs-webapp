@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\LevelsController;
@@ -34,7 +35,8 @@ Route::get('/get-next-exercise-for-next-scenario/{id}', [ExercisesController::cl
 //
 Route::get('/get-previous-exercise-scenario/{id}', [ExercisesController::class, 'getPreviousExerciseScenario']);
 
-
+// Articles
+Route::get('/get-articles', [ArticlesController::class, 'getArticles']);
 
 
 Route::get('/{any}', function () {
