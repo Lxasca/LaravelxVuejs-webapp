@@ -11,22 +11,23 @@
                         )"
                         :key="index"
                     >
-                        <!-- Si le segment est un lien / mot de Vocabularies ... -->
-                        <router-link
-                            v-if="segment.isLink"
-                            :to="{
-                                name: 'course',
-                                params: { id: segment.number },
-                            }"
-                            class="text-blue-500 underline"
-                        >
-                            {{ segment.word }}[{{ segment.number }}]
-                        </router-link>
-
+                        <span v-if="segment.isLink">
+                            {{ segment.word }}
+                            <span
+                                @click="toggleVocabulary(segment.number)"
+                                class="segment-number"
+                            >
+                                {{ segment.number }}
+                            </span>
+                        </span>
                         <span v-else>{{ segment.text }}</span>
                     </span>
                 </p>
             </div>
+        </section>
+
+        <section class="div-currentWord" v-if="currentWord">
+            <p>{{ currentWord }}</p>
         </section>
     </div>
 </template>
@@ -39,6 +40,8 @@ export default {
     data() {
         return {
             articles: [],
+            currentWord: "",
+            currentId: null,
         };
     },
     mounted() {
@@ -63,13 +66,11 @@ export default {
                         isLink: false,
                     });
                 }
-
                 segments.push({
                     word: match[1],
-                    number: parseInt(match[2]),
+                    number: match[2],
                     isLink: true,
                 });
-
                 lastIndex = regex.lastIndex;
             }
 
@@ -82,8 +83,33 @@ export default {
 
             return segments;
         },
+        toggleVocabulary(id) {
+            if (this.currentId === id) {
+                this.currentWord = "";
+                this.currentId = null;
+            } else {
+                axios.get(`/get-vocabulary/${id}`).then((response) => {
+                    this.currentWord = response.data.word;
+                    this.currentId = id;
+                });
+            }
+        },
     },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.segment-number {
+    color: blue;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+
+    position: relative;
+    top: -0.5em;
+}
+.div-currentWord {
+    background-color: #fbfbfb;
+    padding: 25px;
+}
+</style>
