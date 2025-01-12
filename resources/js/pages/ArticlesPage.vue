@@ -2,7 +2,7 @@
     <div>
         <h1>Articles pages</h1>
 
-        <section>
+        <section class="div-content">
             <div v-for="article in articles" :key="article.id">
                 <p>
                     <span
@@ -28,6 +28,8 @@
 
         <section class="div-currentWord" v-if="currentWord">
             <p>{{ currentWord }}</p>
+            <br />
+            <p>{{ traductionArabic }}</p>
         </section>
     </div>
 </template>
@@ -41,6 +43,7 @@ export default {
         return {
             articles: [],
             currentWord: "",
+            traductionArabic: "",
             currentId: null,
         };
     },
@@ -90,6 +93,7 @@ export default {
             } else {
                 axios.get(`/get-vocabulary/${id}`).then((response) => {
                     this.currentWord = response.data.word;
+                    this.traductionArabic = response.data.traduction_arabic;
                     this.currentId = id;
                 });
             }
@@ -108,8 +112,9 @@ export default {
     position: relative;
     top: -0.5em;
 }
+
 .div-currentWord {
+    padding: 50px;
     background-color: #fbfbfb;
-    padding: 25px;
 }
 </style>
