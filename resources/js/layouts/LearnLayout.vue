@@ -10,7 +10,11 @@
         <button>Liste mes parcours (pour switch)</button><br />
 
         <button>Niveaux</button>
-        <button>Lecture (Compréhension / Expression écrite)</button>
+        <button>
+            <router-link :to="{ name: 'articles' }"
+                >Lecture (Compréhension / Expression écrite)</router-link
+            >
+        </button>
         <button>Podcasts (Compréhension / Expression orale)</button>
 
         <button>

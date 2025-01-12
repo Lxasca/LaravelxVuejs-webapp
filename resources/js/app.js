@@ -7,6 +7,7 @@ import LevelPage from "./pages/LevelPage.vue";
 import StartPage from "./pages/StartPage.vue";
 import DictionnaryPage from "./pages/DictionnaryPage.vue";
 import ExercisePage from "./pages/ExercisePage.vue";
+import ArticlesPage from "./pages/ArticlesPage.vue";
 
 const routes = [
     { path: "/", component: HomePage },
@@ -34,6 +35,12 @@ const routes = [
         name: "exercise",
         path: "/course/:id/level/:level_id/exercise/:exercise_id",
         component: ExercisePage,
+    },
+    // lecture - compréhension écrite : artiles
+    {
+        name: "articles",
+        path: "/articles",
+        component: ArticlesPage,
     },
 ];
 
