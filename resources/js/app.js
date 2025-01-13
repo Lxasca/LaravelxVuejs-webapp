@@ -8,6 +8,7 @@ import StartPage from "./pages/StartPage.vue";
 import DictionnaryPage from "./pages/DictionnaryPage.vue";
 import ExercisePage from "./pages/ExercisePage.vue";
 import ArticlesPage from "./pages/ArticlesPage.vue";
+import ArticlePage from "./pages/ArticlePage.vue";
 
 const routes = [
     { path: "/", component: HomePage },
@@ -41,6 +42,11 @@ const routes = [
         name: "articles",
         path: "/articles",
         component: ArticlesPage,
+    },
+    {
+        name: "article",
+        path: "/article/:article_id",
+        component: ArticlePage,
     },
 ];
 

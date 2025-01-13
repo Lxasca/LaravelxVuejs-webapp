@@ -12,4 +12,9 @@ class ArticlesController extends Controller
 
         return response()->json($articles);
     }
+
+    public function getArticle($id) {
+        $article = Articles::find($id);
+        return response()->json($article);
+    }
 }

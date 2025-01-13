@@ -37,6 +37,7 @@ Route::get('/get-previous-exercise-scenario/{id}', [ExercisesController::class, 
 
 // Articles
 Route::get('/get-articles', [ArticlesController::class, 'getArticles']);
+Route::get('/get-article/{id}', [ArticlesController::class, 'getArticle']);
 
 
 Route::get('/{any}', function () {

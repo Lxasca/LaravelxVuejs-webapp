@@ -1,9 +1,7 @@
 <template>
     <div>
-        <h1>Articles Pages</h1>
-
         <section class="div-content">
-            <div v-for="(article, articleIndex) in articles" :key="article.id">
+            <div>
                 <section style="display: flex; justify-content: space-between">
                     <h5>
                         {{
@@ -15,6 +13,12 @@
 
                     <h5 style="font-weight: bold">
                         {{ article.title }}
+
+                        <img
+                            src="../../images/exercises/change.png"
+                            width="30px"
+                            alt=""
+                        />
                     </h5>
                 </section>
                 <p>
@@ -56,7 +60,7 @@ export default {
     name: "ArticlePage",
     data() {
         return {
-            articles: [],
+            article: {},
             showTranslation: false,
             traductionArabic: "",
             traductionFrancais: "",
@@ -64,13 +68,27 @@ export default {
             currentId: null,
         };
     },
+    mounted() {
+        this.getArticle();
+    },
     methods: {
-        getArticles() {
-            axios.get("/get-articles").then((response) => {
-                this.articles = response.data;
-            });
+        getArticle() {
+            const id = this.$route.params.article_id;
+
+            console.log("yoo ", id);
+
+            axios
+                .get(`/get-article/${id}`)
+                .then((response) => {
+                    this.article = response.data;
+                })
+                .catch((error) => {
+                    console.log("erreur : ", error);
+                });
         },
         getMatches(content) {
+            if (!content) return [];
+
             const regex = /\[(\d+)\]/g;
             let match;
             const matches = [];
@@ -113,9 +131,6 @@ export default {
             this.showTranslation = false;
         },
     },
-    mounted() {
-        this.getArticles();
-    },
 };
 </script>
 
@@ -135,7 +150,6 @@ export default {
     font-size: 45px;
     line-height: 80px;
 
-    padding-top: 75px;
     padding-left: 250px;
     padding-right: 250px;
 
@@ -152,7 +166,9 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-    border-radius: 15px;
+    background-color: white;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    border-radius: 12.5px;
 }
 </style>
