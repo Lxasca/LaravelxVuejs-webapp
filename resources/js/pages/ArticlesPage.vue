@@ -4,34 +4,72 @@
 
         <section class="div-content">
             <div v-for="(article, articleIndex) in articles" :key="article.id">
-                <p>
-                    <span
-                        v-for="(match, index) in getMatches(article.content)"
-                        :key="index"
-                    >
-                        <span
-                            v-if="match.type === 'number'"
-                            class="clickable-number"
-                            @click="handleClick(match.id)"
+                <section
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05),
+                            0 1px 2px rgba(0, 0, 0, 0.03);
+
+                        border-radius: 12.5px;
+                        padding-left: 50px;
+                        padding-right: 50px;
+                        height: 115px;
+
+                        margin-bottom: 35px;
+                    "
+                >
+                    <section style="text-align: left; font-size: 20px">
+                        <button
+                            style="
+                                padding-top: 10px;
+                                padding-bottom: 10px;
+                                padding-left: 25px;
+                                padding-right: 25px;
+                                border-radius: 12.5px;
+                                background-color: #262626;
+                                color: #fbfbfb;
+                                letter-spacing: 1px;
+                            "
                         >
-                            {{ match.text }}
+                            {{
+                                new Date(article.created_at).toLocaleDateString(
+                                    "fr-FR"
+                                )
+                            }}
+                        </button>
+                    </section>
+
+                    <h5
+                        style="
+                            font-weight: bold;
+                            display: flex;
+                            align-items: center;
+                            padding: 0;
+                        "
+                    >
+                        <span v-if="!article.isSwitched">{{
+                            article.title
+                        }}</span>
+                        <span style="font-size: 25px" v-else>
+                            {{ article.title_french }}
                         </span>
 
-                        <span v-else>{{ match.text }}</span>
-                    </span>
-                </p>
+                        <img
+                            @click="changeLanguage(article.id)"
+                            style="
+                                margin-left: 15px;
+                                transform: rotate(180deg);
+                                cursor: pointer;
+                            "
+                            src="../../images/exercises/change.png"
+                            width="30px"
+                            alt=""
+                        />
+                    </h5>
+                </section>
             </div>
-        </section>
-
-        <section class="div-translation" v-if="showTranslation">
-            <button @click="close">x</button>
-            <p>
-                <span style="color: green">{{ traductionArabic }}</span>
-                [<span style="color: red">{{ transcriptionArabic }}</span
-                >] se traduit par
-                <span style="color: blue">{{ traductionFrancais }}</span
-                >.
-            </p>
         </section>
     </div>
 </template>
@@ -40,64 +78,28 @@
 import axios from "axios";
 
 export default {
-    name: "ArticlesPages",
+    name: "ArticlesPage",
     data() {
         return {
             articles: [],
-            showTranslation: false,
-            traductionArabic: "",
-            traductionFrancais: "",
-            transcriptionArabic: "",
-            currentId: null,
         };
     },
     methods: {
         getArticles() {
             axios.get("/get-articles").then((response) => {
-                this.articles = response.data;
+                this.articles = response.data.map((article) => ({
+                    ...article,
+                    isSwitched: false,
+                }));
             });
         },
-        getMatches(content) {
-            const regex = /\[(\d+)\]/g;
-            let match;
-            const matches = [];
-            let lastIndex = 0;
-
-            while ((match = regex.exec(content)) !== null) {
-                if (match.index > lastIndex) {
-                    matches.push({
-                        text: content.slice(lastIndex, match.index),
-                    });
+        changeLanguage(articleId) {
+            this.articles = this.articles.map((article) => {
+                if (article.id === articleId) {
+                    article.isSwitched = !article.isSwitched;
                 }
-                matches.push({ text: match[1], type: "number", id: match[1] });
-
-                lastIndex = regex.lastIndex;
-            }
-
-            if (lastIndex < content.length) {
-                matches.push({ text: content.slice(lastIndex) });
-            }
-
-            return matches;
-        },
-        handleClick(id) {
-            if (this.currentId === id && this.showTranslation) {
-                this.showTranslation = false;
-                return;
-            }
-
-            axios.get(`/get-vocabulary/${id}`).then((response) => {
-                this.traductionArabic = response.data.traduction_arabic;
-                this.traductionFrancais =
-                    response.data.word.charAt(0).toLowerCase() +
-                    response.data.word.slice(1);
-                this.transcriptionArabic = response.data.transcription_arabic;
-                this.currentId = id;
-                this.showTranslation = true;
+                return article;
             });
-        },
-        close() {
-            this.showTranslation = false;
         },
     },
     mounted() {
@@ -107,37 +109,13 @@ export default {
 </script>
 
 <style>
-.clickable-number {
-    cursor: pointer;
-    color: green;
-    letter-spacing: normal;
-
-    position: relative;
-    top: -20px;
-    right: -5px;
-    font-size: 15px;
-}
-
 .div-content {
     font-size: 45px;
     line-height: 80px;
 
-    padding-top: 75px;
     padding-left: 250px;
     padding-right: 250px;
-}
 
-.div-translation {
-    text-align: center;
-    font-size: 25px;
-    width: 65%;
-
-    position: fixed;
-    top: 15%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-    border-radius: 15px;
+    text-align: right;
 }
 </style>
