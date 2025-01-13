@@ -1,35 +1,37 @@
 <template>
     <div>
-        <h1>Articles pages</h1>
+        <h1>Articles Pages</h1>
 
         <section class="div-content">
-            <div v-for="article in articles" :key="article.id">
+            <div v-for="(article, articleIndex) in articles" :key="article.id">
                 <p>
                     <span
-                        v-for="(segment, index) in splitContent(
-                            article.content
-                        )"
+                        v-for="(match, index) in getMatches(article.content)"
                         :key="index"
                     >
-                        <span v-if="segment.isLink">
-                            {{ segment.word }}
-                            <span
-                                @click="toggleVocabulary(segment.number)"
-                                class="segment-number"
-                            >
-                                {{ segment.number }}
-                            </span>
+                        <span
+                            v-if="match.type === 'number'"
+                            class="clickable-number"
+                            @click="handleClick(match.id)"
+                        >
+                            {{ match.text }}
                         </span>
-                        <span v-else>{{ segment.text }}</span>
+
+                        <span v-else>{{ match.text }}</span>
                     </span>
                 </p>
             </div>
         </section>
 
-        <section class="div-currentWord" v-if="currentWord">
-            <p>{{ currentWord }}</p>
-            <br />
-            <p>{{ traductionArabic }}</p>
+        <section class="div-translation" v-if="showTranslation">
+            <button @click="close">x</button>
+            <p>
+                <span style="color: green">{{ traductionArabic }}</span>
+                [<span style="color: red">{{ transcriptionArabic }}</span
+                >] se traduit par
+                <span style="color: blue">{{ traductionFrancais }}</span
+                >.
+            </p>
         </section>
     </div>
 </template>
@@ -42,13 +44,12 @@ export default {
     data() {
         return {
             articles: [],
-            currentWord: "",
+            showTranslation: false,
             traductionArabic: "",
+            traductionFrancais: "",
+            transcriptionArabic: "",
             currentId: null,
         };
-    },
-    mounted() {
-        this.getArticles();
     },
     methods: {
         getArticles() {
@@ -56,65 +57,87 @@ export default {
                 this.articles = response.data;
             });
         },
-        splitContent(content) {
-            const regex = /(\w+)\[(\d+)\]/g;
-            let segments = [];
-            let lastIndex = 0;
+        getMatches(content) {
+            const regex = /\[(\d+)\]/g;
             let match;
+            const matches = [];
+            let lastIndex = 0;
 
             while ((match = regex.exec(content)) !== null) {
                 if (match.index > lastIndex) {
-                    segments.push({
+                    matches.push({
                         text: content.slice(lastIndex, match.index),
-                        isLink: false,
                     });
                 }
-                segments.push({
-                    word: match[1],
-                    number: match[2],
-                    isLink: true,
-                });
+                matches.push({ text: match[1], type: "number", id: match[1] });
+
                 lastIndex = regex.lastIndex;
             }
 
             if (lastIndex < content.length) {
-                segments.push({
-                    text: content.slice(lastIndex),
-                    isLink: false,
-                });
+                matches.push({ text: content.slice(lastIndex) });
             }
 
-            return segments;
+            return matches;
         },
-        toggleVocabulary(id) {
-            if (this.currentId === id) {
-                this.currentWord = "";
-                this.currentId = null;
-            } else {
-                axios.get(`/get-vocabulary/${id}`).then((response) => {
-                    this.currentWord = response.data.word;
-                    this.traductionArabic = response.data.traduction_arabic;
-                    this.currentId = id;
-                });
+        handleClick(id) {
+            if (this.currentId === id && this.showTranslation) {
+                this.showTranslation = false;
+                return;
             }
+
+            axios.get(`/get-vocabulary/${id}`).then((response) => {
+                this.traductionArabic = response.data.traduction_arabic;
+                this.traductionFrancais =
+                    response.data.word.charAt(0).toLowerCase() +
+                    response.data.word.slice(1);
+                this.transcriptionArabic = response.data.transcription_arabic;
+                this.currentId = id;
+                this.showTranslation = true;
+            });
         },
+        close() {
+            this.showTranslation = false;
+        },
+    },
+    mounted() {
+        this.getArticles();
     },
 };
 </script>
 
-<style scoped>
-.segment-number {
-    color: blue;
+<style>
+.clickable-number {
     cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
+    color: green;
+    letter-spacing: normal;
 
     position: relative;
-    top: -0.5em;
+    top: -20px;
+    right: -5px;
+    font-size: 15px;
 }
 
-.div-currentWord {
-    padding: 50px;
-    background-color: #fbfbfb;
+.div-content {
+    font-size: 45px;
+    line-height: 80px;
+
+    padding-top: 75px;
+    padding-left: 250px;
+    padding-right: 250px;
+}
+
+.div-translation {
+    text-align: center;
+    font-size: 25px;
+    width: 65%;
+
+    position: fixed;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 15px;
 }
 </style>

@@ -16,7 +16,7 @@ export default {
     font-family: "Roboto Condensed", serif;
     font-optical-sizing: auto;
     font-style: normal;
-    letter-spacing: 1.2px;
+    font-weight: normal;
 }
 
 .d-flex-center {
