@@ -33,8 +33,8 @@
 
                         <img
                             @click="changeLanguage(article.id)"
-                            src="../../images/exercises/change.png"
-                            width="30px"
+                            src="../../images/exercises/translate.png"
+                            width="20px"
                             alt=""
                         />
                     </h5>
@@ -83,10 +83,7 @@ export default {
     font-size: 45px;
     line-height: 80px;
 
-    padding-left: 250px;
-    padding-right: 250px;
-
-    text-align: right;
+    text-align: center;
 }
 #div-content-section {
     display: flex;
@@ -95,11 +92,12 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 
     border-radius: 12.5px;
-    padding-left: 50px;
-    padding-right: 50px;
-    height: 115px;
+    border: solid 1px #262626;
+    padding-left: 25px;
+    padding-right: 25px;
+    height: 85px;
 
-    margin-bottom: 50px;
+    margin-bottom: 25px;
 }
 #button-createdAt {
     padding-top: 10px;
@@ -109,6 +107,7 @@ export default {
     border-radius: 12.5px;
     background-color: #262626;
     color: #fbfbfb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
     letter-spacing: 1px;
 }
 h5 {
@@ -116,6 +115,7 @@ h5 {
     display: flex;
     align-items: center;
     padding: 0;
+    font-size: 30px;
 }
 img {
     margin-left: 15px;
@@ -123,6 +123,6 @@ img {
     cursor: pointer;
 }
 #title-french {
-    font-size: 25px;
+    font-size: 22.5px;
 }
 </style>
