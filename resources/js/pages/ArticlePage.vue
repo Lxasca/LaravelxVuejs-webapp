@@ -51,6 +51,9 @@
                     <button @click="highlightPropositions">
                         mettre en couleur les prépositions
                     </button>
+                    <button @click="highlightLieu">
+                        mettre en couleur les lieux
+                    </button>
                 </div>
                 <section>
                     <p v-if="!isSwitchedContent">
@@ -70,9 +73,7 @@
 
                             <span v-else>
                                 <span
-                                    v-html="
-                                        highlightPrepositionWords(match.text)
-                                    "
+                                    v-html="highlightWords(match.text)"
                                 ></span>
                             </span>
                         </span>
@@ -122,6 +123,7 @@ export default {
             isSwitched: false,
             isSwitchedContent: false,
             highlightPropositionsEnabled: false,
+            highlightLieuEnabled: false,
         };
     },
     mounted() {
@@ -150,14 +152,27 @@ export default {
             this.highlightPropositionsEnabled =
                 !this.highlightPropositionsEnabled;
         },
-        highlightPrepositionWords(text) {
+        highlightWords(text) {
             if (this.highlightPropositionsEnabled) {
-                return text.replace(
+                text = text.replace(
                     /<pp>(.*?)<\/pp>/g,
                     '<span style="color: red">$1</span>'
                 );
             }
+
+            if (this.highlightLieuEnabled) {
+                text = text.replace(
+                    /<lieu>(.*?)<\/lieu>/g,
+                    '<span style="color: blue">$1</span>'
+                );
+            }
+
             return text;
+        },
+
+        // lieu
+        highlightLieu() {
+            this.highlightLieuEnabled = !this.highlightLieuEnabled;
         },
         getMatches(content) {
             if (!content) return [];
