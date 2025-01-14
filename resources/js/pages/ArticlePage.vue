@@ -1,27 +1,40 @@
 <template>
-    <div>
+    <div
+        style="
+            padding-left: 150px;
+            padding-right: 150px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+        "
+    >
         <section class="div-content">
             <div>
-                <section style="display: flex; justify-content: space-between">
-                    <h5>
-                        {{
-                            new Date(article.created_at).toLocaleDateString(
-                                "fr-FR"
-                            )
-                        }}
-                    </h5>
+                <section id="div-content-section">
+                    <section style="text-align: left; font-size: 20px">
+                        <button id="button-createdAt">
+                            {{
+                                new Date(article.created_at).toLocaleDateString(
+                                    "fr-FR"
+                                )
+                            }}
+                        </button>
+                    </section>
 
-                    <h5 style="font-weight: bold">
-                        {{ article.title }}
+                    <h5>
+                        <span v-if="!isSwitched">{{ article.title }}</span>
+                        <span id="title-french" v-else>
+                            {{ article.title_french }}
+                        </span>
 
                         <img
-                            src="../../images/exercises/change.png"
-                            width="30px"
+                            @click="changeLanguage()"
+                            src="../../images/exercises/translate.png"
+                            width="20px"
                             alt=""
                         />
                     </h5>
                 </section>
-                <p>
+                <p v-if="!isSwitched">
                     <span
                         v-for="(match, index) in getMatches(article.content)"
                         :key="index"
@@ -37,6 +50,7 @@
                         <span v-else>{{ match.text }}</span>
                     </span>
                 </p>
+                <p v-else id="content-french">{{ article.content_french }}</p>
             </div>
         </section>
 
@@ -66,16 +80,18 @@ export default {
             traductionFrancais: "",
             transcriptionArabic: "",
             currentId: null,
+            isSwitched: false,
         };
     },
     mounted() {
         this.getArticle();
     },
     methods: {
+        changeLanguage() {
+            this.isSwitched = !this.isSwitched;
+        },
         getArticle() {
             const id = this.$route.params.article_id;
-
-            console.log("yoo ", id);
 
             axios
                 .get(`/get-article/${id}`)
@@ -134,7 +150,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .clickable-number {
     cursor: pointer;
     color: green;
@@ -150,19 +166,18 @@ export default {
     font-size: 45px;
     line-height: 80px;
 
-    padding-left: 250px;
-    padding-right: 250px;
-
     text-align: right;
+    padding: 25px;
+    border-radius: 12.5px;
 }
 
 .div-translation {
     text-align: center;
     font-size: 25px;
-    width: 65%;
+    width: 76%;
 
     position: fixed;
-    top: 15%;
+    top: 12.5%;
     left: 50%;
     transform: translate(-50%, -50%);
 
@@ -170,5 +185,48 @@ export default {
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
     border-radius: 12.5px;
+}
+#div-content-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+
+    border-radius: 12.5px;
+    padding-left: 25px;
+    padding-right: 25px;
+    height: 85px;
+
+    margin-bottom: 45px;
+}
+#button-createdAt {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 12.5px;
+    background-color: #262626;
+    color: #fbfbfb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    letter-spacing: 1px;
+}
+img {
+    margin-left: 15px;
+    transform: rotate(180deg);
+    cursor: pointer;
+}
+h5 {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    font-size: 30px;
+}
+#title-french {
+    font-size: 22.5px;
+}
+#content-french {
+    font-size: 30px;
+    text-align: left;
 }
 </style>

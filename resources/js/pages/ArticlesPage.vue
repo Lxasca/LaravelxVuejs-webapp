@@ -32,8 +32,8 @@
                         </router-link>
 
                         <img
-                            @click="changeLanguage(article.id)"
                             src="../../images/exercises/translate.png"
+                            @click="changeLanguage(article.id)"
                             width="20px"
                             alt=""
                         />
@@ -78,12 +78,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .div-content {
     font-size: 45px;
     line-height: 80px;
 
     text-align: center;
+    padding-left: 150px;
+    padding-right: 150px;
 }
 #div-content-section {
     display: flex;
@@ -92,12 +94,11 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 
     border-radius: 12.5px;
-    border: solid 1px #262626;
     padding-left: 25px;
     padding-right: 25px;
     height: 85px;
 
-    margin-bottom: 25px;
+    margin-bottom: 45px;
 }
 #button-createdAt {
     padding-top: 10px;
@@ -116,6 +117,9 @@ h5 {
     align-items: center;
     padding: 0;
     font-size: 30px;
+}
+#title-french {
+    font-size: 22.5px;
 }
 img {
     margin-left: 15px;
