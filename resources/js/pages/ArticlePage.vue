@@ -54,6 +54,10 @@
                     <button @click="highlightLieu">
                         mettre en couleur les lieux
                     </button>
+                    <button @click="highlightAdjectif">
+                        mettre en couleur les adjectifs et le nom auquels ils se
+                        réfèrent
+                    </button>
                 </div>
                 <section>
                     <p v-if="!isSwitchedContent">
@@ -124,6 +128,7 @@ export default {
             isSwitchedContent: false,
             highlightPropositionsEnabled: false,
             highlightLieuEnabled: false,
+            highlightAdjectifEnabled: false,
         };
     },
     mounted() {
@@ -167,12 +172,25 @@ export default {
                 );
             }
 
+            if (this.highlightAdjectifEnabled) {
+                text = text.replace(
+                    /<adj>(.*?)<\/adj>/g,
+                    '<span style="color: orange;">$1</span>'
+                );
+
+                text = text.replace(
+                    /<adj-nom>(.*?)<\/adj-nom>/g,
+                    '<span style="padding-left:5px;padding-right:5px;border-radius:12.5px;border:dotted 2px orange;">$1</span>'
+                );
+            }
+
             return text;
         },
-
-        // lieu
         highlightLieu() {
             this.highlightLieuEnabled = !this.highlightLieuEnabled;
+        },
+        highlightAdjectif() {
+            this.highlightAdjectifEnabled = !this.highlightAdjectifEnabled;
         },
         getMatches(content) {
             if (!content) return [];
