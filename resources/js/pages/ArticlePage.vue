@@ -34,28 +34,67 @@
                         />
                     </h5>
                 </section>
-                <p v-if="!isSwitched">
-                    <span
-                        v-for="(match, index) in getMatches(article.content)"
-                        :key="index"
-                    >
+                <div
+                    id="div-content-section"
+                    style="
+                        display: flex;
+                        justify-content: space-evenly;
+                        border: solid 2px #262626;
+                    "
+                >
+                    <img
+                        @click="changeLanguageContent()"
+                        src="../../images/exercises/translate.png"
+                        width="20px"
+                        alt=""
+                    />
+                    <button @click="highlightPropositions">
+                        mettre en couleur les prépositions
+                    </button>
+                </div>
+                <section>
+                    <p v-if="!isSwitchedContent">
                         <span
-                            v-if="match.type === 'number'"
-                            class="clickable-number"
-                            @click="handleClick(match.id)"
+                            v-for="(match, index) in getMatches(
+                                article.content
+                            )"
+                            :key="index"
                         >
-                            {{ match.text }}
-                        </span>
+                            <span
+                                v-if="match.type === 'number'"
+                                class="clickable-number"
+                                @click="handleClick(match.id)"
+                            >
+                                {{ match.text }}
+                            </span>
 
-                        <span v-else>{{ match.text }}</span>
-                    </span>
-                </p>
-                <p v-else id="content-french">{{ article.content_french }}</p>
+                            <span v-else>
+                                <span
+                                    v-html="
+                                        highlightPrepositionWords(match.text)
+                                    "
+                                ></span>
+                            </span>
+                        </span>
+                    </p>
+
+                    <p v-else id="content-french">
+                        {{ article.content_french }}
+                    </p>
+                </section>
             </div>
         </section>
 
         <section class="div-translation" v-if="showTranslation">
-            <button @click="close">x</button>
+            <div style="display: flex; justify-content: end">
+                <button class="close" @click="close">
+                    <img
+                        src="../../images/exercises/close.png"
+                        width="21px"
+                        alt=""
+                    />
+                </button>
+            </div>
             <p>
                 <span style="color: green">{{ traductionArabic }}</span>
                 [<span style="color: orange">{{ transcriptionArabic }}</span
@@ -81,6 +120,8 @@ export default {
             transcriptionArabic: "",
             currentId: null,
             isSwitched: false,
+            isSwitchedContent: false,
+            highlightPropositionsEnabled: false,
         };
     },
     mounted() {
@@ -89,6 +130,9 @@ export default {
     methods: {
         changeLanguage() {
             this.isSwitched = !this.isSwitched;
+        },
+        changeLanguageContent() {
+            this.isSwitchedContent = !this.isSwitchedContent;
         },
         getArticle() {
             const id = this.$route.params.article_id;
@@ -101,6 +145,19 @@ export default {
                 .catch((error) => {
                     console.log("erreur : ", error);
                 });
+        },
+        highlightPropositions() {
+            this.highlightPropositionsEnabled =
+                !this.highlightPropositionsEnabled;
+        },
+        highlightPrepositionWords(text) {
+            if (this.highlightPropositionsEnabled) {
+                return text.replace(
+                    /<pp>(.*?)<\/pp>/g,
+                    '<span style="color: red">$1</span>'
+                );
+            }
+            return text;
         },
         getMatches(content) {
             if (!content) return [];
@@ -228,5 +285,10 @@ h5 {
 #content-french {
     font-size: 30px;
     text-align: left;
+}
+.close {
+    background-color: transparent;
+    border: none;
+    padding: 10px;
 }
 </style>
