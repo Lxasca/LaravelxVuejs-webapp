@@ -75,8 +75,14 @@
                                     align-items: center;
                                     margin-left: 25px;
                                 "
+                                @click="showHelp"
                             >
-                                Afficher / Retirer les aides vocabulaires
+                                <span v-if="isShowHelp">
+                                    Retirer les aides vocabulaires</span
+                                >
+                                <span v-else
+                                    >Afficher les aides vocabulaires</span
+                                >
                             </button>
                         </section>
 
@@ -126,7 +132,7 @@
                                         : {}
                                 "
                             >
-                                Adjectifs et leur noom
+                                Adjectifs et leur nom
                             </button>
                         </section>
                     </div>
@@ -150,6 +156,7 @@
                                     width="30px"
                                     alt=""
                                     style="transform: rotate(0deg)"
+                                    v-if="isShowHelp"
                                 />
 
                                 <!--{{ match.text }}-->
@@ -203,6 +210,7 @@ export default {
             highlightLieuEnabled: false,
             highlightAdjectifEnabled: false,
             dropdownIsShow: false,
+            isShowHelp: false,
         };
     },
     mounted() {
@@ -309,6 +317,9 @@ export default {
         },
         showDropdown() {
             this.dropdownIsShow = !this.dropdownIsShow;
+        },
+        showHelp() {
+            this.isShowHelp = !this.isShowHelp;
         },
     },
 };
