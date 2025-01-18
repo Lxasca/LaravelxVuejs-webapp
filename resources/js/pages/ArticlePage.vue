@@ -94,17 +94,16 @@
             <div style="display: flex; justify-content: end">
                 <button class="close" @click="close">
                     <img
-                        src="../../images/exercises/close.png"
-                        width="21px"
+                        src="../../images/exercises/close-red.png"
+                        width="25px"
                         alt=""
                     />
                 </button>
             </div>
-            <p>
-                <span style="color: green">{{ traductionArabic }}</span>
-                [<span style="color: orange">{{ transcriptionArabic }}</span
-                >] se traduit par
-                <span style="color: blue">{{ traductionFrancais }}</span
+            <p style="margin-top: 0px">
+                <span>{{ traductionArabic }}</span>
+                [<span>{{ transcriptionArabic }}</span
+                >] se traduit par <span>{{ traductionFrancais }}</span
                 >.
             </p>
         </section>
@@ -267,11 +266,12 @@ export default {
     width: 76%;
 
     position: fixed;
-    top: 12.5%;
+    top: 12%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    background-color: white;
+    background-color: #262626;
+    color: #fbfbfb;
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
     border-radius: 12.5px;
