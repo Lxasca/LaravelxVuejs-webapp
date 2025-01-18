@@ -11,7 +11,7 @@
             <div>
                 <section id="div-content-section">
                     <section style="text-align: left; font-size: 20px">
-                        <button id="button-createdAt">
+                        <button class="button-createdAt">
                             {{
                                 new Date(article.created_at).toLocaleDateString(
                                     "fr-FR"
@@ -34,31 +34,104 @@
                         />
                     </h5>
                 </section>
-                <div
-                    id="div-content-section"
-                    style="
-                        display: flex;
-                        justify-content: space-evenly;
-                        border: solid 2px #262626;
-                    "
-                >
-                    <img
-                        @click="changeLanguageContent()"
-                        src="../../images/exercises/translate.png"
-                        width="20px"
-                        alt=""
-                    />
-                    <button @click="highlightPropositions">
-                        mettre en couleur les prépositions
-                    </button>
-                    <button @click="highlightLieu">
-                        mettre en couleur les lieux
-                    </button>
-                    <button @click="highlightAdjectif">
-                        mettre en couleur les adjectifs et le nom auquels ils se
-                        réfèrent
-                    </button>
+
+                <div id="encadrement">
+                    <!-- -->
+                    <div id="div-content-section-false-1">
+                        <section style="display: flex; align-items: center">
+                            <button
+                                class="button-createdAt"
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    background-color: #fbfbfb;
+                                    color: #262626;
+                                    border: none;
+                                "
+                                @click="showDropdown"
+                            >
+                                Colorier les ...
+
+                                <img
+                                    src="../../images/exercises/right.png"
+                                    width="20px"
+                                    alt=""
+                                    :style="
+                                        dropdownIsShow
+                                            ? {
+                                                  transform: 'rotate(90deg)',
+                                              }
+                                            : { transform: 'rotate(0deg)' }
+                                    "
+                                />
+                            </button>
+
+                            <button
+                                class="button-createdAt"
+                                style="
+                                    background-color: #fc5134;
+                                    border: solid 1px #fc5134;
+                                    display: flex;
+                                    align-items: center;
+                                    margin-left: 25px;
+                                "
+                            >
+                                Afficher / Retirer les aides vocabulaires
+                            </button>
+                        </section>
+
+                        <img
+                            @click="changeLanguageContent()"
+                            src="../../images/exercises/translate.png"
+                            width="20px"
+                            alt=""
+                        />
+                    </div>
+                    <div id="div-content-section-false-2">
+                        <section v-if="dropdownIsShow" class="dropdown">
+                            <button
+                                class="button-createdAt-false"
+                                @click="highlightPropositions"
+                                :style="
+                                    highlightPropositionsEnabled
+                                        ? {
+                                              color: '#fc5134',
+                                          }
+                                        : {}
+                                "
+                            >
+                                Prépositions
+                            </button>
+                            <button
+                                class="button-createdAt-false"
+                                @click="highlightLieu"
+                                :style="
+                                    highlightLieuEnabled
+                                        ? {
+                                              color: '#fc5134',
+                                          }
+                                        : {}
+                                "
+                            >
+                                Lieux
+                            </button>
+                            <button
+                                class="button-createdAt-false"
+                                @click="highlightAdjectif"
+                                :style="
+                                    highlightAdjectifEnabled
+                                        ? {
+                                              color: '#fc5134',
+                                          }
+                                        : {}
+                                "
+                            >
+                                Adjectifs et leur noom
+                            </button>
+                        </section>
+                    </div>
                 </div>
+
                 <section>
                     <p v-if="!isSwitchedContent">
                         <span
@@ -72,7 +145,14 @@
                                 class="clickable-number"
                                 @click="handleClick(match.id)"
                             >
-                                {{ match.text }}
+                                <img
+                                    src="../../images/exercises/interrogation.png"
+                                    width="30px"
+                                    alt=""
+                                    style="transform: rotate(0deg)"
+                                />
+
+                                <!--{{ match.text }}-->
                             </span>
 
                             <span v-else>
@@ -91,19 +171,13 @@
         </section>
 
         <section class="div-translation" v-if="showTranslation">
-            <div style="display: flex; justify-content: end">
-                <button class="close" @click="close">
-                    <img
-                        src="../../images/exercises/close-red.png"
-                        width="25px"
-                        alt=""
-                    />
-                </button>
-            </div>
-            <p style="margin-top: 0px">
+            <p style="margin-top: 35px">
                 <span>{{ traductionArabic }}</span>
-                [<span>{{ transcriptionArabic }}</span
-                >] se traduit par <span>{{ traductionFrancais }}</span
+                [<span style="color: #fc5134">{{ transcriptionArabic }}</span
+                >] se traduit par
+                <span style="font-weight: bold; color: #fc5134">{{
+                    traductionFrancais
+                }}</span
                 >.
             </p>
         </section>
@@ -128,6 +202,7 @@ export default {
             highlightPropositionsEnabled: false,
             highlightLieuEnabled: false,
             highlightAdjectifEnabled: false,
+            dropdownIsShow: false,
         };
     },
     mounted() {
@@ -160,26 +235,26 @@ export default {
             if (this.highlightPropositionsEnabled) {
                 text = text.replace(
                     /<pp>(.*?)<\/pp>/g,
-                    '<span style="color: red">$1</span>'
+                    '<span style="color: #fc5134">$1</span>'
                 );
             }
 
             if (this.highlightLieuEnabled) {
                 text = text.replace(
                     /<lieu>(.*?)<\/lieu>/g,
-                    '<span style="color: blue">$1</span>'
+                    '<span style="background-color: #fc5134;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;color:#fbfbfb;">$1</span>'
                 );
             }
 
             if (this.highlightAdjectifEnabled) {
                 text = text.replace(
                     /<adj>(.*?)<\/adj>/g,
-                    '<span style="color: orange;">$1</span>'
+                    '<span style="padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:dotted 2px #fc5134;">$1</span>'
                 );
 
                 text = text.replace(
                     /<adj-nom>(.*?)<\/adj-nom>/g,
-                    '<span style="padding-left:5px;padding-right:5px;border-radius:12.5px;border:dotted 2px orange;">$1</span>'
+                    '<span style="padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:solid 2px #fc5134;">$1</span>'
                 );
             }
 
@@ -232,8 +307,8 @@ export default {
                 this.showTranslation = true;
             });
         },
-        close() {
-            this.showTranslation = false;
+        showDropdown() {
+            this.dropdownIsShow = !this.dropdownIsShow;
         },
     },
 };
@@ -247,7 +322,7 @@ export default {
 
     position: relative;
     top: -20px;
-    right: -5px;
+    right: -2px;
     font-size: 15px;
 }
 
@@ -264,9 +339,10 @@ export default {
     text-align: center;
     font-size: 25px;
     width: 76%;
+    height: 14.5%;
 
     position: fixed;
-    top: 12%;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -50%);
 
@@ -276,11 +352,22 @@ export default {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
     border-radius: 12.5px;
 }
+#encadrement {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    border-radius: 12.5px;
+    padding-left: 27px;
+    padding-right: 21px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+
+    margin-bottom: 45px;
+}
 #div-content-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    /**border: solid 2px #262626;**/
 
     border-radius: 12.5px;
     padding-left: 25px;
@@ -289,7 +376,17 @@ export default {
 
     margin-bottom: 45px;
 }
-#button-createdAt {
+#div-content-section-false-1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#div-content-section-false-2 {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.button-createdAt {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 25px;
@@ -299,6 +396,28 @@ export default {
     color: #fbfbfb;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
     letter-spacing: 1px;
+
+    cursor: pointer;
+}
+.button-createdAt-false {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 12.5px;
+    background-color: #fbfbfb;
+    color: #262626;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    letter-spacing: 1px;
+    border: solid 1px #fbfbfb;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    margin-right: 15px;
+    margin-top: 20px;
 }
 img {
     margin-left: 15px;
@@ -319,9 +438,8 @@ h5 {
     font-size: 30px;
     text-align: left;
 }
-.close {
-    background-color: transparent;
-    border: none;
-    padding: 10px;
+.dropdown {
+    display: flex;
+    justify-content: start;
 }
 </style>
