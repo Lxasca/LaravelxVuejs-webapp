@@ -291,7 +291,9 @@ export default {
             while ((match = regex.exec(content)) !== null) {
                 if (match.index > lastIndex) {
                     matches.push({
-                        text: content.slice(lastIndex, match.index),
+                        text: content
+                            .slice(lastIndex, match.index)
+                            .replace(/<br>/g, ".<br>"),
                     });
                 }
                 matches.push({ text: match[1], type: "number", id: match[1] });
