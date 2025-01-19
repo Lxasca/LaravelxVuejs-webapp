@@ -78,11 +78,17 @@
                                 @click="showHelp"
                             >
                                 <span v-if="isShowHelp">
-                                    Retirer les aides vocabulaires</span
-                                >
+                                    Retirer les aides vocabulaires
+                                </span>
                                 <span v-else
                                     >Afficher les aides vocabulaires</span
                                 >
+                                <img
+                                    src="../../images/exercises/interrogation.png"
+                                    width="20px"
+                                    alt=""
+                                    style="transform: rotate(0deg)"
+                                />
                             </button>
                         </section>
 
