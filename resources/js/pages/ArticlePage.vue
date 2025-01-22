@@ -145,8 +145,9 @@
                 </div>
 
                 <section>
-                    <p v-if="!isSwitchedContent">
+                    <p v-if="!isSwitchedContent" style="direction: rtl">
                         <span
+                            :style="{ unicodeBidi: 'plaintext' }"
                             v-for="(match, index) in getMatches(
                                 article.content
                             )"
@@ -283,17 +284,16 @@ export default {
         getMatches(content) {
             if (!content) return [];
 
-            const regex = /\[(\d+)\]/g;
+            const regex = /<(\d+)>/g;
             let match;
             const matches = [];
             let lastIndex = 0;
 
             while ((match = regex.exec(content)) !== null) {
                 if (match.index > lastIndex) {
+                    console.log("lea");
                     matches.push({
-                        text: content
-                            .slice(lastIndex, match.index)
-                            .replace(/<br>/g, ".<br>"),
+                        text: content.slice(lastIndex, match.index),
                     });
                 }
                 matches.push({ text: match[1], type: "number", id: match[1] });
