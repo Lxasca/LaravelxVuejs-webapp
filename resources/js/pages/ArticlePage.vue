@@ -145,7 +145,8 @@
                 </div>
 
                 <section>
-                    <p v-if="!isSwitchedContent" style="direction: rtl">
+                    <!-- content 1 -->
+                    <p style="direction: rtl">
                         <span
                             :style="{ unicodeBidi: 'plaintext' }"
                             v-for="(match, index) in getMatches(
@@ -176,9 +177,44 @@
                             </span>
                         </span>
                     </p>
-
-                    <p v-else id="content-french">
+                    <p v-if="isSwitchedContent" id="content-french">
                         {{ article.content_french }}
+                    </p>
+
+                    <!-- content 2 -->
+                    <p style="direction: rtl">
+                        <span
+                            :style="{ unicodeBidi: 'plaintext' }"
+                            v-for="(match, index) in getMatches(
+                                article.content_2
+                            )"
+                            :key="index"
+                        >
+                            <span
+                                v-if="match.type === 'number'"
+                                class="clickable-number"
+                                @click="handleClick(match.id)"
+                            >
+                                <img
+                                    src="../../images/exercises/interrogation.png"
+                                    width="30px"
+                                    alt=""
+                                    style="transform: rotate(0deg)"
+                                    v-if="isShowHelp"
+                                />
+
+                                <!--{{ match.text }}-->
+                            </span>
+
+                            <span v-else>
+                                <span
+                                    v-html="highlightWords(match.text)"
+                                ></span>
+                            </span>
+                        </span>
+                    </p>
+                    <p v-if="isSwitchedContent" id="content-french">
+                        {{ article.content_2_french }}
                     </p>
                 </section>
             </div>
@@ -291,7 +327,6 @@ export default {
 
             while ((match = regex.exec(content)) !== null) {
                 if (match.index > lastIndex) {
-                    console.log("lea");
                     matches.push({
                         text: content.slice(lastIndex, match.index),
                     });
