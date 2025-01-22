@@ -178,9 +178,19 @@
                         </span>
                     </p>
                     <p v-if="isSwitchedContent" id="content-french">
-                        {{ article.content_french }}
+                        <span
+                            v-for="(match, index) in getMatches(
+                                article.content_french
+                            )"
+                            :key="index"
+                        >
+                            <span>
+                                <span
+                                    v-html="highlightWords(match.text)"
+                                ></span>
+                            </span>
+                        </span>
                     </p>
-
                     <!-- content 2 -->
                     <p style="direction: rtl">
                         <span
@@ -214,7 +224,18 @@
                         </span>
                     </p>
                     <p v-if="isSwitchedContent" id="content-french">
-                        {{ article.content_2_french }}
+                        <span
+                            v-for="(match, index) in getMatches(
+                                article.content_2_french
+                            )"
+                            :key="index"
+                        >
+                            <span>
+                                <span
+                                    v-html="highlightWords(match.text)"
+                                ></span>
+                            </span>
+                        </span>
                     </p>
                 </section>
             </div>
@@ -489,8 +510,11 @@ h5 {
     font-size: 22.5px;
 }
 #content-french {
-    font-size: 30px;
+    font-size: 24px;
+    line-height: 45px;
     text-align: left;
+
+    padding-left: 15px;
 }
 .dropdown {
     display: flex;
