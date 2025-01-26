@@ -7,7 +7,13 @@
             padding-bottom: 0px;
         "
     >
-        <section class="div-content">
+        <section
+            class="div-content"
+            :style="{
+                fontSize: fontSize + 'px',
+                lineHeight: fontSize * 1.8 + 'px',
+            }"
+        >
             <div>
                 <section id="div-content-section">
                     <section style="text-align: left; font-size: 20px">
@@ -88,6 +94,31 @@
                                     width="20px"
                                     alt=""
                                     style="transform: rotate(0deg)"
+                                />
+                            </button>
+
+                            <button
+                                class="button-createdAt"
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    background-color: #fbfbfb;
+                                    color: #262626;
+                                    border: none;
+                                    margin-left: 25px;
+                                    font-size: 15px;
+                                "
+                            >
+                                Taille de la police
+                                <input
+                                    type="number"
+                                    v-model.number="fontSize"
+                                    min="40"
+                                    style="
+                                        color: #fc5134;
+                                        font-size: 15px;
+                                        width: 60px;
+                                    "
                                 />
                             </button>
                         </section>
@@ -262,6 +293,7 @@ export default {
     name: "ArticlePage",
     data() {
         return {
+            fontSize: 40,
             article: {},
             showTranslation: false,
             traductionArabic: "",
@@ -384,6 +416,7 @@ export default {
         },
         showHelp() {
             this.isShowHelp = !this.isShowHelp;
+            this.showTranslation = false;
         },
     },
 };
@@ -402,9 +435,6 @@ export default {
 }
 
 .div-content {
-    font-size: 45px;
-    line-height: 80px;
-
     text-align: right;
     padding: 25px;
     border-radius: 12.5px;
