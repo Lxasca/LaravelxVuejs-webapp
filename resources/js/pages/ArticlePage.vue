@@ -41,7 +41,7 @@
                     </h5>
                 </section>
 
-                <div id="encadrement">
+                <div id="encadrement" style="margin-top: -25px">
                     <!-- -->
                     <div id="div-content-section-false-1">
                         <section style="display: flex; align-items: center">
@@ -60,6 +60,7 @@
 
                                 <img
                                     src="../../images/exercises/right.png"
+                                    style="margin-left: 10px"
                                     width="20px"
                                     alt=""
                                     :style="
@@ -93,7 +94,10 @@
                                     src="../../images/exercises/interrogation.png"
                                     width="20px"
                                     alt=""
-                                    style="transform: rotate(0deg)"
+                                    style="
+                                        transform: rotate(0deg);
+                                        margin-left: 10px;
+                                    "
                                 />
                             </button>
 
@@ -128,6 +132,7 @@
                             src="../../images/exercises/translate.png"
                             width="20px"
                             alt=""
+                            style="cursor: pointer"
                         />
                     </div>
                     <div id="div-content-section-false-2">
@@ -346,19 +351,19 @@ export default {
             if (this.highlightLieuEnabled) {
                 text = text.replace(
                     /<lieu>(.*?)<\/lieu>/g,
-                    '<span style="background-color: #fc5134;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;color:#fbfbfb;">$1</span>'
+                    '<span style="padding:5px;background-color: #fc5134;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;color:#fbfbfb;">$1</span>'
                 );
             }
 
             if (this.highlightAdjectifEnabled) {
                 text = text.replace(
                     /<adj>(.*?)<\/adj>/g,
-                    '<span style="padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:dotted 2px #fc5134;">$1</span>'
+                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:dotted 2px #fc5134;">$1</span>'
                 );
 
                 text = text.replace(
                     /<adj-nom>(.*?)<\/adj-nom>/g,
-                    '<span style="padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:solid 2px #fc5134;">$1</span>'
+                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:solid 2px #fc5134;">$1</span>'
                 );
             }
 
@@ -422,7 +427,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .clickable-number {
     cursor: pointer;
     color: green;
@@ -455,10 +460,10 @@ export default {
     color: #fbfbfb;
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-    border-radius: 12.5px;
 }
 #encadrement {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+
     border-radius: 12.5px;
     padding-left: 27px;
     padding-right: 21px;
@@ -475,6 +480,7 @@ export default {
     /**border: solid 2px #262626;**/
 
     border-radius: 12.5px;
+
     padding-left: 25px;
     padding-right: 25px;
     height: 85px;
@@ -524,17 +530,19 @@ export default {
     margin-right: 15px;
     margin-top: 20px;
 }
-img {
-    margin-left: 15px;
-    transform: rotate(180deg);
-    cursor: pointer;
-}
+
 h5 {
     font-weight: bold;
     display: flex;
     align-items: center;
     padding: 0;
     font-size: 30px;
+
+    img {
+        margin-left: 15px;
+        transform: rotate(180deg);
+        cursor: pointer;
+    }
 }
 #title-french {
     font-size: 22.5px;
