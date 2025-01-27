@@ -77,26 +77,13 @@
                                 />
                             </button>
 
-                            <button
-                                class="button-createdAt d-flex-align"
-                                style="
-                                    background-color: #fbfbfb;
-                                    color: #262626;
-                                    border: none;
-                                    margin-left: 25px;
-                                    font-size: 15px;
-                                "
-                            >
-                                Taille de la police
+                            <button class="button-createdAt d-flex-align btn-3">
+                                <span> Taille de la police </span>
                                 <input
                                     type="number"
                                     v-model.number="fontSize"
                                     min="40"
-                                    style="
-                                        color: #fc5134;
-                                        font-size: 15px;
-                                        width: 60px;
-                                    "
+                                    class="input-policy"
                                 />
                             </button>
                         </section>
@@ -106,13 +93,27 @@
                             src="../../images/exercises/translate.png"
                             width="20px"
                             alt=""
-                            style="cursor: pointer"
+                            class="pointer"
                         />
                     </div>
-                    <div id="div-content-section-false-2">
-                        <section v-if="dropdownIsShow" class="dropdown">
+                    <div class="d-flex-start">
+                        <section v-if="dropdownIsShow" class="d-flex-start">
                             <button
-                                class="button-createdAt-false"
+                                v-for="(item, index) in buttonConfig"
+                                :key="index"
+                                class="button-selection-words"
+                                @click="item.action"
+                                :style="
+                                    item.enabled ? { color: '#fc5134' } : {}
+                                "
+                            >
+                                {{ item.label }}
+                            </button>
+
+                            <!-- -->
+
+                            <button
+                                class="button-selection-words"
                                 @click="highlightPropositions"
                                 :style="
                                     highlightPropositionsEnabled
@@ -125,7 +126,7 @@
                                 Prépositions
                             </button>
                             <button
-                                class="button-createdAt-false"
+                                class="button-selection-words"
                                 @click="highlightLieu"
                                 :style="
                                     highlightLieuEnabled
@@ -138,7 +139,7 @@
                                 Lieux
                             </button>
                             <button
-                                class="button-createdAt-false"
+                                class="button-selection-words"
                                 @click="highlightAdjectif"
                                 :style="
                                     highlightAdjectifEnabled
@@ -153,6 +154,8 @@
                         </section>
                     </div>
                 </div>
+
+                <!-- article -->
 
                 <section>
                     <!-- content 1 -->
@@ -284,6 +287,23 @@ export default {
             highlightAdjectifEnabled: false,
             dropdownIsShow: false,
             isShowHelp: false,
+            buttonConfig: [
+                {
+                    label: "Prépositions",
+                    action: () => this.highlightPropositions(),
+                    enabled: false,
+                },
+                {
+                    label: "Lieux",
+                    action: () => this.highlightLieu(),
+                    enabled: false,
+                },
+                {
+                    label: "Adjectifs et leur nom",
+                    action: () => this.highlightAdjectif(),
+                    enabled: false,
+                },
+            ],
         };
     },
     mounted() {
@@ -438,8 +458,43 @@ export default {
     border: solid 1px #fc5134;
     margin-left: 25px;
 }
+.btn-3 {
+    background-color: #fbfbfb;
+    color: #262626;
+    border: none;
+    margin-left: 25px;
+    font-size: 15px;
+}
 .rotate-0 {
     transform: rotate(0deg);
+}
+.input-policy {
+    color: #fc5134;
+    font-size: 15px;
+    width: 60px;
+}
+.pointer {
+    cursor: pointer;
+}
+.button-selection-words {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 12.5px;
+    background-color: #fbfbfb;
+    color: #262626;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    letter-spacing: 1px;
+    border: solid 1px #fbfbfb;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    margin-right: 15px;
+    margin-top: 20px;
 }
 /********/
 .clickable-number {
@@ -468,11 +523,6 @@ export default {
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 }
-#div-content-section-false-2 {
-    display: flex;
-    justify-content: start;
-    align-items: center;
-}
 .button-createdAt {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -483,26 +533,6 @@ export default {
     letter-spacing: 1px;
 
     cursor: pointer;
-}
-.button-createdAt-false {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    border-radius: 12.5px;
-    background-color: #fbfbfb;
-    color: #262626;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-    letter-spacing: 1px;
-    border: solid 1px #fbfbfb;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-
-    margin-right: 15px;
-    margin-top: 20px;
 }
 
 h5 {
@@ -527,9 +557,5 @@ h5 {
     text-align: left;
 
     padding-left: 15px;
-}
-.dropdown {
-    display: flex;
-    justify-content: start;
 }
 </style>
