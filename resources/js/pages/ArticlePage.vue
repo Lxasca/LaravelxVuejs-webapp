@@ -1,23 +1,16 @@
 <template>
-    <div
-        style="
-            padding-left: 150px;
-            padding-right: 150px;
-            padding-top: 0px;
-            padding-bottom: 0px;
-        "
-    >
+    <div id="article-page">
         <section
-            class="div-content"
             :style="{
                 fontSize: fontSize + 'px',
-                lineHeight: fontSize * 1.8 + 'px',
+                lineHeight: fontSize * 2.2 + 'px',
             }"
         >
             <div>
-                <section id="div-content-section">
-                    <section style="text-align: left; font-size: 20px">
-                        <button class="button-createdAt">
+                <!-- La date à gauche, le titre et sa traduction à droite -->
+                <div id="head-article">
+                    <section>
+                        <button class="button-createdAt btn-0">
                             {{
                                 new Date(article.created_at).toLocaleDateString(
                                     "fr-FR"
@@ -26,43 +19,37 @@
                         </button>
                     </section>
 
-                    <h5>
-                        <span v-if="!isSwitched">{{ article.title }}</span>
-                        <span id="title-french" v-else>
-                            {{ article.title_french }}
-                        </span>
+                    <section>
+                        <h5>
+                            <span v-if="!isSwitched">{{ article.title }}</span>
+                            <span id="title-french" v-else>
+                                {{ article.title_french }}
+                            </span>
 
-                        <img
-                            @click="changeLanguage()"
-                            src="../../images/exercises/translate.png"
-                            width="20px"
-                            alt=""
-                        />
-                    </h5>
-                </section>
+                            <img
+                                @click="changeLanguage()"
+                                src="../../images/exercises/translate.png"
+                                width="20px"
+                                alt=""
+                            />
+                        </h5>
+                    </section>
+                </div>
 
-                <div id="encadrement" style="margin-top: -25px">
+                <!-- les actions possibles sur le contenu de l'article -->
+                <div id="actions-article">
                     <!-- -->
-                    <div id="div-content-section-false-1">
-                        <section style="display: flex; align-items: center">
+                    <div class="d-flex-between">
+                        <section class="d-flex-align">
                             <button
-                                class="button-createdAt"
-                                style="
-                                    display: flex;
-                                    align-items: center;
-                                    background-color: #fbfbfb;
-                                    color: #262626;
-                                    border: none;
-                                "
+                                class="button-createdAt d-flex-align btn-1"
                                 @click="showDropdown"
                             >
                                 Colorier les ...
 
                                 <img
                                     src="../../images/exercises/right.png"
-                                    style="margin-left: 10px"
-                                    width="20px"
-                                    alt=""
+                                    class="ml-10"
                                     :style="
                                         dropdownIsShow
                                             ? {
@@ -74,14 +61,7 @@
                             </button>
 
                             <button
-                                class="button-createdAt"
-                                style="
-                                    background-color: #fc5134;
-                                    border: solid 1px #fc5134;
-                                    display: flex;
-                                    align-items: center;
-                                    margin-left: 25px;
-                                "
+                                class="button-createdAt d-flex-align btn-2"
                                 @click="showHelp"
                             >
                                 <span v-if="isShowHelp">
@@ -92,20 +72,14 @@
                                 >
                                 <img
                                     src="../../images/exercises/interrogation.png"
-                                    width="20px"
                                     alt=""
-                                    style="
-                                        transform: rotate(0deg);
-                                        margin-left: 10px;
-                                    "
+                                    class="ml-10 rotate-0"
                                 />
                             </button>
 
                             <button
-                                class="button-createdAt"
+                                class="button-createdAt d-flex-align"
                                 style="
-                                    display: flex;
-                                    align-items: center;
                                     background-color: #fbfbfb;
                                     color: #262626;
                                     border: none;
@@ -198,8 +172,7 @@
                                 <img
                                     src="../../images/exercises/interrogation.png"
                                     width="30px"
-                                    alt=""
-                                    style="transform: rotate(0deg)"
+                                    class="rotate-0"
                                     v-if="isShowHelp"
                                 />
 
@@ -244,8 +217,7 @@
                                 <img
                                     src="../../images/exercises/interrogation.png"
                                     width="30px"
-                                    alt=""
-                                    style="transform: rotate(0deg)"
+                                    class="rotate-0"
                                     v-if="isShowHelp"
                                 />
 
@@ -428,6 +400,48 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#article-page {
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+#head-article {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 25px;
+    margin-right: 25px;
+
+    font-size: 20px;
+}
+#actions-article {
+    border-radius: 12.5px;
+    margin: 25px;
+
+    margin-top: -15px;
+}
+.btn-0 {
+    background-color: #262626;
+    color: #fbfbfb;
+    border: none;
+}
+.btn-1 {
+    background-color: #fbfbfb;
+    color: #262626;
+    border: none;
+}
+.btn-2 {
+    background-color: #fc5134;
+    color: #fbfbfb;
+    border: solid 1px #fc5134;
+    margin-left: 25px;
+}
+.rotate-0 {
+    transform: rotate(0deg);
+}
+/********/
 .clickable-number {
     cursor: pointer;
     color: green;
@@ -438,13 +452,6 @@ export default {
     right: -2px;
     font-size: 15px;
 }
-
-.div-content {
-    text-align: right;
-    padding: 25px;
-    border-radius: 12.5px;
-}
-
 .div-translation {
     text-align: center;
     font-size: 25px;
@@ -461,37 +468,6 @@ export default {
 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
 }
-#encadrement {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-
-    border-radius: 12.5px;
-    padding-left: 27px;
-    padding-right: 21px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-
-    margin-bottom: 45px;
-}
-#div-content-section {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-    /**border: solid 2px #262626;**/
-
-    border-radius: 12.5px;
-
-    padding-left: 25px;
-    padding-right: 25px;
-    height: 85px;
-
-    margin-bottom: 45px;
-}
-#div-content-section-false-1 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 #div-content-section-false-2 {
     display: flex;
     justify-content: start;
@@ -503,8 +479,6 @@ export default {
     padding-left: 25px;
     padding-right: 25px;
     border-radius: 12.5px;
-    background-color: #262626;
-    color: #fbfbfb;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
     letter-spacing: 1px;
 

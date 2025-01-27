@@ -29,6 +29,15 @@ export default {
 .d-flex-between {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+.d-flex-align {
+    display: flex;
+    align-items: center;
+}
+.ml-10 {
+    margin-left: 10px;
+    width: 20px;
 }
 
 input {
