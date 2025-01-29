@@ -82,7 +82,8 @@
                                 <input
                                     type="number"
                                     v-model.number="fontSize"
-                                    min="40"
+                                    min="38"
+                                    max="60"
                                     class="input-policy"
                                 />
                             </button>
@@ -114,96 +115,52 @@
                 </div>
 
                 <!-- article -->
-
                 <section class="section-article">
-                    <!-- content 1 -->
-                    <p class="direction-text-right">
-                        <span
-                            :style="{ unicodeBidi: 'plaintext' }"
-                            v-for="(match, index) in getMatches(
-                                article.content
-                            )"
-                            :key="index"
-                        >
+                    <div v-for="i in numberOfContent" :key="i">
+                        <p class="direction-text-right">
                             <span
-                                v-if="match.type === 'number'"
-                                class="clickable-number"
-                                @click="handleClick(match.id)"
+                                :style="{ unicodeBidi: 'plaintext' }"
+                                v-for="(match, index) in getMatches(
+                                    getContentByIndex(i)
+                                )"
+                                :key="index"
                             >
-                                <img
-                                    src="../../images/exercises/interrogation.png"
-                                    width="30px"
-                                    class="rotate-0"
-                                    v-if="isShowHelp"
-                                />
-                            </span>
+                                <span
+                                    v-if="match.type === 'number'"
+                                    class="clickable-number"
+                                    @click="handleClick(match.id)"
+                                >
+                                    <img
+                                        src="../../images/exercises/interrogation.png"
+                                        width="30px"
+                                        class="rotate-0"
+                                        v-if="isShowHelp"
+                                    />
+                                </span>
 
-                            <span v-else>
-                                <span
-                                    v-html="highlightWords(match.text)"
-                                ></span>
+                                <span v-else>
+                                    <span
+                                        v-html="highlightWords(match.text)"
+                                    ></span>
+                                </span>
                             </span>
-                        </span>
-                    </p>
-                    <p v-if="isSwitchedContent" class="content-translate">
-                        <span
-                            v-for="(match, index) in getMatches(
-                                article.content_french
-                            )"
-                            :key="index"
-                        >
-                            <span>
-                                <span
-                                    v-html="highlightWords(match.text)"
-                                ></span>
-                            </span>
-                        </span>
-                    </p>
-                    <!-- content 2 -->
-                    <p class="direction-text-right">
-                        <span
-                            :style="{ unicodeBidi: 'plaintext' }"
-                            v-for="(match, index) in getMatches(
-                                article.content_2
-                            )"
-                            :key="index"
-                        >
+                        </p>
+
+                        <p v-if="isSwitchedContent" class="content-translate">
                             <span
-                                v-if="match.type === 'number'"
-                                class="clickable-number"
-                                @click="handleClick(match.id)"
+                                v-for="(match, index) in getMatches(
+                                    getContentByIndex(i, true)
+                                )"
+                                :key="index"
                             >
-                                <img
-                                    src="../../images/exercises/interrogation.png"
-                                    width="30px"
-                                    class="rotate-0"
-                                    v-if="isShowHelp"
-                                />
-
-                                <!--{{ match.text }}-->
+                                <span>
+                                    <span
+                                        v-html="highlightWords(match.text)"
+                                    ></span>
+                                </span>
                             </span>
-
-                            <span v-else>
-                                <span
-                                    v-html="highlightWords(match.text)"
-                                ></span>
-                            </span>
-                        </span>
-                    </p>
-                    <p v-if="isSwitchedContent" class="content-translate">
-                        <span
-                            v-for="(match, index) in getMatches(
-                                article.content_2_french
-                            )"
-                            :key="index"
-                        >
-                            <span>
-                                <span
-                                    v-html="highlightWords(match.text)"
-                                ></span>
-                            </span>
-                        </span>
-                    </p>
+                        </p>
+                    </div>
                 </section>
             </div>
         </section>
@@ -227,7 +184,8 @@ export default {
     name: "ArticlePage",
     data() {
         return {
-            fontSize: 40,
+            numberOfContent: 2,
+            fontSize: 38,
             article: {},
             showTranslation: false,
             traductionArabic: "",
@@ -263,7 +221,24 @@ export default {
     mounted() {
         this.getArticle();
     },
+    computed: {
+        numberOfContent() {
+            return Object.keys(this.article).filter(
+                (key) => key.startsWith("content_") || key === "content"
+            ).length;
+        },
+    },
     methods: {
+        getContentByIndex(i, isFrench = false) {
+            if (i === 1) {
+                return isFrench
+                    ? this.article.content_french
+                    : this.article.content;
+            }
+            return isFrench
+                ? this.article[`content_${i}_french`]
+                : this.article[`content_${i}`];
+        },
         changeLanguage() {
             this.isSwitched = !this.isSwitched;
         },
@@ -454,7 +429,7 @@ export default {
     direction: rtl;
 }
 .section-article {
-    padding-left: 35px;
+    padding-left: 40px;
 }
 /********/
 .clickable-number {
