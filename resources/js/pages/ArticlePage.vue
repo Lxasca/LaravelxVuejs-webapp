@@ -103,53 +103,11 @@
                                 :key="index"
                                 class="button-selection-words"
                                 @click="item.action"
-                                :style="
-                                    item.enabled ? { color: '#fc5134' } : {}
-                                "
+                                :style="{
+                                    color: item.enabled() ? '#fc5134' : '',
+                                }"
                             >
                                 {{ item.label }}
-                            </button>
-
-                            <!-- -->
-
-                            <button
-                                class="button-selection-words"
-                                @click="highlightPropositions"
-                                :style="
-                                    highlightPropositionsEnabled
-                                        ? {
-                                              color: '#fc5134',
-                                          }
-                                        : {}
-                                "
-                            >
-                                Prépositions
-                            </button>
-                            <button
-                                class="button-selection-words"
-                                @click="highlightLieu"
-                                :style="
-                                    highlightLieuEnabled
-                                        ? {
-                                              color: '#fc5134',
-                                          }
-                                        : {}
-                                "
-                            >
-                                Lieux
-                            </button>
-                            <button
-                                class="button-selection-words"
-                                @click="highlightAdjectif"
-                                :style="
-                                    highlightAdjectifEnabled
-                                        ? {
-                                              color: '#fc5134',
-                                          }
-                                        : {}
-                                "
-                            >
-                                Adjectifs et leur nom
                             </button>
                         </section>
                     </div>
@@ -157,7 +115,7 @@
 
                 <!-- article -->
 
-                <section style="padding-left: 35px">
+                <section class="section-article">
                     <!-- content 1 -->
                     <p class="direction-text-right">
                         <span
@@ -287,17 +245,17 @@ export default {
                 {
                     label: "Prépositions",
                     action: () => this.highlightPropositions(),
-                    enabled: false,
+                    enabled: () => this.highlightPropositionsEnabled,
                 },
                 {
                     label: "Lieux",
                     action: () => this.highlightLieu(),
-                    enabled: false,
+                    enabled: () => this.highlightLieuEnabled,
                 },
                 {
                     label: "Adjectifs et leur nom",
                     action: () => this.highlightAdjectif(),
-                    enabled: false,
+                    enabled: () => this.highlightAdjectifEnabled,
                 },
             ],
         };
@@ -494,6 +452,9 @@ export default {
 }
 .direction-text-right {
     direction: rtl;
+}
+.section-article {
+    padding-left: 35px;
 }
 /********/
 .clickable-number {
