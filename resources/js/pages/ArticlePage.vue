@@ -157,9 +157,9 @@
 
                 <!-- article -->
 
-                <section>
+                <section style="padding-left: 35px">
                     <!-- content 1 -->
-                    <p style="direction: rtl">
+                    <p class="direction-text-right">
                         <span
                             :style="{ unicodeBidi: 'plaintext' }"
                             v-for="(match, index) in getMatches(
@@ -178,8 +178,6 @@
                                     class="rotate-0"
                                     v-if="isShowHelp"
                                 />
-
-                                <!--{{ match.text }}-->
                             </span>
 
                             <span v-else>
@@ -189,7 +187,7 @@
                             </span>
                         </span>
                     </p>
-                    <p v-if="isSwitchedContent" id="content-french">
+                    <p v-if="isSwitchedContent" class="content-translate">
                         <span
                             v-for="(match, index) in getMatches(
                                 article.content_french
@@ -204,7 +202,7 @@
                         </span>
                     </p>
                     <!-- content 2 -->
-                    <p style="direction: rtl">
+                    <p class="direction-text-right">
                         <span
                             :style="{ unicodeBidi: 'plaintext' }"
                             v-for="(match, index) in getMatches(
@@ -234,7 +232,7 @@
                             </span>
                         </span>
                     </p>
-                    <p v-if="isSwitchedContent" id="content-french">
+                    <p v-if="isSwitchedContent" class="content-translate">
                         <span
                             v-for="(match, index) in getMatches(
                                 article.content_2_french
@@ -253,13 +251,11 @@
         </section>
 
         <section class="div-translation" v-if="showTranslation">
-            <p style="margin-top: 35px">
+            <p>
                 <span>{{ traductionArabic }}</span>
-                [<span style="color: #fc5134">{{ transcriptionArabic }}</span
+                [<span class="text-color-main">{{ transcriptionArabic }}</span
                 >] se traduit par
-                <span style="font-weight: bold; color: #fc5134">{{
-                    traductionFrancais
-                }}</span
+                <span class="text-color-main">{{ traductionFrancais }}</span
                 >.
             </p>
         </section>
@@ -496,6 +492,9 @@ export default {
     margin-right: 15px;
     margin-top: 20px;
 }
+.direction-text-right {
+    direction: rtl;
+}
 /********/
 .clickable-number {
     cursor: pointer;
@@ -510,8 +509,8 @@ export default {
 .div-translation {
     text-align: center;
     font-size: 25px;
-    width: 76%;
-    height: 14.5%;
+    width: 82.5%;
+    border-radius: 12.5px;
 
     position: fixed;
     top: 10%;
@@ -551,7 +550,7 @@ h5 {
 #title-french {
     font-size: 22.5px;
 }
-#content-french {
+.content-translate {
     font-size: 24px;
     line-height: 45px;
     text-align: left;

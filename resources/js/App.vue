@@ -73,6 +73,9 @@ input:focus {
 
     font-size: 22px;
 }
+.text-color-main {
+    color: #fc5134;
+}
 
 .choice {
     align-items: center;
