@@ -8,33 +8,7 @@
         >
             <div>
                 <!-- La date à gauche, le titre et sa traduction à droite -->
-                <div id="head-article">
-                    <section>
-                        <button class="button-createdAt btn-0">
-                            {{
-                                new Date(article.created_at).toLocaleDateString(
-                                    "fr-FR"
-                                )
-                            }}
-                        </button>
-                    </section>
-
-                    <section>
-                        <h5>
-                            <span v-if="!isSwitched">{{ article.title }}</span>
-                            <span id="title-french" v-else>
-                                {{ article.title_french }}
-                            </span>
-
-                            <img
-                                @click="changeLanguage()"
-                                src="../../images/exercises/translate.png"
-                                width="20px"
-                                alt=""
-                            />
-                        </h5>
-                    </section>
-                </div>
+                <head-article :article="article"></head-article>
 
                 <!-- les actions possibles sur le contenu de l'article -->
                 <div id="actions-article">
@@ -164,9 +138,11 @@
 
 <script>
 import axios from "axios";
+import HeadArticle from "../components/article/HeadArticle.vue";
 
 export default {
     name: "ArticlePage",
+    components: { HeadArticle },
     data() {
         return {
             numberOfContent: 2,
@@ -177,8 +153,7 @@ export default {
             traductionFrancais: "",
             transcriptionArabic: "",
             currentId: null,
-            isSwitched: false,
-            isSwitchedContent: false,
+            isSwitchedContent: true,
             highlightPropositionsEnabled: false,
             highlightLieuEnabled: false,
             highlightAdjectifEnabled: false,
@@ -223,9 +198,6 @@ export default {
             return isFrench
                 ? this.article[`content_${i}_french`]
                 : this.article[`content_${i}`];
-        },
-        changeLanguage() {
-            this.isSwitched = !this.isSwitched;
         },
         changeLanguageContent() {
             this.isSwitchedContent = !this.isSwitchedContent;
@@ -333,7 +305,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 #article-page {
     padding-left: 100px;
     padding-right: 100px;
@@ -355,11 +327,6 @@ export default {
     margin: 25px;
 
     margin-top: -15px;
-}
-.btn-0 {
-    background-color: #262626;
-    color: #fbfbfb;
-    border: none;
 }
 .btn-1 {
     background-color: #fbfbfb;
@@ -437,7 +404,7 @@ input[type="range"]::-webkit-slider-thumb {
     width: 16px;
     border-radius: 50%;
     background: var(--main-color);
-    margin-top: -4px;
+    margin-top: -5.5px;
 }
 
 input[type="range"]:focus {
@@ -448,7 +415,6 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
     background: #ccc;
 }
 
-/********/
 .clickable-number {
     cursor: pointer;
     color: green;
@@ -500,11 +466,8 @@ h5 {
         cursor: pointer;
     }
 }
-#title-french {
-    font-size: 22.5px;
-}
 .content-translate {
-    font-size: 24px;
+    font-size: 23px;
     line-height: 45px;
     text-align: left;
 
