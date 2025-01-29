@@ -11,67 +11,12 @@
                 <head-article :article="article"></head-article>
 
                 <!-- les actions possibles sur le contenu de l'article -->
-                <div id="actions-article">
-                    <!-- -->
-                    <div class="d-flex-between">
-                        <section class="d-flex-align">
-                            <button
-                                class="button-createdAt d-flex-align btn-1"
-                                @click="showDropdown"
-                            >
-                                Mettre en forme
-                            </button>
-
-                            <button
-                                class="button-createdAt d-flex-align btn-2"
-                                @click="showHelp"
-                            >
-                                <span v-if="isShowHelp">
-                                    Retirer les aides vocabulaires
-                                </span>
-                                <span v-else
-                                    >Afficher les aides vocabulaires</span
-                                >
-                            </button>
-
-                            <button class="button-createdAt d-flex-align btn-3">
-                                <span> Taille de la police </span>
-                                <input
-                                    type="range"
-                                    v-model.number="fontSize"
-                                    min="38"
-                                    max="60"
-                                    class="input-policy"
-                                />
-                            </button>
-                        </section>
-
-                        <img
-                            @click="changeLanguageContent()"
-                            src="../../images/exercises/translate.png"
-                            width="20px"
-                            alt=""
-                            class="pointer"
-                        />
-                    </div>
-                    <div class="d-flex-start">
-                        <section v-if="dropdownIsShow" class="d-flex-start">
-                            <button
-                                v-for="(item, index) in buttonConfig"
-                                :key="index"
-                                class="button-selection-words"
-                                @click="item.action"
-                                :style="{
-                                    color: item.enabled()
-                                        ? 'var(--main-color)'
-                                        : '',
-                                }"
-                            >
-                                {{ item.label }}
-                            </button>
-                        </section>
-                    </div>
-                </div>
+                <actions-article
+                    :isShowHelp="isShowHelp"
+                    :dropdownIsShow="dropdownIsShow"
+                    :buttonConfig="buttonConfig"
+                    v-model:fontSize="fontSize"
+                ></actions-article>
 
                 <!-- article -->
                 <section class="section-article">
@@ -139,10 +84,11 @@
 <script>
 import axios from "axios";
 import HeadArticle from "../components/article/HeadArticle.vue";
+import ActionsArticle from "../components/article/ActionsArticle.vue";
 
 export default {
     name: "ArticlePage",
-    components: { HeadArticle },
+    components: { HeadArticle, ActionsArticle },
     data() {
         return {
             numberOfContent: 2,
