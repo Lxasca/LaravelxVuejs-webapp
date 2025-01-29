@@ -1,4 +1,7 @@
 <template>
+    <input type="color" v-model="selectedColor" @input="updateMainColor" />
+    {{ selectedColor }}
+
     <div>
         <router-view></router-view>
     </div>
@@ -7,10 +10,30 @@
 <script>
 export default {
     name: "App",
+    data() {
+        return {
+            selectedColor: "#fc5134",
+        };
+    },
+    methods: {
+        updateMainColor() {
+            document.documentElement.style.setProperty(
+                "--main-color",
+                this.selectedColor
+            );
+        },
+    },
+    mounted() {
+        this.updateMainColor(); // Met à jour la couleur au chargement
+    },
 };
 </script>
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Neucha&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+:root {
+    --main-color: ;
+}
+
 * {
     font-family: "Roboto Condensed", serif;
     font-optical-sizing: auto;
@@ -74,7 +97,7 @@ input:focus {
     font-size: 22px;
 }
 .text-color-main {
-    color: #fc5134;
+    color: var(--main-color);
 }
 
 .choice {

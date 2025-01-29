@@ -45,19 +45,7 @@
                                 class="button-createdAt d-flex-align btn-1"
                                 @click="showDropdown"
                             >
-                                Colorier les ...
-
-                                <img
-                                    src="../../images/exercises/right.png"
-                                    class="ml-10"
-                                    :style="
-                                        dropdownIsShow
-                                            ? {
-                                                  transform: 'rotate(90deg)',
-                                              }
-                                            : { transform: 'rotate(0deg)' }
-                                    "
-                                />
+                                Mettre en forme
                             </button>
 
                             <button
@@ -70,17 +58,12 @@
                                 <span v-else
                                     >Afficher les aides vocabulaires</span
                                 >
-                                <img
-                                    src="../../images/exercises/interrogation.png"
-                                    alt=""
-                                    class="ml-10 rotate-0"
-                                />
                             </button>
 
                             <button class="button-createdAt d-flex-align btn-3">
                                 <span> Taille de la police </span>
                                 <input
-                                    type="number"
+                                    type="range"
                                     v-model.number="fontSize"
                                     min="38"
                                     max="60"
@@ -105,7 +88,9 @@
                                 class="button-selection-words"
                                 @click="item.action"
                                 :style="{
-                                    color: item.enabled() ? '#fc5134' : '',
+                                    color: item.enabled()
+                                        ? 'var(--main-color)'
+                                        : '',
                                 }"
                             >
                                 {{ item.label }}
@@ -265,26 +250,26 @@ export default {
             if (this.highlightPropositionsEnabled) {
                 text = text.replace(
                     /<pp>(.*?)<\/pp>/g,
-                    '<span style="color: #fc5134">$1</span>'
+                    '<span style="color: var(--main-color)">$1</span>'
                 );
             }
 
             if (this.highlightLieuEnabled) {
                 text = text.replace(
                     /<lieu>(.*?)<\/lieu>/g,
-                    '<span style="padding:5px;background-color: #fc5134;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;color:#fbfbfb;">$1</span>'
+                    '<span style="padding:5px;background-color: var(--main-color);padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;color:#fbfbfb;">$1</span>'
                 );
             }
 
             if (this.highlightAdjectifEnabled) {
                 text = text.replace(
                     /<adj>(.*?)<\/adj>/g,
-                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:dotted 2px #fc5134;">$1</span>'
+                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:dotted 2px var(--main-color);">$1</span>'
                 );
 
                 text = text.replace(
                     /<adj-nom>(.*?)<\/adj-nom>/g,
-                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:solid 2px #fc5134;">$1</span>'
+                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:solid 2px var(--main-color);">$1</span>'
                 );
             }
 
@@ -382,9 +367,9 @@ export default {
     border: none;
 }
 .btn-2 {
-    background-color: #fc5134;
+    background-color: var(--main-color);
     color: #fbfbfb;
-    border: solid 1px #fc5134;
+    border: solid 1px var(--main-color);
     margin-left: 25px;
 }
 .btn-3 {
@@ -398,9 +383,11 @@ export default {
     transform: rotate(0deg);
 }
 .input-policy {
-    color: #fc5134;
+    color: var(--main-color);
     font-size: 15px;
     width: 60px;
+
+    margin-left: 15px;
 }
 .pointer {
     cursor: pointer;
@@ -431,6 +418,36 @@ export default {
 .section-article {
     padding-left: 40px;
 }
+input[type="range"] {
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: var(--main-color);
+    margin-top: -4px;
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
 /********/
 .clickable-number {
     cursor: pointer;
