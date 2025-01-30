@@ -13,12 +13,12 @@
                     {{ article.title_french }}
                 </span>
 
-                <img
+                <!--<img
                     @click="changeLanguage()"
                     src="../../../images/exercises/translate.png"
                     width="20px"
                     alt=""
-                />
+                />-->
             </h5>
         </section>
     </div>
@@ -52,5 +52,21 @@ export default {
 }
 #title-french {
     font-size: 22.5px;
+}
+#head-article {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 20px;
+
+    background-color: #fbfbfb;
+    height: 80px;
+    margin-bottom: 35px;
+
+    padding: 28px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 7.5px;
 }
 </style>

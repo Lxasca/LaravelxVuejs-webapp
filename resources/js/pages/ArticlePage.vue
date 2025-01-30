@@ -20,7 +20,18 @@
                 ></actions-article>
 
                 <!-- article -->
-                <section class="section-article">
+                <section
+                    class="section-article"
+                    style="
+                        background-color: #fbfbfb;
+                        margin-bottom: 35px;
+
+                        padding: 27.5px;
+                        padding-top: 5px;
+                        padding-bottom: 5px;
+                        border-radius: 7.5px;
+                    "
+                >
                     <div v-for="i in numberOfContent" :key="i">
                         <p class="direction-text-right">
                             <span
@@ -254,112 +265,21 @@ export default {
 
 <style lang="scss">
 #article-page {
-    padding-left: 100px;
-    padding-right: 100px;
+    padding-left: 11.5%;
+    padding-right: 11.5%;
+
     padding-top: 0px;
     padding-bottom: 0px;
-}
-#head-article {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-left: 25px;
-    margin-right: 25px;
-
-    font-size: 20px;
-}
-#actions-article {
-    border-radius: 12.5px;
-    margin: 25px;
-
-    margin-top: -15px;
-}
-.btn-1 {
-    background-color: #fbfbfb;
-    color: #262626;
-    border: none;
-}
-.btn-2 {
-    background-color: var(--main-color);
-    color: #fbfbfb;
-    border: solid 1px var(--main-color);
-    margin-left: 25px;
-}
-.btn-3 {
-    background-color: #fbfbfb;
-    color: #262626;
-    border: none;
-    margin-left: 25px;
-    font-size: 15px;
 }
 .rotate-0 {
     transform: rotate(0deg);
 }
-.input-policy {
-    color: var(--main-color);
-    font-size: 15px;
-    width: 60px;
 
-    margin-left: 15px;
-}
-.pointer {
-    cursor: pointer;
-}
-.button-selection-words {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    border-radius: 12.5px;
-    background-color: #fbfbfb;
-    color: #262626;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
-    letter-spacing: 1px;
-    border: solid 1px #fbfbfb;
-
-    cursor: pointer;
-
-    display: flex;
-    align-items: center;
-
-    margin-right: 15px;
-    margin-top: 20px;
-}
 .direction-text-right {
     direction: rtl;
 }
 .section-article {
     padding-left: 40px;
-}
-input[type="range"] {
-    -webkit-appearance: none;
-}
-
-input[type="range"]::-webkit-slider-runnable-track {
-    width: 300px;
-    height: 5px;
-    background: #ddd;
-    border: none;
-    border-radius: 3px;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: var(--main-color);
-    margin-top: -5.5px;
-}
-
-input[type="range"]:focus {
-    outline: none;
-}
-
-input[type="range"]:focus::-webkit-slider-runnable-track {
-    background: #ccc;
 }
 
 .clickable-number {
@@ -376,7 +296,7 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
     text-align: center;
     font-size: 25px;
     width: 82.5%;
-    border-radius: 12.5px;
+    border-radius: 7.5px;
 
     position: fixed;
     top: 10%;
@@ -386,15 +306,15 @@ input[type="range"]:focus::-webkit-slider-runnable-track {
     background-color: #262626;
     color: #fbfbfb;
 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 .button-createdAt {
     padding-top: 10px;
     padding-bottom: 10px;
     padding-left: 25px;
     padding-right: 25px;
-    border-radius: 12.5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    border-radius: 7.5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     letter-spacing: 1px;
 
     cursor: pointer;
@@ -414,10 +334,10 @@ h5 {
     }
 }
 .content-translate {
-    font-size: 23px;
-    line-height: 45px;
+    font-size: 22px;
+    line-height: 40px;
     text-align: left;
 
-    padding-left: 15px;
+    padding-left: 2.5px;
 }
 </style>

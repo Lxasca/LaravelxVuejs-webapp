@@ -91,9 +91,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
 
-    border-radius: 12.5px;
+    border-radius: 7.5px;
     padding-left: 25px;
     padding-right: 25px;
     height: 85px;
@@ -105,10 +105,10 @@ export default {
     padding-bottom: 10px;
     padding-left: 25px;
     padding-right: 25px;
-    border-radius: 12.5px;
+    border-radius: 7.5px;
     background-color: #262626;
     color: #fbfbfb;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     letter-spacing: 1px;
 }
 h5 {

@@ -12,7 +12,7 @@ export default {
     name: "App",
     data() {
         return {
-            selectedColor: "#fc5134",
+            selectedColor: "#009f6b",
         };
     },
     methods: {
