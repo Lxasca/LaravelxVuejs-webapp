@@ -12,10 +12,11 @@
 
                 <!-- les actions possibles sur le contenu de l'article -->
                 <actions-article
-                    :isShowHelp="isShowHelp"
-                    :dropdownIsShow="dropdownIsShow"
-                    :buttonConfig="buttonConfig"
                     v-model:fontSize="fontSize"
+                    v-model:isShowHelp="isShowHelp"
+                    v-model:dropdownIsShow="dropdownIsShow"
+                    v-model:isSwitchedContent="isSwitchedContent"
+                    :buttonConfig="buttonConfig"
                 ></actions-article>
 
                 <!-- article -->

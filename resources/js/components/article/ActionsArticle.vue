@@ -1,23 +1,23 @@
 <template>
     <div id="actions-article">
-        <!-- -->
         <div class="d-flex-between">
             <section class="d-flex-align">
                 <button
                     class="button-createdAt d-flex-align btn-1"
-                    @click="showDropdown"
+                    @click="toggleDropdown"
                 >
                     Mettre en forme
                 </button>
 
                 <button
                     class="button-createdAt d-flex-align btn-2"
-                    @click="showHelp"
+                    @click="toggleHelp"
                 >
-                    <span v-if="isShowHelp">
-                        Retirer les aides vocabulaires
-                    </span>
-                    <span v-else>Afficher les aides vocabulaires</span>
+                    <span>{{
+                        isShowHelp
+                            ? "Retirer les aides vocabulaires"
+                            : "Afficher les aides vocabulaires"
+                    }}</span>
                 </button>
 
                 <button class="button-createdAt d-flex-align btn-3">
@@ -25,7 +25,12 @@
                     <input
                         type="range"
                         :value="fontSize"
-                        @input="$emit('update:fontSize', $event.target.value)"
+                        @input="
+                            $emit(
+                                'update:fontSize',
+                                parseInt($event.target.value)
+                            )
+                        "
                         min="38"
                         max="60"
                         class="input-policy"
@@ -34,15 +39,16 @@
             </section>
 
             <img
-                @click="changeLanguageContent()"
+                @click="toggleLanguage"
                 src="../../../images/exercises/translate.png"
                 width="20px"
-                alt=""
+                alt="Changer la langue"
                 class="pointer"
             />
         </div>
-        <div class="d-flex-start">
-            <section v-if="dropdownIsShow" class="d-flex-start">
+
+        <div class="d-flex-start" v-if="dropdownIsShow">
+            <section class="d-flex-start">
                 <button
                     v-for="(item, index) in buttonConfig"
                     :key="index"
@@ -63,28 +69,21 @@
 export default {
     name: "ActionsArticle",
     props: {
-        isShowHelp: {
-            type: Boolean,
-        },
-        fontSize: {
-            type: Number,
-        },
-        dropdownIsShow: {
-            type: Boolean,
-        },
-        buttonConfig: {
-            type: Array,
-        },
+        isShowHelp: Boolean,
+        fontSize: Number,
+        dropdownIsShow: Boolean,
+        isSwitchedContent: Boolean,
+        buttonConfig: Array,
     },
     methods: {
-        showHelp() {
-            //
+        toggleHelp() {
+            this.$emit("update:isShowHelp", !this.isShowHelp);
         },
-        showDropdown() {
-            //
+        toggleDropdown() {
+            this.$emit("update:dropdownIsShow", !this.dropdownIsShow);
         },
-        changeLanguageContent() {
-            //
+        toggleLanguage() {
+            this.$emit("update:isSwitchedContent", !this.isSwitchedContent);
         },
     },
 };
