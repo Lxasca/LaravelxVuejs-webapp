@@ -1,8 +1,12 @@
 <template>
-    <input type="color" v-model="selectedColor" @input="updateMainColor" />
-    {{ selectedColor }}
-
     <div>
+        <input type="color" v-model="selectedColor" @input="updateMainColor" />
+        {{ selectedColor }}
+
+        <a> NAVBAR </a>
+    </div>
+
+    <div style="margin-top: 4.5%">
         <router-view></router-view>
     </div>
 </template>

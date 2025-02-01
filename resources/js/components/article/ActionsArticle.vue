@@ -10,8 +10,11 @@
                 </button>
 
                 <button
-                    class="button-createdAt d-flex-align btn-2"
+                    class="button-createdAt d-flex-align btn-3"
                     @click="toggleHelp"
+                    :style="{
+                        backgroundColor: isShowHelp ? '#fbfbfb' : '',
+                    }"
                 >
                     <span>{{
                         isShowHelp
@@ -55,7 +58,7 @@
                     class="button-selection-words"
                     @click="item.action"
                     :style="{
-                        color: item.enabled() ? 'var(--main-color)' : '',
+                        backgroundColor: item.enabled() ? '#fbfbfb' : '',
                     }"
                 >
                     {{ item.label }}
@@ -70,6 +73,7 @@ export default {
     name: "ActionsArticle",
     props: {
         isShowHelp: Boolean,
+        showTranslation: Boolean,
         fontSize: Number,
         dropdownIsShow: Boolean,
         isSwitchedContent: Boolean,
@@ -78,6 +82,7 @@ export default {
     methods: {
         toggleHelp() {
             this.$emit("update:isShowHelp", !this.isShowHelp);
+            this.$emit("update:showTranslation", false);
         },
         toggleDropdown() {
             this.$emit("update:dropdownIsShow", !this.dropdownIsShow);

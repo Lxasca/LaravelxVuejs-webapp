@@ -8,10 +8,7 @@
 
         <section>
             <h5>
-                <span v-if="!isSwitched">{{ article.title }}</span>
-                <span id="title-french" v-else>
-                    {{ article.title_french }}
-                </span>
+                <span>{{ article.title }}</span>
 
                 <!--<img
                     @click="changeLanguage()"
@@ -27,19 +24,9 @@
 <script>
 export default {
     name: "HeadArticle",
-    data() {
-        return {
-            isSwitched: false,
-        };
-    },
     props: {
         article: {
             type: Object,
-        },
-    },
-    methods: {
-        changeLanguage() {
-            this.isSwitched = !this.isSwitched;
         },
     },
 };
@@ -49,9 +36,6 @@ export default {
     background-color: #262626;
     color: #fbfbfb;
     border: none;
-}
-#title-french {
-    font-size: 22.5px;
 }
 #head-article {
     display: flex;

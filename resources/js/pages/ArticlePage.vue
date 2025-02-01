@@ -14,24 +14,14 @@
                 <actions-article
                     v-model:fontSize="fontSize"
                     v-model:isShowHelp="isShowHelp"
+                    v-model:showTranslation="showTranslation"
                     v-model:dropdownIsShow="dropdownIsShow"
                     v-model:isSwitchedContent="isSwitchedContent"
                     :buttonConfig="buttonConfig"
                 ></actions-article>
 
                 <!-- article -->
-                <section
-                    class="section-article"
-                    style="
-                        background-color: #fbfbfb;
-                        margin-bottom: 35px;
-
-                        padding: 27.5px;
-                        padding-top: 5px;
-                        padding-bottom: 5px;
-                        border-radius: 7.5px;
-                    "
-                >
+                <section class="section-article">
                     <div v-for="i in numberOfContent" :key="i">
                         <p class="direction-text-right">
                             <span
@@ -47,7 +37,7 @@
                                     @click="handleClick(match.id)"
                                 >
                                     <img
-                                        src="../../images/exercises/interrogation.png"
+                                        src="../../images/exercises/interrogation2.png"
                                         width="30px"
                                         class="rotate-0"
                                         v-if="isShowHelp"
@@ -82,7 +72,13 @@
         </section>
 
         <section class="div-translation" v-if="showTranslation">
-            <p>
+            <img
+                src="../../images/exercises/interrogation2.png"
+                width="30px"
+                class="rotate-0"
+                style="margin-top: 20px"
+            />
+            <p style="margin-top: 8.5px">
                 <span>{{ traductionArabic }}</span>
                 [<span class="text-color-main">{{ transcriptionArabic }}</span
                 >] se traduit par
@@ -116,7 +112,7 @@ export default {
             highlightLieuEnabled: false,
             highlightAdjectifEnabled: false,
             dropdownIsShow: false,
-            isShowHelp: false,
+            isShowHelp: true,
             buttonConfig: [
                 {
                     label: "Prépositions",
@@ -265,8 +261,8 @@ export default {
 
 <style lang="scss">
 #article-page {
-    padding-left: 11.5%;
-    padding-right: 11.5%;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
 
     padding-top: 0px;
     padding-bottom: 0px;
@@ -280,6 +276,16 @@ export default {
 }
 .section-article {
     padding-left: 40px;
+    background-color: #fbfbfb;
+    margin-bottom: 35px;
+
+    padding: 27.5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 7.5px;
+
+    overflow-y: auto;
+    max-height: 500px;
 }
 
 .clickable-number {
@@ -294,19 +300,21 @@ export default {
 }
 .div-translation {
     text-align: center;
-    font-size: 25px;
-    width: 82.5%;
+    font-size: 21px;
+    width: 94%;
     border-radius: 7.5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 
     position: fixed;
-    top: 10%;
+    top: 18.5%;
     left: 50%;
     transform: translate(-50%, -50%);
 
-    background-color: #262626;
-    color: #fbfbfb;
+    background-color: #fbfbfb;
+    color: #262626;
 
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    //box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 .button-createdAt {
     padding-top: 10px;
@@ -325,7 +333,7 @@ h5 {
     display: flex;
     align-items: center;
     padding: 0;
-    font-size: 30px;
+    font-size: 34px;
 
     img {
         margin-left: 15px;
@@ -334,10 +342,10 @@ h5 {
     }
 }
 .content-translate {
-    font-size: 22px;
+    font-size: 21px;
     line-height: 40px;
     text-align: left;
 
-    padding-left: 2.5px;
+    padding-left: 25px;
 }
 </style>
