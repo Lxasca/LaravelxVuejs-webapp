@@ -20,6 +20,26 @@
                     :buttonConfig="buttonConfig"
                 ></actions-article>
 
+                <section class="div-translation" v-if="showTranslation">
+                    <img
+                        src="../../images/exercises/interrogation2.png"
+                        width="30px"
+                        class="rotate-0"
+                        style="margin-top: 20px"
+                    />
+                    <p style="margin-top: -40px">
+                        <span>{{ traductionArabic }}</span>
+                        [<span class="text-color-main">{{
+                            transcriptionArabic
+                        }}</span
+                        >] se traduit par
+                        <span class="text-color-main">{{
+                            traductionFrancais
+                        }}</span
+                        >.
+                    </p>
+                </section>
+
                 <!-- article -->
                 <section class="section-article">
                     <div v-for="i in numberOfContent" :key="i">
@@ -69,22 +89,6 @@
                     </div>
                 </section>
             </div>
-        </section>
-
-        <section class="div-translation" v-if="showTranslation">
-            <img
-                src="../../images/exercises/interrogation2.png"
-                width="30px"
-                class="rotate-0"
-                style="margin-top: 20px"
-            />
-            <p style="margin-top: 8.5px">
-                <span>{{ traductionArabic }}</span>
-                [<span class="text-color-main">{{ transcriptionArabic }}</span
-                >] se traduit par
-                <span class="text-color-main">{{ traductionFrancais }}</span
-                >.
-            </p>
         </section>
     </div>
 </template>
@@ -266,6 +270,9 @@ export default {
 
     padding-top: 0px;
     padding-bottom: 0px;
+
+    scroll-behavior: smooth;
+    transition: all 0.5s ease;
 }
 .rotate-0 {
     transform: rotate(0deg);
@@ -283,9 +290,23 @@ export default {
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 7.5px;
-
     overflow-y: auto;
-    max-height: 500px;
+    max-height: 750px;
+}
+
+.section-article::-webkit-scrollbar {
+    width: 12px;
+}
+
+.section-article::-webkit-scrollbar-thumb {
+    background-color: var(--main-color);
+    border-radius: 10px;
+    cursor: grab;
+}
+
+.section-article::-webkit-scrollbar-track {
+    background: #fbfbfb;
+    border-radius: 10px;
 }
 
 .clickable-number {
@@ -301,15 +322,9 @@ export default {
 .div-translation {
     text-align: center;
     font-size: 21px;
-    width: 94%;
     border-radius: 7.5px;
     padding-top: 5px;
     padding-bottom: 5px;
-
-    position: fixed;
-    top: 18.5%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 
     background-color: #fbfbfb;
     color: #262626;
