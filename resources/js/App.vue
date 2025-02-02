@@ -1,12 +1,20 @@
 <template>
-    <div>
+    <div
+        style="
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            padding: 25px;
+            background-color: #262626;
+            color: #fbfbfb;
+            border-radius: 7.5px;
+            margin-left: 2.5%;
+            margin-right: 2.5%;
+        "
+    >
         <input type="color" v-model="selectedColor" @input="updateMainColor" />
         {{ selectedColor }}
-
-        <a> NAVBAR </a>
     </div>
 
-    <div style="margin-top: 4.5%">
+    <div style="margin-top: 1.9%">
         <router-view></router-view>
     </div>
 </template>
@@ -102,6 +110,9 @@ input:focus {
 }
 .text-color-main {
     color: var(--main-color);
+}
+.text-color-second {
+    color: #fbfbfb;
 }
 
 .choice {

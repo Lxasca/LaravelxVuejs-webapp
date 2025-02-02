@@ -20,25 +20,22 @@
                     :buttonConfig="buttonConfig"
                 ></actions-article>
 
-                <section class="div-translation" v-if="showTranslation">
-                    <img
-                        src="../../images/exercises/interrogation2.png"
-                        width="30px"
-                        class="rotate-0"
-                        style="margin-top: 20px"
-                    />
-                    <p style="margin-top: -40px">
-                        <span>{{ traductionArabic }}</span>
-                        [<span class="text-color-main">{{
-                            transcriptionArabic
-                        }}</span
-                        >] se traduit par
-                        <span class="text-color-main">{{
-                            traductionFrancais
-                        }}</span
-                        >.
-                    </p>
-                </section>
+                <div class="d-flex-center">
+                    <section class="div-translation" v-if="showTranslation">
+                        <p>
+                            <span>{{ traductionArabic }}</span>
+                            <span
+                                style="
+                                    margin-left: 17.5px;
+                                    margin-right: 17.5px;
+                                    font-style: italic;
+                                "
+                                >{{ transcriptionArabic }}</span
+                            >
+                            <span>{{ traductionFrancais }}</span>
+                        </p>
+                    </section>
+                </div>
 
                 <!-- article -->
                 <section class="section-article">
@@ -270,10 +267,8 @@ export default {
 
     padding-top: 0px;
     padding-bottom: 0px;
-
-    scroll-behavior: smooth;
-    transition: all 0.5s ease;
 }
+
 .rotate-0 {
     transform: rotate(0deg);
 }
@@ -290,23 +285,6 @@ export default {
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 7.5px;
-    overflow-y: auto;
-    max-height: 750px;
-}
-
-.section-article::-webkit-scrollbar {
-    width: 12px;
-}
-
-.section-article::-webkit-scrollbar-thumb {
-    background-color: var(--main-color);
-    border-radius: 10px;
-    cursor: grab;
-}
-
-.section-article::-webkit-scrollbar-track {
-    background: #fbfbfb;
-    border-radius: 10px;
 }
 
 .clickable-number {
@@ -321,15 +299,25 @@ export default {
 }
 .div-translation {
     text-align: center;
-    font-size: 21px;
+    font-size: 20px;
     border-radius: 7.5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    height: 55px;
 
-    background-color: #fbfbfb;
-    color: #262626;
+    width: 50%;
 
-    //box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    background-color: #262626;
+    color: #fbfbfb;
+
+    position: fixed;
+    bottom: 0;
+    margin-bottom: 12.5px;
+    border-radius: 7.5px;
+
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+
+    p {
+        margin-top: -12px;
+    }
 }
 .button-createdAt {
     padding-top: 10px;
@@ -357,7 +345,7 @@ h5 {
     }
 }
 .content-translate {
-    font-size: 21px;
+    font-size: 19.5px;
     line-height: 40px;
     text-align: left;
 
