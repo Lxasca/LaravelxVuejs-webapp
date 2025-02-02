@@ -32,11 +32,6 @@ export default {
 };
 </script>
 <style scoped>
-.btn-0 {
-    background-color: #262626;
-    color: #fbfbfb;
-    border: none;
-}
 #head-article {
     display: flex;
     justify-content: space-between;

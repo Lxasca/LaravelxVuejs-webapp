@@ -1,11 +1,10 @@
 <template>
     <div
         style="
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            /**box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);**/
             padding: 25px;
-            background-color: #262626;
-            color: #fbfbfb;
-            border-radius: 7.5px;
+            background-color: white;
+            color: #262626;
             margin-left: 2.5%;
             margin-right: 2.5%;
         "
@@ -14,7 +13,7 @@
         {{ selectedColor }}
     </div>
 
-    <div style="margin-top: 1.9%">
+    <div>
         <router-view></router-view>
     </div>
 </template>
@@ -139,5 +138,23 @@ div[class^="choice"] input[type="radio"]:checked + span {
 /** disabled un exercice pour ne pas que l'user puisse changer sa réponse **/
 .disabled {
     pointer-events: none;
+}
+
+.button-createdAt {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    padding-right: 25px;
+    border-radius: 7.5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    letter-spacing: 1px;
+
+    cursor: pointer;
+}
+
+.btn-0 {
+    background-color: #262626;
+    color: #fbfbfb;
+    border: none;
 }
 </style>

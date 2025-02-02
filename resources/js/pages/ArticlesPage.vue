@@ -1,19 +1,18 @@
 <template>
     <div>
-        <h1>Articles Pages</h1>
-
         <section class="div-content">
             <div v-for="article in articles" :key="article.id">
                 <section id="div-content-section">
-                    <section style="text-align: left; font-size: 20px">
-                        <button id="button-createdAt">
-                            {{
-                                new Date(article.created_at).toLocaleDateString(
-                                    "fr-FR"
-                                )
-                            }}
-                        </button>
-                    </section>
+                    <button
+                        class="button-createdAt btn-0"
+                        style="margin-top: 5px"
+                    >
+                        {{
+                            new Date(article.created_at).toLocaleDateString(
+                                "fr-FR"
+                            )
+                        }}
+                    </button>
 
                     <h5>
                         <router-link
@@ -30,13 +29,6 @@
                                 {{ article.title_french }}
                             </span>
                         </router-link>
-
-                        <img
-                            src="../../images/exercises/translate.png"
-                            @click="changeLanguage(article.id)"
-                            width="20px"
-                            alt=""
-                        />
                     </h5>
                 </section>
             </div>
@@ -84,49 +76,30 @@ export default {
     line-height: 80px;
 
     text-align: center;
-    padding-left: 150px;
-    padding-right: 150px;
+    padding-left: 2.5%;
+    padding-right: 3.5%;
 }
 #div-content-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    background-color: #fbfbfb;
 
     border-radius: 7.5px;
-    padding-left: 25px;
-    padding-right: 25px;
-    height: 85px;
+    padding: 28px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 
-    margin-bottom: 45px;
+    height: 80px;
+
+    margin-bottom: 25px;
 }
-#button-createdAt {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    border-radius: 7.5px;
-    background-color: #262626;
-    color: #fbfbfb;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-    letter-spacing: 1px;
-}
+
 h5 {
     font-weight: bold;
     display: flex;
     align-items: center;
     padding: 0;
     font-size: 30px;
-}
-#title-french {
-    font-size: 22.5px;
-}
-img {
-    margin-left: 15px;
-    transform: rotate(180deg);
-    cursor: pointer;
-}
-#title-french {
-    font-size: 22.5px;
 }
 </style>
