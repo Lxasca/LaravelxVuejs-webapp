@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ExercisesController;
@@ -39,6 +40,9 @@ Route::get('/get-previous-exercise-scenario/{id}', [ExercisesController::class, 
 Route::get('/get-articles', [ArticlesController::class, 'getArticles']);
 Route::get('/get-article/{id}', [ArticlesController::class, 'getArticle']);
 
+
+// ADMIN
+Route::post('/admin/create-article', [AdminArticleController::class, 'store']);
 
 Route::get('/{any}', function () {
     return view('welcome');

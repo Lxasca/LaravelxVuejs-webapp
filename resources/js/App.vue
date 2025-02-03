@@ -11,6 +11,8 @@
     >
         <input type="color" v-model="selectedColor" @input="updateMainColor" />
         {{ selectedColor }}
+
+        <router-link :to="{ name: 'admin' }">Administration</router-link>
     </div>
 
     <div>
@@ -78,8 +80,7 @@ export default {
     margin-left: 10px;
     width: 20px;
 }
-
-input {
+/**input {
     border: none !important;
     outline: none;
     text-align: center;
@@ -93,7 +94,7 @@ input::placeholder {
 
 input:focus {
     box-shadow: none;
-}
+}**/
 
 .answer {
     text-align: center;
@@ -156,5 +157,9 @@ div[class^="choice"] input[type="radio"]:checked + span {
     background-color: #262626;
     color: #fbfbfb;
     border: none;
+}
+
+.direction-text-right {
+    direction: rtl;
 }
 </style>

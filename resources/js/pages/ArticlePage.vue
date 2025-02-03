@@ -272,10 +272,6 @@ export default {
 .rotate-0 {
     transform: rotate(0deg);
 }
-
-.direction-text-right {
-    direction: rtl;
-}
 .section-article {
     padding-left: 40px;
     background-color: #fbfbfb;
@@ -340,4 +336,5 @@ h5 {
 
     padding-left: 25px;
 }
+
 </style>
