@@ -6,6 +6,13 @@
     <div>
         <button @click="toggleForm">Créer un article</button>
 
+        <!-- listing de tous les articles -->
+        <get-articles
+            v-if="!isForm"
+            :articles="articles"
+            :isAdmin="isAdmin"
+        ></get-articles>
+
         <section v-if="isForm">
             <form @submit.prevent="formSubmit">
                 <div id="head-article">
@@ -90,9 +97,11 @@
 
 <script>
 import axios from "axios";
+import GetArticles from "../../components/article/GetArticles.vue";
 
 export default {
     name: "ArticlesPageAdmin",
+    components: { GetArticles },
     data() {
         return {
             isForm: false,
@@ -105,7 +114,12 @@ export default {
                 content_2: "",
                 content_2_french: "",
             },
+            articles: {},
+            isAdmin: true,
         };
+    },
+    mounted() {
+        this.getArticles();
     },
     methods: {
         toggleForm() {
@@ -127,6 +141,13 @@ export default {
         },
         toggleLanguage() {
             this.switchLanguage = !this.switchLanguage;
+        },
+        getArticles() {
+            axios.get("/get-articles").then((response) => {
+                this.articles = response.data.map((article) => ({
+                    ...article,
+                }));
+            });
         },
     },
 };
