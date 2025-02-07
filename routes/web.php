@@ -43,6 +43,8 @@ Route::get('/get-article/{id}', [ArticlesController::class, 'getArticle']);
 
 // ADMIN
 Route::post('/admin/create-article', [AdminArticleController::class, 'store']);
+Route::put('/admin/edit-article/{id}', [AdminArticleController::class, 'edit']);
+
 
 Route::get('/{any}', function () {
     return view('welcome');

@@ -8,12 +8,13 @@
 
         <!-- listing de tous les articles -->
         <get-articles
-            v-if="!isForm"
+            v-if="!isForm && !isFormEdit"
             :articles="articles"
             :isAdmin="isAdmin"
+            @is-form-edit="toggleForm('edit', $event)"
         ></get-articles>
 
-        <section v-if="isForm">
+        <section v-if="isForm || isFormEdit">
             <form @submit.prevent="formSubmit">
                 <div id="head-article">
                     <section>
@@ -87,7 +88,8 @@
 
                 <section class="d-flex-center">
                     <button type="submit" class="button-createdAt btn-0">
-                        Créer
+                        <span v-if="isForm"> Créer </span>
+                        <span v-else>Editer</span>
                     </button>
                 </section>
             </form>
@@ -105,6 +107,7 @@ export default {
     data() {
         return {
             isForm: false,
+            isFormEdit: false,
             switchLanguage: false,
             formData: {
                 title: "",
@@ -122,22 +125,56 @@ export default {
         this.getArticles();
     },
     methods: {
-        toggleForm() {
-            this.isForm = !this.isForm;
+        toggleForm(edit = null, article = null) {
+            if (edit === "edit" && article) {
+                this.isFormEdit = !this.isFormEdit;
+                this.formData = { ...article };
+            } else {
+                this.isFormEdit = false;
+                this.isForm = !this.isForm;
+            }
         },
         formSubmit() {
-            axios
-                .post("/admin/create-article", this.formData)
-                .then((response) => {
-                    this.formData = {
-                        title: "",
-                        title_french: "",
-                        content: "",
-                        content_french: "",
-                        content_2: "",
-                        content_2_french: "",
-                    };
-                });
+            if (this.isForm) {
+                axios
+                    .post("/admin/create-article", this.formData)
+                    .then((response) => {
+                        this.formData = {
+                            title: "",
+                            title_french: "",
+                            content: "",
+                            content_french: "",
+                            content_2: "",
+                            content_2_french: "",
+                        };
+
+                        this.isForm = false;
+
+                        this.getArticles();
+                    });
+            } else {
+                axios
+                    .put(
+                        `/admin/edit-article/${this.formData.id}`,
+                        this.formData
+                    )
+                    .then((response) => {
+                        console.log(response.data.message);
+
+                        const index = this.articles.findIndex(
+                            (article) => article.id === this.formData.id
+                        );
+                        if (index !== -1) {
+                            this.articles[index] = { ...this.formData };
+                        }
+
+                        this.isFormEdit = false;
+                        this.isForm = false;
+                    })
+                    .catch((error) => {
+                        console.error(error.response.data.message);
+                    });
+            }
         },
         toggleLanguage() {
             this.switchLanguage = !this.switchLanguage;

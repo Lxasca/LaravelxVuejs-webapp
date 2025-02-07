@@ -27,7 +27,12 @@
 
                 <!-- si is Admin -->
                 <div v-if="isAdmin" style="margin-top: -10px">
-                    <button class="button-createdAt btn-0">Editer</button>
+                    <button
+                        @click="formEdit(article)"
+                        class="button-createdAt btn-0"
+                    >
+                        Editer
+                    </button>
                     <button
                         class="button-createdAt btn-0"
                         style="margin-left: 10px"
@@ -50,6 +55,11 @@ export default {
         isAdmin: {
             type: Boolean,
             required: false,
+        },
+    },
+    methods: {
+        formEdit(article) {
+            this.$emit("is-form-edit", article);
         },
     },
 };
