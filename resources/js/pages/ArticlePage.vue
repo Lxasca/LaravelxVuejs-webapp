@@ -126,7 +126,7 @@ export default {
                     enabled: () => this.highlightLieuEnabled,
                 },
                 {
-                    label: "Adjectifs et leur nom",
+                    label: "Adjectifs / noms",
                     action: () => this.highlightAdjectif(),
                     enabled: () => this.highlightAdjectifEnabled,
                 },
@@ -336,5 +336,4 @@ h5 {
 
     padding-left: 25px;
 }
-
 </style>

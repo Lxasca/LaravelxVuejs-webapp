@@ -138,45 +138,53 @@ export default {
             }
         },
         formDelete(articleId) {
-            axios.delete(`/admin/edit-article/${articleId}`).then(() => {
-                this.articles = this.articles.filter(
-                    (article) => article.id !== articleId
-                );
-            });
+            const isAdmin = localStorage.getItem("isAdmin");
+            if (isAdmin === "true") {
+                axios.delete(`/admin/edit-article/${articleId}`).then(() => {
+                    this.articles = this.articles.filter(
+                        (article) => article.id !== articleId
+                    );
+                });
+            }
         },
         formSubmit() {
-            if (this.isForm) {
-                axios.post("/admin/create-article", this.formData).then(() => {
-                    this.formData = {
-                        title: "",
-                        title_french: "",
-                        content: "",
-                        content_french: "",
-                        content_2: "",
-                        content_2_french: "",
-                    };
+            const isAdmin = localStorage.getItem("isAdmin");
+            if (isAdmin === "true") {
+                if (this.isForm) {
+                    axios
+                        .post("/admin/create-article", this.formData)
+                        .then(() => {
+                            this.formData = {
+                                title: "",
+                                title_french: "",
+                                content: "",
+                                content_french: "",
+                                content_2: "",
+                                content_2_french: "",
+                            };
 
-                    this.isForm = false;
+                            this.isForm = false;
 
-                    this.getArticles();
-                });
-            } else {
-                axios
-                    .put(
-                        `/admin/edit-article/${this.formData.id}`,
-                        this.formData
-                    )
-                    .then((response) => {
-                        const index = this.articles.findIndex(
-                            (article) => article.id === this.formData.id
-                        );
-                        if (index !== -1) {
-                            this.articles[index] = { ...this.formData };
-                        }
+                            this.getArticles();
+                        });
+                } else {
+                    axios
+                        .put(
+                            `/admin/edit-article/${this.formData.id}`,
+                            this.formData
+                        )
+                        .then((response) => {
+                            const index = this.articles.findIndex(
+                                (article) => article.id === this.formData.id
+                            );
+                            if (index !== -1) {
+                                this.articles[index] = { ...this.formData };
+                            }
 
-                        this.isFormEdit = false;
-                        this.isForm = false;
-                    });
+                            this.isFormEdit = false;
+                            this.isForm = false;
+                        });
+                }
             }
         },
         toggleLanguage() {

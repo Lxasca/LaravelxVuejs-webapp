@@ -12,6 +12,14 @@ import ArticlePage from "./pages/ArticlePage.vue";
 import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
 
+const requireAdminAuth = (to, from, next) => {
+    if (localStorage.getItem("isAdmin") === "true") {
+        next(); // ici ok, l'utilisateur est admin
+    } else {
+        next({ name: "admin" }); // on redirige vers la page admin principale (avec input du mdp)
+    }
+};
+
 const routes = [
     { path: "/", component: HomePage },
     { path: "/start", component: StartPage },
@@ -52,15 +60,12 @@ const routes = [
     },
 
     // ADMIN
-    {
-        name: "admin",
-        path: "/admin",
-        component: HomePageAdmin,
-    },
+    { name: "admin", path: "/admin", component: HomePageAdmin },
     {
         name: "admin-articles",
         path: "/admin/articles",
         component: ArticlesPageAdmin,
+        beforeEnter: requireAdminAuth,
     },
 ];
 

@@ -1,12 +1,12 @@
 <template>
     <div id="actions-article">
-        <div class="d-flex-between">
+        <div class="d-flex-between responsive-margin">
             <section class="d-flex-align">
                 <button
                     class="button-createdAt d-flex-align btn-1"
                     @click="toggleDropdown"
                 >
-                    Mettre en forme
+                    Colorier
                 </button>
 
                 <button
@@ -16,15 +16,11 @@
                         backgroundColor: isShowHelp ? '#fbfbfb' : '',
                     }"
                 >
-                    <span>{{
-                        isShowHelp
-                            ? "Retirer les aides vocabulaires"
-                            : "Afficher les aides vocabulaires"
-                    }}</span>
+                    <span>Vocabulaires</span>
                 </button>
 
                 <button class="button-createdAt d-flex-align btn-3">
-                    <span> Taille de la police </span>
+                    <span> Taille </span>
                     <input
                         type="range"
                         :value="fontSize"
@@ -50,7 +46,7 @@
             />
         </div>
 
-        <div class="d-flex-start" v-if="dropdownIsShow">
+        <div class="d-flex-start responsive-margin" v-if="dropdownIsShow">
             <section class="d-flex-start">
                 <button
                     v-for="(item, index) in buttonConfig"
@@ -178,5 +174,13 @@ input[type="range"]:focus {
 
 input[type="range"]:focus::-webkit-slider-runnable-track {
     background: #fbfbfb;
+}
+
+/** responsive **/
+@media (max-width: 767px) {
+    .responsive-margin {
+        margin-left: -25px;
+        margin-right: -15px;
+    }
 }
 </style>

@@ -11,8 +11,6 @@
     >
         <input type="color" v-model="selectedColor" @input="updateMainColor" />
         {{ selectedColor }}
-
-        <router-link :to="{ name: 'admin' }">Administration</router-link>
     </div>
 
     <div>
@@ -144,8 +142,8 @@ div[class^="choice"] input[type="radio"]:checked + span {
 .button-createdAt {
     padding-top: 10px;
     padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
+    padding-left: 15px;
+    padding-right: 15px;
     border-radius: 7.5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
     letter-spacing: 1px;

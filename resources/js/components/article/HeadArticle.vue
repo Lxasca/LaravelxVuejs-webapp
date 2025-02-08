@@ -40,12 +40,34 @@ export default {
     font-size: 20px;
 
     background-color: #fbfbfb;
-    height: 80px;
     margin-bottom: 35px;
+
+    height: 80px;
 
     padding: 28px;
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 7.5px;
+}
+
+/** responsive **/
+@media (max-width: 767px) {
+    #head-article {
+        height: 80px;
+        display: block;
+    }
+    h5 {
+        font-size: 25px;
+        white-space: normal;
+        word-wrap: break-word;
+        line-height: 1.2;
+        text-align: right;
+        direction: rtl;
+
+        margin-top: -50px;
+    }
+    .btn-0 {
+        margin-left: -15px;
+    }
 }
 </style>
