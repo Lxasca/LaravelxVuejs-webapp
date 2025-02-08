@@ -36,6 +36,7 @@
                     <button
                         class="button-createdAt btn-0"
                         style="margin-left: 10px"
+                        @click="formDelete(article)"
                     >
                         Supprimer
                     </button>
@@ -60,6 +61,9 @@ export default {
     methods: {
         formEdit(article) {
             this.$emit("is-form-edit", article);
+        },
+        formDelete(article) {
+            this.$emit("form-delete", article.id);
         },
     },
 };

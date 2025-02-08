@@ -12,6 +12,7 @@
             :articles="articles"
             :isAdmin="isAdmin"
             @is-form-edit="toggleForm('edit', $event)"
+            @form-delete="formDelete($event)"
         ></get-articles>
 
         <section v-if="isForm || isFormEdit">
@@ -136,24 +137,29 @@ export default {
                 this.formData = {};
             }
         },
+        formDelete(articleId) {
+            axios.delete(`/admin/edit-article/${articleId}`).then(() => {
+                this.articles = this.articles.filter(
+                    (article) => article.id !== articleId
+                );
+            });
+        },
         formSubmit() {
             if (this.isForm) {
-                axios
-                    .post("/admin/create-article", this.formData)
-                    .then((response) => {
-                        this.formData = {
-                            title: "",
-                            title_french: "",
-                            content: "",
-                            content_french: "",
-                            content_2: "",
-                            content_2_french: "",
-                        };
+                axios.post("/admin/create-article", this.formData).then(() => {
+                    this.formData = {
+                        title: "",
+                        title_french: "",
+                        content: "",
+                        content_french: "",
+                        content_2: "",
+                        content_2_french: "",
+                    };
 
-                        this.isForm = false;
+                    this.isForm = false;
 
-                        this.getArticles();
-                    });
+                    this.getArticles();
+                });
             } else {
                 axios
                     .put(
@@ -161,8 +167,6 @@ export default {
                         this.formData
                     )
                     .then((response) => {
-                        console.log(response.data.message);
-
                         const index = this.articles.findIndex(
                             (article) => article.id === this.formData.id
                         );
@@ -172,9 +176,6 @@ export default {
 
                         this.isFormEdit = false;
                         this.isForm = false;
-                    })
-                    .catch((error) => {
-                        console.error(error.response.data.message);
                     });
             }
         },

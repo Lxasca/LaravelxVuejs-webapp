@@ -55,5 +55,12 @@ class AdminArticleController extends Controller
         ]);
     }
     
+    public function destroy($id)
+    {
+        $article = Articles::find($id);
+        $article->delete();
+
+        return response()->json(['message' => 'Article supprimé avec succès']);
+    }
 
 }
