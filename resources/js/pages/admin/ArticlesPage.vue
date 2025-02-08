@@ -127,11 +127,13 @@ export default {
     methods: {
         toggleForm(edit = null, article = null) {
             if (edit === "edit" && article) {
-                this.isFormEdit = !this.isFormEdit;
+                this.isForm = false;
+                this.isFormEdit = true;
                 this.formData = { ...article };
             } else {
                 this.isFormEdit = false;
                 this.isForm = !this.isForm;
+                this.formData = {};
             }
         },
         formSubmit() {
