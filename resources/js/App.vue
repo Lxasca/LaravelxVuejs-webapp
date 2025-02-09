@@ -11,6 +11,8 @@
     >
         <input type="color" v-model="selectedColor" @input="updateMainColor" />
         {{ selectedColor }}
+
+        <router-link to="/articles">Tous les articles</router-link>
     </div>
 
     <div>
