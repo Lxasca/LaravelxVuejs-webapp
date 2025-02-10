@@ -1,0 +1,30 @@
+<script setup>
+import { cn } from "../../../lib/utils";
+import { Primitive } from "radix-vue";
+import { buttonVariants } from ".";
+
+const props = defineProps({
+    variant: { type: null, required: false },
+    size: { type: null, required: false },
+    class: { type: null, required: false },
+    asChild: { type: Boolean, required: false },
+    as: { type: null, required: false, default: "button" },
+});
+</script>
+
+<template>
+    <Primitive
+        :as="as"
+        :as-child="asChild"
+        :class="cn(buttonVariants({ variant, size }), props.class)"
+    >
+        <slot />
+    </Primitive>
+</template>
+
+<style scoped>
+button {
+    font-weight: normal;
+    letter-spacing: 1.75px;
+}
+</style>

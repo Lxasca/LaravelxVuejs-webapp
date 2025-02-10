@@ -2,11 +2,11 @@
     <div class="div-content">
         <div v-for="article in articles" :key="article.id">
             <section id="div-content-section">
-                <button class="button-createdAt btn-0" style="margin-top: 5px">
+                <Button class="button-createdAt btn-0" style="margin-top: 5px">
                     {{
                         new Date(article.created_at).toLocaleDateString("fr-FR")
                     }}
-                </button>
+                </Button>
 
                 <h5>
                     <router-link
@@ -47,8 +47,11 @@
 </template>
 
 <script>
+import { Button } from "../../../../src/components/ui/button";
+
 export default {
     name: "GetArticles",
+    components: { Button },
     props: {
         articles: {
             type: Object,
