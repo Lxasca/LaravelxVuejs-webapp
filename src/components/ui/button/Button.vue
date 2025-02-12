@@ -25,6 +25,7 @@ const props = defineProps({
 <style scoped>
 button {
     font-weight: normal;
-    letter-spacing: 1.75px;
+    letter-spacing: 1px;
+    font-size: 13.5px;
 }
 </style>

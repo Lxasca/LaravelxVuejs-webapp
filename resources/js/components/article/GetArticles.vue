@@ -1,94 +1,110 @@
 <template>
     <div class="div-content">
-        <Table style="background-color:red;">
-            <TableCaption>A list of your recent invoices.</TableCaption>
+        <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead class="w-[100px]"> Invoice </TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Method</TableHead>
-                    <TableHead class="text-right"> Amount </TableHead>
+                    <TableHead class="text-center" style="width: 15%">
+                        Publié le
+                    </TableHead>
+                    <TableHead class="text-center" style="width: 15%">
+                        Par
+                    </TableHead>
+                    <TableHead class="text-center" style="width: 45%"
+                        >Titre de l'article</TableHead
+                    >
+                    <TableHead class="text-center" style="width: 15%">
+                        Catégorie
+                    </TableHead>
+                    <TableHead
+                        class="text-center"
+                        style="width: 10%"
+                    ></TableHead>
                 </TableRow>
             </TableHeader>
+            <br />
             <TableBody>
-                <TableRow>
-                    <TableCell class="font-medium"> INV001 </TableCell>
-                    <TableCell>Paid</TableCell>
-                    <TableCell>Credit Card</TableCell>
-                    <TableCell class="text-right"> $250.00 </TableCell>
+                <TableRow v-for="article in articles" :key="article.id">
+                    <TableCell style="width: 15%">
+                        <Button variant="outline">
+                            {{
+                                new Date(article.created_at).toLocaleDateString(
+                                    "fr-FR"
+                                )
+                            }}
+                        </Button>
+                    </TableCell>
+                    <TableCell style="width: 15%">
+                        Léa le sang de la veine</TableCell
+                    >
+                    <TableCell style="width: 45%">
+                        <span style="font-size: 30px">
+                            {{ article.title }}
+                        </span>
+                    </TableCell>
+                    <TableCell style="width: 15%">
+                        <Button>Relations internationales</Button>
+                    </TableCell>
+                    <TableCell style="width: 10%">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger as-child>
+                                <Button variant="outline"> ... </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent class="w-56">
+                                <DropdownMenuGroup>
+                                    <DropdownMenuItem>
+                                        <router-link
+                                            :to="{
+                                                name: 'article',
+                                                params: {
+                                                    article_id: article.id,
+                                                },
+                                            }"
+                                        >
+                                            <span>Consulter</span>
+                                        </router-link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSub>
+                                        <DropdownMenuSubTrigger>
+                                            <span>Actions</span>
+                                        </DropdownMenuSubTrigger>
+                                        <DropdownMenuPortal>
+                                            <DropdownMenuSubContent>
+                                                <DropdownMenuItem>
+                                                    <span
+                                                        @click="
+                                                            formEdit(article)
+                                                        "
+                                                        >Editer</span
+                                                    >
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem>
+                                                    <span
+                                                        @click="
+                                                            formDelete(article)
+                                                        "
+                                                        >Supprimer</span
+                                                    >
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>
+                                                    <span>More...</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuSubContent>
+                                        </DropdownMenuPortal>
+                                    </DropdownMenuSub>
+                                    <DropdownMenuItem>
+                                        <span>New Team</span>
+                                        <DropdownMenuShortcut
+                                            >⌘+T</DropdownMenuShortcut
+                                        >
+                                    </DropdownMenuItem>
+                                </DropdownMenuGroup>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </TableCell>
                 </TableRow>
             </TableBody>
         </Table>
-
-        <div v-for="article in articles" :key="article.id">
-            <section id="div-content-section">
-                <!-- si is Admin -->
-                <div v-if="isAdmin" style="margin-top: -10px">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger as-child>
-                            <Button variant="outline"> ... </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent class="w-56">
-                            <DropdownMenuGroup>
-                                <DropdownMenuSub>
-                                    <DropdownMenuSubTrigger>
-                                        <span>Actions</span>
-                                    </DropdownMenuSubTrigger>
-                                    <DropdownMenuPortal>
-                                        <DropdownMenuSubContent>
-                                            <DropdownMenuItem>
-                                                <span @click="formEdit(article)"
-                                                    >Editer</span
-                                                >
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem>
-                                                <span
-                                                    @click="formDelete(article)"
-                                                    >Supprimer</span
-                                                >
-                                            </DropdownMenuItem>
-                                            <DropdownMenuSeparator />
-                                            <DropdownMenuItem>
-                                                <span>More...</span>
-                                            </DropdownMenuItem>
-                                        </DropdownMenuSubContent>
-                                    </DropdownMenuPortal>
-                                </DropdownMenuSub>
-                                <DropdownMenuItem>
-                                    <span>New Team</span>
-                                    <DropdownMenuShortcut
-                                        >⌘+T</DropdownMenuShortcut
-                                    >
-                                </DropdownMenuItem>
-                            </DropdownMenuGroup>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-
-                <Button class="button-createdAt btn-0" style="margin-top: 5px">
-                    {{
-                        new Date(article.created_at).toLocaleDateString("fr-FR")
-                    }}
-                </Button>
-
-                <h5>
-                    <router-link
-                        :to="{
-                            name: 'article',
-                            params: { article_id: article.id },
-                        }"
-                        style="text-decoration: none; color: black"
-                    >
-                        <span v-if="!article.isSwitched">{{
-                            article.title
-                        }}</span>
-                        <span id="title-french" v-else>
-                            {{ article.title_french }}
-                        </span>
-                    </router-link>
-                </h5>
-            </section>
-        </div>
     </div>
 </template>
 
