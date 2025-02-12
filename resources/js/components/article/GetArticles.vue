@@ -1,7 +1,70 @@
 <template>
     <div class="div-content">
+        <Table style="background-color:red;">
+            <TableCaption>A list of your recent invoices.</TableCaption>
+            <TableHeader>
+                <TableRow>
+                    <TableHead class="w-[100px]"> Invoice </TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Method</TableHead>
+                    <TableHead class="text-right"> Amount </TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableCell class="font-medium"> INV001 </TableCell>
+                    <TableCell>Paid</TableCell>
+                    <TableCell>Credit Card</TableCell>
+                    <TableCell class="text-right"> $250.00 </TableCell>
+                </TableRow>
+            </TableBody>
+        </Table>
+
         <div v-for="article in articles" :key="article.id">
             <section id="div-content-section">
+                <!-- si is Admin -->
+                <div v-if="isAdmin" style="margin-top: -10px">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger as-child>
+                            <Button variant="outline"> ... </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent class="w-56">
+                            <DropdownMenuGroup>
+                                <DropdownMenuSub>
+                                    <DropdownMenuSubTrigger>
+                                        <span>Actions</span>
+                                    </DropdownMenuSubTrigger>
+                                    <DropdownMenuPortal>
+                                        <DropdownMenuSubContent>
+                                            <DropdownMenuItem>
+                                                <span @click="formEdit(article)"
+                                                    >Editer</span
+                                                >
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem>
+                                                <span
+                                                    @click="formDelete(article)"
+                                                    >Supprimer</span
+                                                >
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem>
+                                                <span>More...</span>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuSubContent>
+                                    </DropdownMenuPortal>
+                                </DropdownMenuSub>
+                                <DropdownMenuItem>
+                                    <span>New Team</span>
+                                    <DropdownMenuShortcut
+                                        >⌘+T</DropdownMenuShortcut
+                                    >
+                                </DropdownMenuItem>
+                            </DropdownMenuGroup>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+
                 <Button class="button-createdAt btn-0" style="margin-top: 5px">
                     {{
                         new Date(article.created_at).toLocaleDateString("fr-FR")
@@ -24,23 +87,6 @@
                         </span>
                     </router-link>
                 </h5>
-
-                <!-- si is Admin -->
-                <div v-if="isAdmin" style="margin-top: -10px">
-                    <button
-                        @click="formEdit(article)"
-                        class="button-createdAt btn-0"
-                    >
-                        Editer
-                    </button>
-                    <button
-                        class="button-createdAt btn-0"
-                        style="margin-left: 10px"
-                        @click="formDelete(article)"
-                    >
-                        Supprimer
-                    </button>
-                </div>
             </section>
         </div>
     </div>
@@ -48,10 +94,54 @@
 
 <script>
 import { Button } from "../../../../src/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuSubTrigger,
+    DropdownMenuTrigger,
+} from "../../../../src/components/ui/dropdown-menu";
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "../../../../src/components/ui/table";
 
 export default {
     name: "GetArticles",
-    components: { Button },
+    components: {
+        Button,
+        DropdownMenu,
+        DropdownMenuContent,
+        DropdownMenuGroup,
+        DropdownMenuItem,
+        DropdownMenuLabel,
+        DropdownMenuPortal,
+        DropdownMenuSeparator,
+        DropdownMenuShortcut,
+        DropdownMenuSub,
+        DropdownMenuSubContent,
+        DropdownMenuSubTrigger,
+        DropdownMenuTrigger,
+        Table,
+        TableBody,
+        TableCaption,
+        TableCell,
+        TableHead,
+        TableHeader,
+        TableRow,
+    },
     props: {
         articles: {
             type: Object,
@@ -104,5 +194,9 @@ h5 {
     align-items: center;
     padding: 0;
     font-size: 30px;
+}
+
+span {
+    cursor: pointer;
 }
 </style>
