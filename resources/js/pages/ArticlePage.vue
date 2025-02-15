@@ -15,7 +15,6 @@
                     v-model:fontSize="fontSize"
                     v-model:isShowHelp="isShowHelp"
                     v-model:showTranslation="showTranslation"
-                    v-model:dropdownIsShow="dropdownIsShow"
                     v-model:isSwitchedContent="isSwitchedContent"
                     :buttonConfig="buttonConfig"
                 ></actions-article>
@@ -112,7 +111,6 @@ export default {
             highlightPropositionsEnabled: false,
             highlightLieuEnabled: false,
             highlightAdjectifEnabled: false,
-            dropdownIsShow: false,
             isShowHelp: true,
             buttonConfig: [
                 {
@@ -126,7 +124,7 @@ export default {
                     enabled: () => this.highlightLieuEnabled,
                 },
                 {
-                    label: "Adjectifs / noms",
+                    label: "Adjectifs - noms",
                     action: () => this.highlightAdjectif(),
                     enabled: () => this.highlightAdjectifEnabled,
                 },
@@ -248,9 +246,6 @@ export default {
                 this.currentId = id;
                 this.showTranslation = true;
             });
-        },
-        showDropdown() {
-            this.dropdownIsShow = !this.dropdownIsShow;
         },
         showHelp() {
             this.isShowHelp = !this.isShowHelp;

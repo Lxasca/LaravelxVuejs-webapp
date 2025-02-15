@@ -2,25 +2,11 @@
     <div id="actions-article">
         <div class="d-flex-between responsive-margin">
             <section class="d-flex-align">
-                <button
-                    class="button-createdAt d-flex-align btn-1"
-                    @click="toggleDropdown"
+                <Button
+                    variant="outline"
+                    style="margin-right: 10px; margin-top: 10px"
                 >
-                    Colorier
-                </button>
-
-                <button
-                    class="button-createdAt d-flex-align btn-3"
-                    @click="toggleHelp"
-                    :style="{
-                        backgroundColor: isShowHelp ? '#fbfbfb' : '',
-                    }"
-                >
-                    <span>Vocabulaires</span>
-                </button>
-
-                <button class="button-createdAt d-flex-align btn-3">
-                    <span> Taille </span>
+                    Taille de la police
                     <input
                         type="range"
                         :value="fontSize"
@@ -34,7 +20,21 @@
                         max="60"
                         class="input-policy"
                     />
-                </button>
+                </Button>
+                <Button
+                    @click="toggleHelp"
+                    :variant="isShowHelp ? '' : 'outline'"
+                    style="margin-right: 10px; margin-top: 10px"
+                    >Vocabulaire</Button
+                >
+                <Button
+                    style="margin-right: 10px; margin-top: 10px"
+                    v-for="(item, index) in buttonConfig"
+                    :key="index"
+                    @click="item.action"
+                    :variant="item.enabled() ? '' : 'outline'"
+                    >{{ item.label }}</Button
+                >
             </section>
 
             <img
@@ -45,28 +45,17 @@
                 class="pointer"
             />
         </div>
-
-        <div class="d-flex-start responsive-margin" v-if="dropdownIsShow">
-            <section class="d-flex-start">
-                <button
-                    v-for="(item, index) in buttonConfig"
-                    :key="index"
-                    class="button-selection-words"
-                    @click="item.action"
-                    :style="{
-                        backgroundColor: item.enabled() ? '#fbfbfb' : '',
-                    }"
-                >
-                    {{ item.label }}
-                </button>
-            </section>
-        </div>
     </div>
 </template>
 
 <script>
+import { Button } from "../../../../src/components/ui/button";
+
 export default {
     name: "ActionsArticle",
+    components: {
+        Button,
+    },
     props: {
         isShowHelp: Boolean,
         showTranslation: Boolean,
@@ -79,9 +68,6 @@ export default {
         toggleHelp() {
             this.$emit("update:isShowHelp", !this.isShowHelp);
             this.$emit("update:showTranslation", false);
-        },
-        toggleDropdown() {
-            this.$emit("update:dropdownIsShow", !this.dropdownIsShow);
         },
         toggleLanguage() {
             this.$emit("update:isSwitchedContent", !this.isSwitchedContent);

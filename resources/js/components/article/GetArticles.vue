@@ -188,7 +188,7 @@
                             params: { article_id: article.id },
                         }"
                     >
-                        <CardContent class="grid gap-4">
+                        <CardContent>
                             <Button> Relations internationales </Button>
                             <Button
                                 variant="secondary"
@@ -197,12 +197,12 @@
                                 Débutant
                             </Button>
 
-                            <div
+                            <!--<div
                                 class="flex items-center space-x-4 rounded-md border px-4"
                                 style="
                                     display: flex;
                                     justify-content: space-between;
-                                    margin-top: 23.5px;
+                                    margin-top: 25px;
                                     padding-top: 11.5px;
                                     padding-bottom: 10px;
                                 "
@@ -216,7 +216,7 @@
                                         consequuntur aut enim id nisi.
                                     </p>
                                 </section>
-                            </div>
+                            </div>-->
                         </CardContent>
                     </router-link>
                 </Card>
