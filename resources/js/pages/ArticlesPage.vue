@@ -1,5 +1,7 @@
 <template>
-    <get-articles :articles="articles"></get-articles>
+    <div id="articles-page">
+        <get-articles :articles="articles"></get-articles>
+    </div>
 </template>
 
 <script>
@@ -37,3 +39,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+#articles-page {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+</style>

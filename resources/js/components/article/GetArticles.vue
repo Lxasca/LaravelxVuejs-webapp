@@ -25,12 +25,28 @@
             <TableBody>
                 <TableRow v-for="article in articles" :key="article.id">
                     <TableCell style="width: 15%">
-                        <Button variant="outline">
-                            {{
-                                new Date(article.created_at).toLocaleDateString(
-                                    "fr-FR"
-                                )
-                            }}
+                        <Button
+                            :variant="
+                                formatDate(article.created_at) ===
+                                'Aujourd\'hui'
+                                    ? 'secondary'
+                                    : 'outline'
+                            "
+                        >
+                            <span
+                                v-if="
+                                    formatDate(article.created_at) ===
+                                    'Aujourd\'hui'
+                                "
+                                >Aujourd'hui</span
+                            >
+                            <span v-else>
+                                {{
+                                    new Date(
+                                        article.created_at
+                                    ).toLocaleDateString("fr-FR")
+                                }}
+                            </span>
                         </Button>
                     </TableCell>
                     <TableCell style="width: 15%">
@@ -107,61 +123,85 @@
         </Table>
     </div>
     <div v-else>
-        <div v-for="article in articles" :key="article.id">
-            <router-link
-                :to="{
-                    name: 'article',
-                    params: {
-                        article_id: article.id,
-                    },
-                }"
-            >
-                <Card style="width: 375px">
-                    <CardHeader>
-                        <CardDescription style="text-align: left">
-                            <Badge
-                                class="px-4 py-2"
-                                style="letter-spacing: 1px; font-weight: normal"
-                                >{{
-                                    new Date(
-                                        article.created_at
-                                    ).toLocaleDateString("fr-FR")
-                                }}</Badge
+        <div class="card-grid">
+            <div v-for="article in articles" :key="article.id">
+                <Card>
+                    <router-link
+                        :to="{
+                            name: 'article',
+                            params: { article_id: article.id },
+                        }"
+                    >
+                        <CardHeader>
+                            <CardDescription style="text-align: right">
+                                <Button
+                                    :variant="
+                                        formatDate(article.created_at) ===
+                                        'Aujourd\'hui'
+                                            ? 'secondary'
+                                            : 'outline'
+                                    "
+                                >
+                                    <span
+                                        v-if="
+                                            formatDate(article.created_at) ===
+                                            'Aujourd\'hui'
+                                        "
+                                        >Aujourd'hui</span
+                                    >
+                                    <span v-else>
+                                        {{
+                                            new Date(
+                                                article.created_at
+                                            ).toLocaleDateString("fr-FR")
+                                        }}
+                                    </span>
+                                </Button>
+                            </CardDescription>
+                            <CardTitle
+                                style="
+                                    direction: rtl;
+                                    margin-top: 15px;
+                                    margin-bottom: 5px;
+                                    font-weight: normal;
+                                    font-size: 30px;
+                                "
+                                >{{ article.title }}</CardTitle
                             >
-                        </CardDescription>
-                        <CardTitle
-                            style="
-                                direction: rtl;
-                                margin-top: 15px;
-                                margin-bottom: 5px;
-                                font-weight: normal;
-                                font-size: 30px;
-                            "
-                            >{{ article.title }}</CardTitle
-                        >
-                        <CardDescription style="font-size: 15px">
-                            {{ article.title_french }}
-                        </CardDescription>
-                    </CardHeader>
+                            <CardDescription style="font-size: 15px">
+                                {{ article.title_french }}
+                            </CardDescription>
+                        </CardHeader>
+                    </router-link>
+
                     <CardContent class="grid gap-4">
+                        <Button>
+                            <Button>Relations internationales</Button>
+                        </Button>
+
                         <div
                             class="flex items-center space-x-4 rounded-md border p-4"
                             style="
                                 display: flex;
                                 justify-content: space-between;
-                                margin-top: 20px;
+                                margin-top: 25px;
                             "
                         >
                             <section>
                                 <div class="flex-1 space-y-1">
-                                    <p class="text-sm leading-none">Terminé</p>
+                                    <p
+                                        class="text-sm"
+                                        style="letter-spacing: 0.7px"
+                                    >
+                                        Terminé
+                                    </p>
                                 </div>
                             </section>
                             <section><Switch /></section>
                         </div>
                     </CardContent>
                 </Card>
-            </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -255,6 +295,18 @@ export default {
         formDelete(article) {
             this.$emit("form-delete", article.id);
         },
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            const today = new Date();
+            const yesterday = new Date(today);
+            yesterday.setDate(today.getDate() - 1);
+
+            if (date.toDateString() === today.toDateString()) {
+                return "Aujourd'hui";
+            } else {
+                return date.toLocaleDateString("fr-FR");
+            }
+        },
     },
 };
 </script>
@@ -295,5 +347,11 @@ h5 {
 
 span {
     cursor: pointer;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
 }
 </style>

@@ -1,100 +1,102 @@
 <template>
-    <div>
-        <h1>Administration - Articles</h1>
-    </div>
+    <div id="articles-page">
+        <div>
+            <h1>Administration - Articles</h1>
+        </div>
 
-    <div>
-        <button @click="toggleForm">Créer un article</button>
+        <div>
+            <button @click="toggleForm">Créer un article</button>
 
-        <!-- listing de tous les articles -->
-        <get-articles
-            v-if="!isForm && !isFormEdit"
-            :articles="articles"
-            :isAdmin="isAdmin"
-            @is-form-edit="toggleForm('edit', $event)"
-            @form-delete="formDelete($event)"
-        ></get-articles>
+            <!-- listing de tous les articles -->
+            <get-articles
+                v-if="!isForm && !isFormEdit"
+                :articles="articles"
+                :isAdmin="isAdmin"
+                @is-form-edit="toggleForm('edit', $event)"
+                @form-delete="formDelete($event)"
+            ></get-articles>
 
-        <section v-if="isForm || isFormEdit">
-            <form @submit.prevent="formSubmit">
-                <div id="head-article">
-                    <section>
-                        <button class="button-createdAt btn-0">
-                            {{ new Date().toLocaleDateString("fr-FR") }}
+            <section v-if="isForm || isFormEdit">
+                <form @submit.prevent="formSubmit">
+                    <div id="head-article">
+                        <section>
+                            <button class="button-createdAt btn-0">
+                                {{ new Date().toLocaleDateString("fr-FR") }}
+                            </button>
+                        </section>
+
+                        <section>
+                            <h5>
+                                <input
+                                    v-if="switchLanguage"
+                                    type="text"
+                                    class="input input-titre direction-text-right input-learn"
+                                    placeholder="Titre en arabe"
+                                    v-model="formData.title"
+                                />
+
+                                <input
+                                    v-else
+                                    type="text"
+                                    class="input input-titre input-translate"
+                                    placeholder="Titre en français"
+                                    v-model="formData.title_french"
+                                />
+
+                                <img
+                                    @click="toggleLanguage"
+                                    src="../../../images/exercises/translate.png"
+                                    width="20px"
+                                    alt="Changer la langue"
+                                    class="pointer"
+                                />
+                            </h5>
+                        </section>
+                    </div>
+
+                    <div class="section-article">
+                        <section>
+                            <textarea
+                                class="input input-content direction-text-right input-learn"
+                                placeholder="Paragraphe 1 en arabe"
+                                v-model="formData.content"
+                            ></textarea>
+                        </section>
+
+                        <section>
+                            <textarea
+                                class="input input-content input-translate"
+                                placeholder="Paragraphe 1 en français"
+                                v-model="formData.content_french"
+                            ></textarea>
+                        </section>
+
+                        <section>
+                            <textarea
+                                class="input input-content direction-text-right input-learn"
+                                placeholder="Paragraphe 2 en arabe"
+                                v-model="formData.content_2"
+                            ></textarea>
+                        </section>
+
+                        <section>
+                            <textarea
+                                class="input input-content input-translate"
+                                placeholder="Paragraphe 2 en français"
+                                v-model="formData.content_2_french"
+                            ></textarea>
+                        </section>
+                    </div>
+
+                    <section class="d-flex-center">
+                        <button type="submit" class="button-createdAt btn-0">
+                            <span v-if="isForm"> Créer </span>
+                            <span v-else>Editer</span>
                         </button>
                     </section>
-
-                    <section>
-                        <h5>
-                            <input
-                                v-if="switchLanguage"
-                                type="text"
-                                class="input input-titre direction-text-right input-learn"
-                                placeholder="Titre en arabe"
-                                v-model="formData.title"
-                            />
-
-                            <input
-                                v-else
-                                type="text"
-                                class="input input-titre input-translate"
-                                placeholder="Titre en français"
-                                v-model="formData.title_french"
-                            />
-
-                            <img
-                                @click="toggleLanguage"
-                                src="../../../images/exercises/translate.png"
-                                width="20px"
-                                alt="Changer la langue"
-                                class="pointer"
-                            />
-                        </h5>
-                    </section>
-                </div>
-
-                <div class="section-article">
-                    <section>
-                        <textarea
-                            class="input input-content direction-text-right input-learn"
-                            placeholder="Paragraphe 1 en arabe"
-                            v-model="formData.content"
-                        ></textarea>
-                    </section>
-
-                    <section>
-                        <textarea
-                            class="input input-content input-translate"
-                            placeholder="Paragraphe 1 en français"
-                            v-model="formData.content_french"
-                        ></textarea>
-                    </section>
-
-                    <section>
-                        <textarea
-                            class="input input-content direction-text-right input-learn"
-                            placeholder="Paragraphe 2 en arabe"
-                            v-model="formData.content_2"
-                        ></textarea>
-                    </section>
-
-                    <section>
-                        <textarea
-                            class="input input-content input-translate"
-                            placeholder="Paragraphe 2 en français"
-                            v-model="formData.content_2_french"
-                        ></textarea>
-                    </section>
-                </div>
-
-                <section class="d-flex-center">
-                    <button type="submit" class="button-createdAt btn-0">
-                        <span v-if="isForm"> Créer </span>
-                        <span v-else>Editer</span>
-                    </button>
-                </section>
-            </form>
-        </section>
+                </form>
+            </section>
+        </div>
     </div>
 </template>
 
@@ -265,5 +267,10 @@ textarea {
 }
 .input-translate {
     font-size: 20px;
+}
+
+#articles-page {
+    padding-left: 50px;
+    padding-right: 50px;
 }
 </style>

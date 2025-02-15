@@ -9,7 +9,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <div :class="cn(badgeVariants({ variant }), props.class)">
+    <div :class="[cn(badgeVariants({ variant }), props.class)]">
         <slot />
     </div>
 </template>
+
+<style scoped></style>
