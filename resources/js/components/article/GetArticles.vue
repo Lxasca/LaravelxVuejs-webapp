@@ -126,43 +126,51 @@
         <div class="card-grid">
             <div v-for="article in articles" :key="article.id">
                 <Card>
-                    <router-link
-                        :to="{
-                            name: 'article',
-                            params: { article_id: article.id },
-                        }"
-                    >
-                        <CardHeader>
-                            <CardDescription style="text-align: right">
-                                <Button
-                                    :variant="
+                    <CardHeader>
+                        <CardDescription
+                            style="
+                                align-items: center;
+                                display: flex;
+                                justify-content: space-between;
+                            "
+                        >
+                            <Button
+                                :variant="
+                                    formatDate(article.created_at) ===
+                                    'Aujourd\'hui'
+                                        ? 'secondary'
+                                        : 'outline'
+                                "
+                            >
+                                <span
+                                    v-if="
                                         formatDate(article.created_at) ===
                                         'Aujourd\'hui'
-                                            ? 'secondary'
-                                            : 'outline'
                                     "
+                                    >Aujourd'hui</span
                                 >
-                                    <span
-                                        v-if="
-                                            formatDate(article.created_at) ===
-                                            'Aujourd\'hui'
-                                        "
-                                        >Aujourd'hui</span
-                                    >
-                                    <span v-else>
-                                        {{
-                                            new Date(
-                                                article.created_at
-                                            ).toLocaleDateString("fr-FR")
-                                        }}
-                                    </span>
-                                </Button>
-                            </CardDescription>
+                                <span v-else>
+                                    {{
+                                        new Date(
+                                            article.created_at
+                                        ).toLocaleDateString("fr-FR")
+                                    }}
+                                </span>
+                            </Button>
+                            <Switch />
+                        </CardDescription>
+
+                        <router-link
+                            :to="{
+                                name: 'article',
+                                params: { article_id: article.id },
+                            }"
+                        >
                             <CardTitle
                                 style="
                                     direction: rtl;
                                     margin-top: 15px;
-                                    margin-bottom: 5px;
+                                    margin-bottom: 10px;
                                     font-weight: normal;
                                     font-size: 30px;
                                 "
@@ -171,35 +179,46 @@
                             <CardDescription style="font-size: 15px">
                                 {{ article.title_french }}
                             </CardDescription>
-                        </CardHeader>
-                    </router-link>
+                        </router-link>
+                    </CardHeader>
 
-                    <CardContent class="grid gap-4">
-                        <Button>
-                            <Button>Relations internationales</Button>
-                        </Button>
+                    <router-link
+                        :to="{
+                            name: 'article',
+                            params: { article_id: article.id },
+                        }"
+                    >
+                        <CardContent class="grid gap-4">
+                            <Button> Relations internationales </Button>
+                            <Button
+                                variant="secondary"
+                                style="margin-left: 12.5px"
+                            >
+                                Débutant
+                            </Button>
 
-                        <div
-                            class="flex items-center space-x-4 rounded-md border p-4"
-                            style="
-                                display: flex;
-                                justify-content: space-between;
-                                margin-top: 25px;
-                            "
-                        >
-                            <section>
-                                <div class="flex-1 space-y-1">
-                                    <p
-                                        class="text-sm"
-                                        style="letter-spacing: 0.7px"
-                                    >
-                                        Terminé
+                            <div
+                                class="flex items-center space-x-4 rounded-md border px-4"
+                                style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin-top: 23.5px;
+                                    padding-top: 11.5px;
+                                    padding-bottom: 10px;
+                                "
+                            >
+                                <section>
+                                    <p style="font-size: 15px">
+                                        Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. A ipsum magnam nulla
+                                        fuga beatae odit mollitia itaque.
+                                        Aliquam accusantium impedit qui
+                                        consequuntur aut enim id nisi.
                                     </p>
-                                </div>
-                            </section>
-                            <section><Switch /></section>
-                        </div>
-                    </CardContent>
+                                </section>
+                            </div>
+                        </CardContent>
+                    </router-link>
                 </Card>
             </div>
         </div>
