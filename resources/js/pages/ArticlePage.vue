@@ -44,24 +44,26 @@
                                         <AlertDialogTrigger>
                                             <Button>
                                                 <svg
+                                                    style="
+                                                        margin-right: -10px;
+                                                        margin-left: 5px;
+                                                    "
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    width="20"
-                                                    height="20"
+                                                    width="16"
+                                                    height="16"
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     stroke="var(--main-color)"
                                                     stroke-width="2"
                                                     stroke-linecap="round"
                                                     stroke-linejoin="round"
-                                                    class="lucide lucide-info"
+                                                    class="lucide lucide-external-link"
                                                 >
-                                                    <circle
-                                                        cx="12"
-                                                        cy="12"
-                                                        r="10"
+                                                    <path d="M15 3h6v6" />
+                                                    <path d="M10 14 21 3" />
+                                                    <path
+                                                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
                                                     />
-                                                    <path d="M12 16v-4" />
-                                                    <path d="M12 8h.01" />
                                                 </svg>
                                             </Button>
                                         </AlertDialogTrigger>
@@ -249,26 +251,26 @@ export default {
             if (this.highlightPropositionsEnabled) {
                 text = text.replace(
                     /<pp>(.*?)<\/pp>/g,
-                    '<span style="color: var(--main-color)">$1</span>'
+                    '<span style="color: var(--main-color);">$1</span>'
                 );
             }
 
             if (this.highlightLieuEnabled) {
                 text = text.replace(
                     /<lieu>(.*?)<\/lieu>/g,
-                    '<span style="padding:5px;background-color: var(--main-color);padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;color:#fbfbfb;">$1</span>'
+                    '<span style="padding-left:7.5px;padding-right:7.5px;background-color: var(--main-color);border-radius:10px;color:white;">$1</span>'
                 );
             }
 
             if (this.highlightAdjectifEnabled) {
                 text = text.replace(
                     /<adj>(.*?)<\/adj>/g,
-                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:dotted 2px var(--main-color);">$1</span>'
+                    '<span style="padding-left:5px;padding-right:5px;border-bottom:dotted 2px var(--main-color);">$1</span>'
                 );
 
                 text = text.replace(
                     /<adj-nom>(.*?)<\/adj-nom>/g,
-                    '<span style="padding:5px;padding-left:7.5px;padding-right:7.5px;border-radius:12.5px;border:solid 2px var(--main-color);">$1</span>'
+                    '<span style="padding-left:5px;padding-right:5px;border-bottom:solid 2px var(--main-color);">$1</span>'
                 );
             }
 
