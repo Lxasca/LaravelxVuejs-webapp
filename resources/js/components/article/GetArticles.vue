@@ -6,13 +6,13 @@
                     <TableHead class="text-center" style="width: 15%">
                         Publié le
                     </TableHead>
-                    <TableHead class="text-center" style="width: 15%">
+                    <TableHead class="text-center" style="width: 10%">
                         Par
                     </TableHead>
                     <TableHead class="text-center" style="width: 45%"
                         >Titre</TableHead
                     >
-                    <TableHead class="text-center" style="width: 15%">
+                    <TableHead class="text-center" style="width: 25%">
                         Catégorie
                     </TableHead>
                     <TableHead
@@ -49,16 +49,17 @@
                             </span>
                         </Button>
                     </TableCell>
-                    <TableCell style="width: 15%">
-                        Léa le sang de la veine</TableCell
-                    >
+                    <TableCell style="width: 10%"> John Doe</TableCell>
                     <TableCell style="width: 45%">
                         <span style="font-size: 30px">
                             {{ article.title }}
                         </span>
                     </TableCell>
-                    <TableCell style="width: 15%">
+                    <TableCell style="width: 25%">
                         <Button>Relations internationales</Button>
+                        <Button variant="secondary" style="margin-left: 12.5px">
+                            Débutant
+                        </Button>
                     </TableCell>
                     <TableCell style="width: 10%">
                         <DropdownMenu>

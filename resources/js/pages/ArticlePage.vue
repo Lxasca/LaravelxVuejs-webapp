@@ -45,7 +45,7 @@
                                             <Button>
                                                 <svg
                                                     style="
-                                                        margin-right: -10px;
+                                                        margin-right: -5px;
                                                         margin-left: 5px;
                                                     "
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,9 @@
                                             </Button>
                                         </AlertDialogTrigger>
                                         <AlertDialogContent>
-                                            <AlertDialogHeader>
+                                            <AlertDialogHeader
+                                                class="divTranslation"
+                                            >
                                                 <AlertDialogTitle
                                                     style="font-size: 45px"
                                                 >
@@ -76,7 +78,9 @@
                                                         traductionArabic
                                                     }}</span></AlertDialogTitle
                                                 >
-                                                <AlertDialogDescription>
+                                                <AlertDialogDescription
+                                                    style="margin-top: 15px"
+                                                >
                                                     <span
                                                         style="
                                                             font-size: 25px;
@@ -193,16 +197,20 @@ export default {
                     label: "Prépositions",
                     action: () => this.highlightPropositions(),
                     enabled: () => this.highlightPropositionsEnabled,
+                    tooltip: "Colorer les prépositions",
                 },
                 {
                     label: "Lieux",
                     action: () => this.highlightLieu(),
                     enabled: () => this.highlightLieuEnabled,
+                    tooltip: "Entourer les noms de lieux",
                 },
                 {
                     label: "Adjectifs - noms",
                     action: () => this.highlightAdjectif(),
                     enabled: () => this.highlightAdjectifEnabled,
+                    tooltip:
+                        "Souligner les adjectifs avec des pointillés et les noms qui s'y réfèrent avec une ligne",
                 },
             ],
         };
@@ -362,10 +370,9 @@ export default {
     right: -2px;
     font-size: 15px;
 }
-.div-translation {
+.divTranslation {
+    padding-top: 25px;
     text-align: center;
-    font-size: 20px;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 h5 {
@@ -387,5 +394,6 @@ h5 {
     text-align: left;
 
     padding-left: 25px;
+    margin-top: 15px;
 }
 </style>

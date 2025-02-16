@@ -2,78 +2,129 @@
     <div id="actions-article">
         <div class="d-flex-between responsive-margin">
             <section class="d-flex-align">
-                <Button
-                    variant="outline"
-                    style="margin-right: 10px; margin-top: 10px"
-                >
-                    Taille de la police
-                    <input
-                        type="range"
-                        :value="fontSize"
-                        @input="
-                            $emit(
-                                'update:fontSize',
-                                parseInt($event.target.value)
-                            )
-                        "
-                        min="38"
-                        max="60"
-                        class="input-policy"
-                    />
-                </Button>
-                <Button
-                    @click="toggleHelp"
-                    :variant="isShowHelp ? '' : 'outline'"
-                    style="margin-right: 10px; margin-top: 10px"
-                    >Vocabulaire</Button
-                >
-                <Button
-                    style="margin-right: 10px; margin-top: 10px"
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                variant="outline"
+                                style="margin-right: 10px; margin-top: 10px"
+                            >
+                                Taille de la police
+                                <input
+                                    type="range"
+                                    :value="fontSize"
+                                    @input="
+                                        $emit(
+                                            'update:fontSize',
+                                            parseInt($event.target.value)
+                                        )
+                                    "
+                                    min="38"
+                                    max="60"
+                                    class="input-policy"
+                                />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Agrandir et réduire la taille de la police</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                @click="toggleHelp"
+                                :variant="isShowHelp ? '' : 'outline'"
+                                style="margin-right: 10px; margin-top: 10px"
+                                >Vocabulaire</Button
+                            >
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>Afficher l'aide aux vocabulaires</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+
+                <TooltipProvider
                     v-for="(item, index) in buttonConfig"
                     :key="index"
-                    @click="item.action"
-                    :variant="item.enabled() ? '' : 'outline'"
-                    >{{ item.label }}</Button
                 >
+                    <Tooltip>
+                        <TooltipTrigger>
+                            <Button
+                                style="margin-right: 10px; margin-top: 10px"
+                                @click="item.action"
+                                :variant="item.enabled() ? '' : 'outline'"
+                                >{{ item.label }}</Button
+                            >
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>
+                                {{ item.tooltip }}
+                            </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </section>
 
-            <Button
-                @click="toggleLanguage"
-                :variant="isSwitchedContent ? '' : 'outline'"
-                alt="Changer la langue"
-                class="pointer"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-languages"
-                >
-                    <path d="m5 8 6 6" />
-                    <path d="m4 14 6-6 2-3" />
-                    <path d="M2 5h12" />
-                    <path d="M7 2h1" />
-                    <path d="m22 22-5-10-5 10" />
-                    <path d="M14 18h6" />
-                </svg>
-            </Button>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger
+                        ><Button
+                            @click="toggleLanguage"
+                            :variant="isSwitchedContent ? '' : 'outline'"
+                            alt="Changer la langue"
+                            class="pointer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-languages"
+                            >
+                                <path d="m5 8 6 6" />
+                                <path d="m4 14 6-6 2-3" />
+                                <path d="M2 5h12" />
+                                <path d="M7 2h1" />
+                                <path d="m22 22-5-10-5 10" />
+                                <path d="M14 18h6" />
+                            </svg> </Button
+                    ></TooltipTrigger>
+                    <TooltipContent>
+                        <p v-if="isSwitchedContent">Retirer la traduction</p>
+                        <p v-else>Afficher la traduction</p>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
         </div>
     </div>
 </template>
 
 <script>
 import { Button } from "../../../../src/components/ui/button";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "../../../../src/components/ui/tooltip";
 
 export default {
     name: "ActionsArticle",
     components: {
         Button,
+        Tooltip,
+        TooltipContent,
+        TooltipProvider,
+        TooltipTrigger,
     },
     props: {
         isShowHelp: Boolean,
