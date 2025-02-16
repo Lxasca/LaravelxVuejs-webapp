@@ -1,21 +1,8 @@
 <template>
-    <div id="head-article">
-        <section>
-            <button class="button-createdAt btn-0">
-                {{ new Date(article.created_at).toLocaleDateString("fr-FR") }}
-            </button>
-        </section>
-
+    <div id="head-article" class="direction-text-right">
         <section>
             <h5>
                 <span>{{ article.title }}</span>
-
-                <!--<img
-                    @click="changeLanguage()"
-                    src="../../../images/exercises/translate.png"
-                    width="20px"
-                    alt=""
-                />-->
             </h5>
         </section>
     </div>
@@ -33,21 +20,8 @@ export default {
 </script>
 <style scoped>
 #head-article {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    font-size: 20px;
-
-    background-color: #fbfbfb;
-    margin-bottom: 35px;
-
-    height: 80px;
-
-    padding: 28px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 7.5px;
+    padding-right: 28px;
+    padding-bottom: 10px;
 }
 
 /** responsive **/

@@ -17,6 +17,7 @@
                     v-model:showTranslation="showTranslation"
                     v-model:isSwitchedContent="isSwitchedContent"
                     :buttonConfig="buttonConfig"
+                    style="margin-top: 22.5px; margin-bottom: 35px"
                 ></actions-article>
 
                 <div class="d-flex-center">
@@ -269,13 +270,7 @@ export default {
 }
 .section-article {
     padding-left: 40px;
-    background-color: #fbfbfb;
-    margin-bottom: 35px;
-
-    padding: 27.5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 7.5px;
+    padding-right: 20px;
 }
 
 .clickable-number {
@@ -291,24 +286,7 @@ export default {
 .div-translation {
     text-align: center;
     font-size: 20px;
-    border-radius: 7.5px;
-    height: 55px;
-
-    width: 50%;
-
-    background-color: #262626;
-    color: #fbfbfb;
-
-    position: fixed;
-    bottom: 0;
-    margin-bottom: 12.5px;
-    border-radius: 7.5px;
-
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-
-    p {
-        margin-top: -12px;
-    }
 }
 
 h5 {
