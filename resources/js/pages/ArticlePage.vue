@@ -3,7 +3,7 @@
         <section
             :style="{
                 fontSize: fontSize + 'px',
-                lineHeight: fontSize * 2.2 + 'px',
+                lineHeight: fontSize * 1.8 + 'px',
             }"
         >
             <div>
@@ -20,26 +20,13 @@
                     style="margin-top: 22.5px; margin-bottom: 35px"
                 ></actions-article>
 
-                <div class="d-flex-center">
-                    <section class="div-translation" v-if="showTranslation">
-                        <p>
-                            <span>{{ traductionArabic }}</span>
-                            <span
-                                style="
-                                    margin-left: 17.5px;
-                                    margin-right: 17.5px;
-                                    font-style: italic;
-                                "
-                                >{{ transcriptionArabic }}</span
-                            >
-                            <span>{{ traductionFrancais }}</span>
-                        </p>
-                    </section>
-                </div>
-
                 <!-- article -->
                 <section class="section-article">
-                    <div v-for="i in numberOfContent" :key="i">
+                    <div
+                        v-for="i in numberOfContent"
+                        :key="i"
+                        style="margin-bottom: 40px"
+                    >
                         <p class="direction-text-right">
                             <span
                                 :style="{ unicodeBidi: 'plaintext' }"
@@ -53,12 +40,75 @@
                                     class="clickable-number"
                                     @click="handleClick(match.id)"
                                 >
-                                    <img
-                                        src="../../images/exercises/interrogation2.png"
-                                        width="30px"
-                                        class="rotate-0"
-                                        v-if="isShowHelp"
-                                    />
+                                    <AlertDialog v-if="isShowHelp">
+                                        <AlertDialogTrigger>
+                                            <Button>
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    width="20"
+                                                    height="20"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="var(--main-color)"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    class="lucide lucide-info"
+                                                >
+                                                    <circle
+                                                        cx="12"
+                                                        cy="12"
+                                                        r="10"
+                                                    />
+                                                    <path d="M12 16v-4" />
+                                                    <path d="M12 8h.01" />
+                                                </svg>
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle
+                                                    style="font-size: 45px"
+                                                >
+                                                    <span>{{
+                                                        traductionArabic
+                                                    }}</span></AlertDialogTitle
+                                                >
+                                                <AlertDialogDescription>
+                                                    <span
+                                                        style="
+                                                            font-size: 25px;
+                                                            font-style: italic;
+                                                        "
+                                                        >{{
+                                                            transcriptionArabic
+                                                        }}</span
+                                                    >
+                                                </AlertDialogDescription>
+                                                <AlertDialogTitle
+                                                    style="
+                                                        font-size: 30px;
+                                                        margin-top: 25px;
+                                                    "
+                                                >
+                                                    <span
+                                                        style="
+                                                            font-weight: bold;
+                                                        "
+                                                        >{{
+                                                            traductionFrancais
+                                                        }}</span
+                                                    ></AlertDialogTitle
+                                                >
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogAction
+                                                    style="margin-top: 15px"
+                                                    >J'ai compris !
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </span>
 
                                 <span v-else>
@@ -94,10 +144,33 @@
 import axios from "axios";
 import HeadArticle from "../components/article/HeadArticle.vue";
 import ActionsArticle from "../components/article/ActionsArticle.vue";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "../../../src/components/ui/alert-dialog";
 
 export default {
     name: "ArticlePage",
-    components: { HeadArticle, ActionsArticle },
+    components: {
+        HeadArticle,
+        ActionsArticle,
+        AlertDialog,
+        AlertDialogAction,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle,
+        AlertDialogTrigger,
+    },
     data() {
         return {
             numberOfContent: 2,
@@ -258,8 +331,8 @@ export default {
 
 <style lang="scss">
 #article-page {
-    padding-left: 2.5%;
-    padding-right: 2.5%;
+    padding-left: 5%;
+    padding-right: 5%;
 
     padding-top: 0px;
     padding-bottom: 0px;
@@ -271,6 +344,10 @@ export default {
 .section-article {
     padding-left: 40px;
     padding-right: 20px;
+
+    margin-top: 40px;
+
+    padding-bottom: 50px;
 }
 
 .clickable-number {
