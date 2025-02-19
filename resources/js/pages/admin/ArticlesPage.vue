@@ -57,21 +57,48 @@
                     <div class="section-article">
                         <section>
                             <div class="grid w-full gap-1.5">
-                                <Label for="message-2"
-                                    >Paragraphe 1 - Arabe</Label
+                                <div
+                                    style="
+                                        display: flex;
+                                        justify-content: start;
+                                    "
                                 >
-                                <p class="text-sm text-muted-foreground">
-                                    &lt;pp/&gt;&lt;pp&gt; pour les prépositions,
-                                    &lt;lieu/&gt;&lt;lieu&gt; pour les lieux,
-                                    &lt;adj/&gt;&lt;adj&gt; pour les adjectifs,
-                                    &lt;adj-nom/&gt;&lt;adj-nom&gt; pour les
-                                    noms aux quels se réfèrent les adjectifs.
-                                </p>
+                                    <ToggleGroup type="multiple">
+                                        <ToggleGroupItem
+                                            style="
+                                                box-shadow: 0 1px 3px
+                                                        rgba(0, 0, 0, 0.04),
+                                                    0 1px 2px
+                                                        rgba(0, 0, 0, 0.02);
+                                                background-color: black;
+                                                color: white;
+                                                font-weight: normal;
+                                                font-size: 13px;
+                                                letter-spacing: 0.7px;
+                                            "
+                                            value="pp"
+                                            @click="wrapSelectionWithPP"
+                                        >
+                                            Preposition
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem value="italic">
+                                            Lieux
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem value="underline">
+                                            Adjectif
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem value="underline">
+                                            Nom
+                                        </ToggleGroupItem>
+                                    </ToggleGroup>
+                                </div>
 
                                 <Textarea
+                                    ref="textarea"
                                     id="message-2"
                                     class="direction-text-right input-learn"
                                     v-model="formData.content"
+                                    @mouseup="captureSelection"
                                 />
                             </div>
                         </section>
@@ -166,10 +193,24 @@ import axios from "axios";
 import GetArticles from "../../components/article/GetArticles.vue";
 import { Textarea } from "../../../../src/components/ui/textarea";
 import { Label } from "../../../../src/components/ui/label";
+import {
+    ToggleGroup,
+    ToggleGroupItem,
+} from "../../../../src/components/ui/toggle-group";
+import { FontBoldIcon, FontItalicIcon, UnderlineIcon } from "@radix-icons/vue";
 
 export default {
     name: "ArticlesPageAdmin",
-    components: { GetArticles, Textarea, Label },
+    components: {
+        GetArticles,
+        Textarea,
+        Label,
+        ToggleGroup,
+        ToggleGroupItem,
+        FontBoldIcon,
+        FontItalicIcon,
+        UnderlineIcon,
+    },
     data() {
         return {
             isForm: false,
@@ -185,12 +226,76 @@ export default {
             },
             articles: {},
             isAdmin: true,
+            selection: "",
         };
     },
     mounted() {
         this.getArticles();
+        const textarea = this.$refs.textarea;
+        if (textarea) {
+            textarea.addEventListener("select", this.captureSelection);
+        }
+    },
+    beforeDestroy() {
+        const textarea = this.$refs.textarea;
+        if (textarea) {
+            textarea.removeEventListener("select", this.captureSelection);
+        }
     },
     methods: {
+        captureSelection() {
+            const textarea = this.$refs.textarea.$el || this.$refs.textarea;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            console.log(selectedText);
+        },
+        wrapSelectionWithPP() {
+            // selectionne tous les textarea avec la classe .input-learn
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+
+                if (selectedText) {
+                    const cursorPosition = textarea.selectionStart;
+                    const textBefore = textarea.value.substring(
+                        0,
+                        cursorPosition
+                    );
+                    const textAfter = textarea.value.substring(
+                        textarea.selectionEnd
+                    );
+
+                    // Ajouter les balises <pp> autour du texte sélectionné
+                    const newText =
+                        textBefore +
+                        "<pp>" +
+                        selectedText +
+                        "</pp>" +
+                        textAfter;
+
+                    // Mettre à jour la valeur du textarea
+                    textarea.value = newText;
+
+                    // Mettre à jour le v-model
+                    this.formData.content = newText;
+
+                    // Réinitialiser la sélection
+                    const newCursorPosition =
+                        cursorPosition +
+                        "<pp>".length +
+                        selectedText.length +
+                        "</pp>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        ///
         toggleForm(edit = null, article = null) {
             if (edit === "edit" && article) {
                 this.isForm = false;
@@ -262,6 +367,7 @@ export default {
                 }));
             });
         },
+        ////
     },
 };
 </script>
