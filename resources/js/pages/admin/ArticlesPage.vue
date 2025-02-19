@@ -56,35 +56,96 @@
 
                     <div class="section-article">
                         <section>
-                            <textarea
-                                class="input input-content direction-text-right input-learn"
-                                placeholder="Paragraphe 1 en arabe"
-                                v-model="formData.content"
-                            ></textarea>
+                            <div class="grid w-full gap-1.5">
+                                <Label for="message-2"
+                                    >Paragraphe 1 - Arabe</Label
+                                >
+                                <p class="text-sm text-muted-foreground">
+                                    &lt;pp/&gt;&lt;pp&gt; pour les prépositions,
+                                    &lt;lieu/&gt;&lt;lieu&gt; pour les lieux,
+                                    &lt;adj/&gt;&lt;adj&gt; pour les adjectifs,
+                                    &lt;adj-nom/&gt;&lt;adj-nom&gt; pour les
+                                    noms aux quels se réfèrent les adjectifs.
+                                </p>
+
+                                <Textarea
+                                    id="message-2"
+                                    class="direction-text-right input-learn"
+                                    v-model="formData.content"
+                                />
+                            </div>
                         </section>
 
                         <section>
-                            <textarea
-                                class="input input-content input-translate"
-                                placeholder="Paragraphe 1 en français"
-                                v-model="formData.content_french"
-                            ></textarea>
+                            <div class="grid w-full gap-1.5">
+                                <Label for="message-2"
+                                    >Paragraphe 1 - Francais</Label
+                                >
+                                <p class="text-sm text-muted-foreground"></p>
+
+                                <Textarea
+                                    id="message-2"
+                                    class="input-fr"
+                                    v-model="formData.content_french"
+                                />
+                            </div>
+                        </section>
+
+                        <div
+                            class="d-flex-center"
+                            style="margin-bottom: 75px; margin-top: 75px"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="20"
+                                height="20"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-chevrons-up-down"
+                            >
+                                <path d="m7 15 5 5 5-5" />
+                                <path d="m7 9 5-5 5 5" />
+                            </svg>
+                        </div>
+
+                        <section>
+                            <div class="grid w-full gap-1.5">
+                                <Label for="message-2"
+                                    >Paragraphe 2 - Arabe</Label
+                                >
+                                <p class="text-sm text-muted-foreground">
+                                    &lt;pp/&gt;&lt;pp&gt; pour les prépositions,
+                                    &lt;lieu/&gt;&lt;lieu&gt; pour les lieux,
+                                    &lt;adj/&gt;&lt;adj&gt; pour les adjectifs,
+                                    &lt;adj-nom/&gt;&lt;adj-nom&gt; pour les
+                                    noms aux quels se réfèrent les adjectifs.
+                                </p>
+
+                                <Textarea
+                                    id="message-2"
+                                    class="direction-text-right input-learn"
+                                    v-model="formData.content_2"
+                                />
+                            </div>
                         </section>
 
                         <section>
-                            <textarea
-                                class="input input-content direction-text-right input-learn"
-                                placeholder="Paragraphe 2 en arabe"
-                                v-model="formData.content_2"
-                            ></textarea>
-                        </section>
+                            <div class="grid w-full gap-1.5">
+                                <Label for="message-2"
+                                    >Paragraphe 2 - Français</Label
+                                >
+                                <p class="text-sm text-muted-foreground"></p>
 
-                        <section>
-                            <textarea
-                                class="input input-content input-translate"
-                                placeholder="Paragraphe 2 en français"
-                                v-model="formData.content_2_french"
-                            ></textarea>
+                                <Textarea
+                                    id="message-2"
+                                    class="input-fr"
+                                    v-model="formData.content_2_french"
+                                />
+                            </div>
                         </section>
                     </div>
 
@@ -103,10 +164,12 @@
 <script>
 import axios from "axios";
 import GetArticles from "../../components/article/GetArticles.vue";
+import { Textarea } from "../../../../src/components/ui/textarea";
+import { Label } from "../../../../src/components/ui/label";
 
 export default {
     name: "ArticlesPageAdmin",
-    components: { GetArticles },
+    components: { GetArticles, Textarea, Label },
     data() {
         return {
             isForm: false,
@@ -225,12 +288,6 @@ export default {
     border-radius: 7.5px;
 }
 .section-article {
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-
-    border-radius: 7.5px;
-
-    background-color: #fbfbfb;
     margin-bottom: 35px;
 
     padding: 27.5px;
@@ -239,31 +296,24 @@ export default {
 
     padding-left: 2.5%;
     padding-right: 2.5%;
-
-    textarea {
-        width: 100%;
-        margin-bottom: 27.5px;
-
-        padding: 5px;
-        min-height: 150px;
-    }
 }
 
-.input-titre {
+/**.input-titre {
     width: 1000px;
+}**/
+textarea:focus {
+    box-shadow: none !important;
 }
-
-input,
-textarea {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    //box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    border-radius: 7.5px;
-}
-
 .input-learn {
-    font-size: 38px;
+    font-size: 30px;
+    line-height: 50px;
+    min-height: 200px;
+}
+.input-fr {
+    font-size: 17px;
+    line-height: 25px;
+
+    min-height: 100px;
 }
 .input-translate {
     font-size: 20px;
@@ -272,5 +322,8 @@ textarea {
 #articles-page {
     padding-left: 50px;
     padding-right: 50px;
+}
+.grid {
+    margin-bottom: 50px;
 }
 </style>
