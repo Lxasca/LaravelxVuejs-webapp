@@ -79,6 +79,84 @@
                                     "
                                 >
                                     <ToggleGroup type="multiple">
+                                        <Combobox
+                                            by="label"
+                                            v-model="value"
+                                            @update:modelValue="handleSelection"
+                                            style="margin-right: 5px"
+                                        >
+                                            <ComboboxAnchor as-child>
+                                                <ComboboxTrigger as-child>
+                                                    <Button
+                                                        variant="outline"
+                                                        class="justify-between"
+                                                    >
+                                                        {{
+                                                            value?.label ??
+                                                            "Selectionner un mot"
+                                                        }}
+
+                                                        <ChevronsUpDown
+                                                            class="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                                        />
+                                                    </Button>
+                                                </ComboboxTrigger>
+                                            </ComboboxAnchor>
+
+                                            <ComboboxList>
+                                                <div
+                                                    class="relative w-full max-w-sm items-center"
+                                                >
+                                                    <ComboboxInput
+                                                        class="pl-9 focus-visible:ring-0 border-0 border-b rounded-none h-10"
+                                                        placeholder="Rechercher ..."
+                                                    />
+                                                </div>
+
+                                                <ComboboxEmpty>
+                                                    Aucun résultat.
+                                                </ComboboxEmpty>
+
+                                                <ComboboxGroup>
+                                                    <ComboboxItem
+                                                        v-for="framework in frameworks"
+                                                        :key="framework.value"
+                                                        :value="framework"
+                                                    >
+                                                        <div
+                                                            style="
+                                                                font-size: 16px;
+                                                            "
+                                                        >
+                                                            {{
+                                                                framework.value
+                                                            }}
+                                                            {{
+                                                                framework.label
+                                                            }}
+                                                        </div>
+
+                                                        <ComboboxItemIndicator>
+                                                            <Check
+                                                                class="ml-auto h-4 w-4"
+                                                            />
+                                                        </ComboboxItemIndicator>
+                                                    </ComboboxItem>
+                                                </ComboboxGroup>
+                                            </ComboboxList>
+                                        </Combobox>
+
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            style="
+                                                background-color: black;
+                                                color: white;
+                                            "
+                                            value="vocabulary"
+                                            @click="wrapSelectionWithVocabulary"
+                                        >
+                                            Insérer le mot
+                                        </ToggleGroupItem>
                                         <ToggleGroupItem
                                             class="toggle-group-item"
                                             value="pp"
@@ -175,6 +253,84 @@
                                     "
                                 >
                                     <ToggleGroup type="multiple">
+                                        <Combobox
+                                            by="label"
+                                            v-model="value"
+                                            @update:modelValue="handleSelection"
+                                            style="margin-right: 5px"
+                                        >
+                                            <ComboboxAnchor as-child>
+                                                <ComboboxTrigger as-child>
+                                                    <Button
+                                                        variant="outline"
+                                                        class="justify-between"
+                                                    >
+                                                        {{
+                                                            value?.label ??
+                                                            "Selectionner un mot"
+                                                        }}
+
+                                                        <ChevronsUpDown
+                                                            class="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                                        />
+                                                    </Button>
+                                                </ComboboxTrigger>
+                                            </ComboboxAnchor>
+
+                                            <ComboboxList>
+                                                <div
+                                                    class="relative w-full max-w-sm items-center"
+                                                >
+                                                    <ComboboxInput
+                                                        class="pl-9 focus-visible:ring-0 border-0 border-b rounded-none h-10"
+                                                        placeholder="Rechercher ..."
+                                                    />
+                                                </div>
+
+                                                <ComboboxEmpty>
+                                                    Aucun résultat.
+                                                </ComboboxEmpty>
+
+                                                <ComboboxGroup>
+                                                    <ComboboxItem
+                                                        v-for="framework in frameworks"
+                                                        :key="framework.value"
+                                                        :value="framework"
+                                                    >
+                                                        <div
+                                                            style="
+                                                                font-size: 16px;
+                                                            "
+                                                        >
+                                                            {{
+                                                                framework.value
+                                                            }}
+                                                            {{
+                                                                framework.label
+                                                            }}
+                                                        </div>
+
+                                                        <ComboboxItemIndicator>
+                                                            <Check
+                                                                class="ml-auto h-4 w-4"
+                                                            />
+                                                        </ComboboxItemIndicator>
+                                                    </ComboboxItem>
+                                                </ComboboxGroup>
+                                            </ComboboxList>
+                                        </Combobox>
+
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            style="
+                                                background-color: black;
+                                                color: white;
+                                            "
+                                            value="vocabulary"
+                                            @click="wrapSelectionWithVocabulary"
+                                        >
+                                            Insérer le mot
+                                        </ToggleGroupItem>
                                         <ToggleGroupItem
                                             class="toggle-group-item"
                                             value="pp"
@@ -255,10 +411,39 @@ import {
     ToggleGroupItem,
 } from "../../../../src/components/ui/toggle-group";
 import { FontBoldIcon, FontItalicIcon, UnderlineIcon } from "@radix-icons/vue";
+import { cn } from "../../../../src/lib/utils";
+import {
+    Combobox,
+    ComboboxAnchor,
+    ComboboxEmpty,
+    ComboboxGroup,
+    ComboboxInput,
+    ComboboxItem,
+    ComboboxItemIndicator,
+    ComboboxList,
+    ComboboxTrigger,
+} from "../../../../src/components/ui/combobox";
+import { Check, ChevronsUpDown, Search } from "lucide-vue-next";
+import { ref } from "vue";
 
 export default {
     name: "ArticlesPageAdmin",
     components: {
+        cn,
+        Button,
+        Combobox,
+        ComboboxAnchor,
+        ComboboxEmpty,
+        ComboboxGroup,
+        ComboboxInput,
+        ComboboxItem,
+        ComboboxItemIndicator,
+        ComboboxList,
+        ComboboxTrigger,
+        Check,
+        ChevronsUpDown,
+        Search,
+        ref,
         Input,
         GetArticles,
         Textarea,
@@ -286,10 +471,16 @@ export default {
             articles: {},
             isAdmin: true,
             selection: "",
+            frameworks: [
+                //{ value: "ici le word en arabe", label: "ici la trad", id: 3 }
+            ],
+            value: null,
+            selectedVocabularyId: null,
         };
     },
     mounted() {
         this.getArticles();
+        this.getVocabularies();
         const textarea = this.$refs.textarea;
         if (textarea) {
             textarea.addEventListener("select", this.captureSelection);
@@ -302,6 +493,17 @@ export default {
         }
     },
     methods: {
+        handleSelection(selected) {
+            this.selectedVocabularyId = selected.id;
+        },
+        getVocabularies() {
+            // requête axios pour récupérer toutes les instances de Vocabularies
+            // dans frameworks
+
+            axios.get(`/get-vocabularies`).then((response) => {
+                this.frameworks = response.data;
+            });
+        },
         captureSelection() {
             const textarea = this.$refs.textarea.$el || this.$refs.textarea;
             const start = textarea.selectionStart;
@@ -482,6 +684,47 @@ export default {
                         "<adj-nom>".length +
                         selectedText.length +
                         "</adj-nom>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        wrapSelectionWithVocabulary() {
+            if (!this.selectedVocabularyId) {
+                return;
+            }
+
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+
+                if (selectedText) {
+                    const cursorPosition = textarea.selectionStart;
+                    const textBefore = textarea.value.substring(
+                        0,
+                        cursorPosition
+                    );
+                    const textAfter = textarea.value.substring(
+                        textarea.selectionEnd
+                    );
+
+                    const newText =
+                        textBefore +
+                        selectedText +
+                        `<${this.selectedVocabularyId}>` +
+                        textAfter;
+
+                    textarea.value = newText;
+                    this.formData.content = newText;
+
+                    const newCursorPosition =
+                        cursorPosition +
+                        selectedText.length +
+                        `<${this.selectedVocabularyId}>`.length;
                     textarea.setSelectionRange(
                         newCursorPosition,
                         newCursorPosition

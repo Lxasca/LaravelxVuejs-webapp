@@ -28,4 +28,19 @@ class VocabulariesController extends Controller
 
         return response()->json($vocabulary);
     }
+
+    public function getAllVocabularies()
+    {
+        $vocabularies = Vocabularies::all(['id', 'word', 'traduction_arabic'])
+            ->map(function ($vocabulary) {
+                return [
+                    'value' => $vocabulary->word,
+                    'label' => $vocabulary->traduction_arabic,
+                    'id'    => $vocabulary->id,
+                ];
+            });
+
+        return response()->json($vocabularies);
+    }
+
 }

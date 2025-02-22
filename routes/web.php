@@ -46,6 +46,8 @@ Route::post('/admin/create-article', [AdminArticleController::class, 'store']);
 Route::put('/admin/edit-article/{id}', [AdminArticleController::class, 'edit']);
 Route::delete('/admin/edit-article/{id}', [AdminArticleController::class, 'destroy']);
 
+Route::get('/get-vocabularies', [VocabulariesController::class, 'getAllVocabularies']);
+
 
 Route::get('/{any}', function () {
     return view('welcome');
