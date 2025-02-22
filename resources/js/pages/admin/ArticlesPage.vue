@@ -19,33 +19,43 @@
             <section v-if="isForm || isFormEdit">
                 <form @submit.prevent="formSubmit">
                     <div id="head-article">
-                        <section>
-                            <h5>
-                                <input
-                                    v-if="switchLanguage"
+                        <section
+                            style="
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-evenly;
+                            "
+                        >
+                            <div v-if="switchLanguage">
+                                <Label>Titre - Arabe</Label>
+                                <Input
                                     type="text"
                                     class="input direction-text-right input-title"
-                                    placeholder="Titre en arabe"
                                     v-model="formData.title"
                                 />
+                            </div>
 
-                                <input
-                                    v-else
+                            <div v-else>
+                                <Label>Titre - Francais</Label>
+                                <Input
                                     type="text"
                                     class="input input-title"
-                                    placeholder="Titre en français"
                                     v-model="formData.title_french"
                                 />
+                            </div>
 
-                                <img
-                                    @click="toggleLanguage"
-                                    src="../../../images/exercises/translate.png"
-                                    width="20px"
-                                    alt="Changer la langue"
-                                    class="pointer"
-                                    style="margin-top: 20px"
-                                />
-                            </h5>
+                            <img
+                                @click="toggleLanguage"
+                                src="../../../images/exercises/translate.png"
+                                width="20px"
+                                alt="Changer la langue"
+                                class="pointer"
+                                style="
+                                    margin-top: 40px;
+                                    margin-left: 20px;
+                                    cursor: pointer;
+                                "
+                            />
                         </section>
                     </div>
 
@@ -223,8 +233,8 @@
 
                     <section class="d-flex-center">
                         <Button type="submit">
-                            <span v-if="isForm"> Créer </span>
-                            <span v-else>Editer</span>
+                            <span v-if="isForm"> Créer l'article</span>
+                            <span v-else>Editer l'article</span>
                         </Button>
                     </section>
                 </form>
@@ -239,6 +249,7 @@ import GetArticles from "../../components/article/GetArticles.vue";
 import { Textarea } from "../../../../src/components/ui/textarea";
 import { Label } from "../../../../src/components/ui/label";
 import { Button } from "../../../../src/components/ui/button";
+import { Input } from "../../../../src/components/ui/input";
 import {
     ToggleGroup,
     ToggleGroupItem,
@@ -248,6 +259,7 @@ import { FontBoldIcon, FontItalicIcon, UnderlineIcon } from "@radix-icons/vue";
 export default {
     name: "ArticlesPageAdmin",
     components: {
+        Input,
         GetArticles,
         Textarea,
         Label,
@@ -614,8 +626,15 @@ textarea:focus {
     margin-right: 5px;
 }
 .input-title {
-    width: 1325px;
-    margin-top: 25px;
+    width: 1310px;
+    margin-top: 5px;
     font-weight: lighter;
+
+    font-size: 34px;
+
+    padding-top: 35px !important;
+    padding-bottom: 35px !important;
+
+    font-weight: 400;
 }
 </style>
