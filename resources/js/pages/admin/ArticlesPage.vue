@@ -57,37 +57,49 @@
                     <div class="section-article">
                         <section>
                             <div class="grid w-full gap-1.5">
+                                <Label for="message-2"
+                                    >Paragraphe 1 - Arabe</Label
+                                >
+                                <p class="text-sm text-muted-foreground">
+                                    Mettez en page le paragraphe avec les
+                                    différentes options disponibles ci-dessous.
+                                </p>
+
                                 <div
                                     style="
+                                        margin-top: 5px;
                                         display: flex;
                                         justify-content: start;
+                                        margin-bottom: 7px;
                                     "
                                 >
                                     <ToggleGroup type="multiple">
                                         <ToggleGroupItem
-                                            style="
-                                                box-shadow: 0 1px 3px
-                                                        rgba(0, 0, 0, 0.04),
-                                                    0 1px 2px
-                                                        rgba(0, 0, 0, 0.02);
-                                                background-color: black;
-                                                color: white;
-                                                font-weight: normal;
-                                                font-size: 13px;
-                                                letter-spacing: 0.7px;
-                                            "
+                                            class="toggle-group-item"
                                             value="pp"
                                             @click="wrapSelectionWithPP"
                                         >
                                             Preposition
                                         </ToggleGroupItem>
-                                        <ToggleGroupItem value="italic">
-                                            Lieux
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="lieu"
+                                            @click="wrapSelectionWithLieu"
+                                        >
+                                            Lieu
                                         </ToggleGroupItem>
-                                        <ToggleGroupItem value="underline">
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="adj"
+                                            @click="wrapSelectionWithAdj"
+                                        >
                                             Adjectif
                                         </ToggleGroupItem>
-                                        <ToggleGroupItem value="underline">
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="adj-nom"
+                                            @click="wrapSelectionWithAdjNom"
+                                        >
                                             Nom
                                         </ToggleGroupItem>
                                     </ToggleGroup>
@@ -145,17 +157,55 @@
                                     >Paragraphe 2 - Arabe</Label
                                 >
                                 <p class="text-sm text-muted-foreground">
-                                    &lt;pp/&gt;&lt;pp&gt; pour les prépositions,
-                                    &lt;lieu/&gt;&lt;lieu&gt; pour les lieux,
-                                    &lt;adj/&gt;&lt;adj&gt; pour les adjectifs,
-                                    &lt;adj-nom/&gt;&lt;adj-nom&gt; pour les
-                                    noms aux quels se réfèrent les adjectifs.
+                                    Mettez en page le paragraphe avec les
+                                    différentes options disponibles ci-dessous.
                                 </p>
+
+                                <div
+                                    style="
+                                        margin-top: 5px;
+                                        display: flex;
+                                        justify-content: start;
+                                        margin-bottom: 7px;
+                                    "
+                                >
+                                    <ToggleGroup type="multiple">
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="pp"
+                                            @click="wrapSelectionWithPP"
+                                        >
+                                            Preposition
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="lieu"
+                                            @click="wrapSelectionWithLieu"
+                                        >
+                                            Lieu
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="adj"
+                                            @click="wrapSelectionWithAdj"
+                                        >
+                                            Adjectif
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="adj-nom"
+                                            @click="wrapSelectionWithAdjNom"
+                                        >
+                                            Nom
+                                        </ToggleGroupItem>
+                                    </ToggleGroup>
+                                </div>
 
                                 <Textarea
                                     id="message-2"
                                     class="direction-text-right input-learn"
                                     v-model="formData.content_2"
+                                    @mouseup="captureSelection"
                                 />
                             </div>
                         </section>
@@ -248,7 +298,7 @@ export default {
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
             const selectedText = textarea.value.substring(start, end);
-            console.log(selectedText);
+            //console.log(selectedText);
         },
         wrapSelectionWithPP() {
             // selectionne tous les textarea avec la classe .input-learn
@@ -288,6 +338,141 @@ export default {
                         "<pp>".length +
                         selectedText.length +
                         "</pp>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        wrapSelectionWithLieu() {
+            // selectionne tous les textarea avec la classe .input-learn
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+
+                if (selectedText) {
+                    const cursorPosition = textarea.selectionStart;
+                    const textBefore = textarea.value.substring(
+                        0,
+                        cursorPosition
+                    );
+                    const textAfter = textarea.value.substring(
+                        textarea.selectionEnd
+                    );
+
+                    // Ajouter les balises <pp> autour du texte sélectionné
+                    const newText =
+                        textBefore +
+                        "<lieu>" +
+                        selectedText +
+                        "</lieu>" +
+                        textAfter;
+
+                    // Mettre à jour la valeur du textarea
+                    textarea.value = newText;
+
+                    // Mettre à jour le v-model
+                    this.formData.content = newText;
+
+                    // Réinitialiser la sélection
+                    const newCursorPosition =
+                        cursorPosition +
+                        "<lieu>".length +
+                        selectedText.length +
+                        "</lieu>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        wrapSelectionWithAdj() {
+            // selectionne tous les textarea avec la classe .input-learn
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+
+                if (selectedText) {
+                    const cursorPosition = textarea.selectionStart;
+                    const textBefore = textarea.value.substring(
+                        0,
+                        cursorPosition
+                    );
+                    const textAfter = textarea.value.substring(
+                        textarea.selectionEnd
+                    );
+
+                    // Ajouter les balises <pp> autour du texte sélectionné
+                    const newText =
+                        textBefore +
+                        "<adj>" +
+                        selectedText +
+                        "</adj>" +
+                        textAfter;
+
+                    // Mettre à jour la valeur du textarea
+                    textarea.value = newText;
+
+                    // Mettre à jour le v-model
+                    this.formData.content = newText;
+
+                    // Réinitialiser la sélection
+                    const newCursorPosition =
+                        cursorPosition +
+                        "<adj>".length +
+                        selectedText.length +
+                        "</adj>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        wrapSelectionWithAdjNom() {
+            // selectionne tous les textarea avec la classe .input-learn
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const selection = window.getSelection();
+                const selectedText = selection.toString();
+
+                if (selectedText) {
+                    const cursorPosition = textarea.selectionStart;
+                    const textBefore = textarea.value.substring(
+                        0,
+                        cursorPosition
+                    );
+                    const textAfter = textarea.value.substring(
+                        textarea.selectionEnd
+                    );
+
+                    // Ajouter les balises <pp> autour du texte sélectionné
+                    const newText =
+                        textBefore +
+                        "<adj-nom>" +
+                        selectedText +
+                        "</adj-nom>" +
+                        textAfter;
+
+                    // Mettre à jour la valeur du textarea
+                    textarea.value = newText;
+
+                    // Mettre à jour le v-model
+                    this.formData.content = newText;
+
+                    // Réinitialiser la sélection
+                    const newCursorPosition =
+                        cursorPosition +
+                        "<adj-nom>".length +
+                        selectedText.length +
+                        "</adj-nom>".length;
                     textarea.setSelectionRange(
                         newCursorPosition,
                         newCursorPosition
@@ -411,7 +596,7 @@ textarea:focus {
     box-shadow: none !important;
 }
 .input-learn {
-    font-size: 30px;
+    font-size: 28px;
     line-height: 50px;
     min-height: 200px;
 }
@@ -431,5 +616,17 @@ textarea:focus {
 }
 .grid {
     margin-bottom: 50px;
+}
+.toggle-group-item {
+    background-color: hsl(var(--secondary));
+    color: black;
+    font-weight: normal;
+    font-size: 13px;
+    letter-spacing: 0.7px;
+
+    padding-left: 25px;
+    padding-right: 25px;
+
+    margin-right: 5px;
 }
 </style>
