@@ -1,10 +1,29 @@
 <template>
     <div id="articles-page">
         <div>
-            <h1>Administration - Articles</h1>
-        </div>
+            <!-- les filtres -->
+            <div style="margin-left: 2.5%">
+                <section>
+                    <Select v-model="sortOrder">
+                        <SelectTrigger style="width: 225px">
+                            <SelectValue placeholder="Trier par date" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectItem value="asc">
+                                    Du plus ancien au plus récent
+                                </SelectItem>
+                                <SelectItem value="desc">
+                                    Du plus récent au plus ancien
+                                </SelectItem>
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </section>
+            </div>
 
-        <div>
+            <br />
+
             <button @click="toggleForm">Créer un article</button>
 
             <!-- listing de tous les articles -->
@@ -425,6 +444,15 @@ import {
 } from "../../../../src/components/ui/combobox";
 import { Check, ChevronsUpDown, Search } from "lucide-vue-next";
 import { ref } from "vue";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+} from "../../../../src/components/ui/select";
 
 export default {
     name: "ArticlesPageAdmin",
@@ -454,6 +482,13 @@ export default {
         FontItalicIcon,
         UnderlineIcon,
         Button,
+        Select,
+        SelectContent,
+        SelectGroup,
+        SelectItem,
+        SelectLabel,
+        SelectTrigger,
+        SelectValue,
     },
     data() {
         return {
@@ -476,6 +511,7 @@ export default {
             ],
             value: null,
             selectedVocabularyId: null,
+            sortOrder: "desc",
         };
     },
     mounted() {
@@ -485,6 +521,12 @@ export default {
         if (textarea) {
             textarea.addEventListener("select", this.captureSelection);
         }
+    },
+    watch: {
+        // lorsque sortOrder change, on relance le tri
+        sortOrder() {
+            this.getArticles();
+        },
     },
     beforeDestroy() {
         const textarea = this.$refs.textarea;
@@ -799,9 +841,22 @@ export default {
         },
         getArticles() {
             axios.get("/get-articles").then((response) => {
-                this.articles = response.data.map((article) => ({
-                    ...article,
-                }));
+                this.articles = Array.isArray(response.data)
+                    ? response.data
+                    : [];
+                this.sortArticles();
+            });
+        },
+        sortArticles() {
+            this.articles.sort((a, b) => {
+                const dateA = new Date(a.created_at);
+                const dateB = new Date(b.created_at);
+
+                if (this.sortOrder === "asc") {
+                    return dateA - dateB; // du plus ancien au plus récent
+                } else {
+                    return dateB - dateA; // du plus récent au plus ancien
+                }
             });
         },
         ////
@@ -857,7 +912,7 @@ textarea:focus {
     margin-bottom: 50px;
 }
 .toggle-group-item {
-    background-color: hsl(var(--secondary));
+    background-color: white;
     color: black;
     font-weight: normal;
     font-size: 13px;
@@ -867,6 +922,16 @@ textarea:focus {
     padding-right: 25px;
 
     margin-right: 5px;
+
+    border-radius: 0.375rem;
+    border-width: 1px;
+    border-color: hsl(var(--input));
+    transition: color 0.2s ease, background-color 0.2s ease,
+        border-color 0.2s ease, box-shadow 0.2s ease;
+    --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+        var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .input-title {
     width: 1310px;
