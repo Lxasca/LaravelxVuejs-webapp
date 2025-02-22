@@ -20,17 +20,11 @@
                 <form @submit.prevent="formSubmit">
                     <div id="head-article">
                         <section>
-                            <button class="button-createdAt btn-0">
-                                {{ new Date().toLocaleDateString("fr-FR") }}
-                            </button>
-                        </section>
-
-                        <section>
                             <h5>
                                 <input
                                     v-if="switchLanguage"
                                     type="text"
-                                    class="input input-titre direction-text-right input-learn"
+                                    class="input direction-text-right input-title"
                                     placeholder="Titre en arabe"
                                     v-model="formData.title"
                                 />
@@ -38,7 +32,7 @@
                                 <input
                                     v-else
                                     type="text"
-                                    class="input input-titre input-translate"
+                                    class="input input-title"
                                     placeholder="Titre en français"
                                     v-model="formData.title_french"
                                 />
@@ -49,6 +43,7 @@
                                     width="20px"
                                     alt="Changer la langue"
                                     class="pointer"
+                                    style="margin-top: 20px"
                                 />
                             </h5>
                         </section>
@@ -227,10 +222,10 @@
                     </div>
 
                     <section class="d-flex-center">
-                        <button type="submit" class="button-createdAt btn-0">
+                        <Button type="submit">
                             <span v-if="isForm"> Créer </span>
                             <span v-else>Editer</span>
-                        </button>
+                        </Button>
                     </section>
                 </form>
             </section>
@@ -243,6 +238,7 @@ import axios from "axios";
 import GetArticles from "../../components/article/GetArticles.vue";
 import { Textarea } from "../../../../src/components/ui/textarea";
 import { Label } from "../../../../src/components/ui/label";
+import { Button } from "../../../../src/components/ui/button";
 import {
     ToggleGroup,
     ToggleGroupItem,
@@ -260,6 +256,7 @@ export default {
         FontBoldIcon,
         FontItalicIcon,
         UnderlineIcon,
+        Button,
     },
     data() {
         return {
@@ -564,24 +561,14 @@ export default {
     margin-right: 2.5%;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: end;
     align-items: center;
 
     font-size: 20px;
-
-    background-color: #fbfbfb;
-    height: 80px;
-    margin-bottom: 35px;
-
-    padding: 28px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-radius: 7.5px;
 }
 .section-article {
     margin-bottom: 35px;
 
-    padding: 27.5px;
     padding-bottom: 0px;
     border-radius: 7.5px;
 
@@ -606,13 +593,10 @@ textarea:focus {
 
     min-height: 100px;
 }
-.input-translate {
-    font-size: 20px;
-}
-
 #articles-page {
     padding-left: 50px;
     padding-right: 50px;
+    padding-bottom: 45px;
 }
 .grid {
     margin-bottom: 50px;
@@ -628,5 +612,10 @@ textarea:focus {
     padding-right: 25px;
 
     margin-right: 5px;
+}
+.input-title {
+    width: 1325px;
+    margin-top: 25px;
+    font-weight: lighter;
 }
 </style>
