@@ -355,6 +355,8 @@ export default {
     text-align: center;
     padding-left: 2.5%;
     padding-right: 3.5%;
+
+    margin-top: 15px;
 }
 
 h5 {
@@ -372,6 +374,8 @@ span {
 .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+    gap: 75px;
+    margin-left: 0.9%;
+    margin-right: 0.9%;
 }
 </style>

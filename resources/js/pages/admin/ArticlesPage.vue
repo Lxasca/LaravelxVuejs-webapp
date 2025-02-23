@@ -2,7 +2,15 @@
     <div id="articles-page">
         <div>
             <!-- les filtres -->
-            <div style="margin-left: 2.5%">
+            <div
+                v-if="!isForm && !isFormEdit"
+                style="
+                    margin-left: 2.5%;
+                    margin-right: 3.5%;
+                    display: flex;
+                    justify-content: space-between;
+                "
+            >
                 <section>
                     <Select v-model="sortOrder">
                         <SelectTrigger style="width: 225px">
@@ -20,11 +28,24 @@
                         </SelectContent>
                     </Select>
                 </section>
+
+                <section>
+                    <Button @click="toggleForm">Créer un article</Button>
+                </section>
             </div>
-
-            <br />
-
-            <button @click="toggleForm">Créer un article</button>
+            <div
+                v-else
+                style="
+                    margin-left: 2.5%;
+                    margin-right: 2%;
+                    display: flex;
+                    justify-content: end;
+                "
+            >
+                <section>
+                    <Button @click="closeToggleForm">Retour</Button>
+                </section>
+            </div>
 
             <!-- listing de tous les articles -->
             <get-articles
@@ -785,6 +806,10 @@ export default {
                 this.isForm = !this.isForm;
                 this.formData = {};
             }
+        },
+        closeToggleForm() {
+            this.isFormEdit = false;
+            this.isForm = false;
         },
         formDelete(articleId) {
             const isAdmin = localStorage.getItem("isAdmin");

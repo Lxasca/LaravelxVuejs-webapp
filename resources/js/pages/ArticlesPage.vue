@@ -21,8 +21,6 @@
             </section>
         </div>
 
-        <br />
-
         <get-articles :articles="articles"></get-articles>
     </div>
 </template>

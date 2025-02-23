@@ -5,14 +5,27 @@
             padding: 25px;
             background-color: white;
             color: #262626;
-            margin-left: 2.5%;
-            margin-right: 2.5%;
+            margin-left: 4%;
+            margin-right: 4%;
+            display: flex;
+            align-items: center;
+
+            padding-bottom: 50px;
         "
     >
-        <input type="color" v-model="selectedColor" @input="updateMainColor" />
-        {{ selectedColor }}
+        <Input
+            type="color"
+            v-model="selectedColor"
+            @input="updateMainColor"
+            style="width: 50px"
+        />
 
-        <router-link to="/articles">Tous les articles</router-link>
+        <router-link to="/articles" style="margin-left: 25px"
+            >Consulter tous les articles</router-link
+        >
+        <router-link to="/admin" style="margin-left: 25px"
+            >Accéder à l'espace d'administration</router-link
+        >
     </div>
 
     <div>
@@ -21,8 +34,11 @@
 </template>
 
 <script>
+import { Input } from "../../src/components/ui/input";
+
 export default {
     name: "App",
+    components: { Input },
     data() {
         return {
             selectedColor: "#009f6b",
