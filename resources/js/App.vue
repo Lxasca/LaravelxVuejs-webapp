@@ -5,27 +5,62 @@
             padding: 25px;
             background-color: white;
             color: #262626;
-            margin-left: 4%;
-            margin-right: 4%;
-            display: flex;
-            align-items: center;
 
             padding-bottom: 50px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         "
     >
-        <Input
-            type="color"
-            v-model="selectedColor"
-            @input="updateMainColor"
-            style="width: 50px"
-        />
+        <section
+            style="display: flex; justify-content: center; align-items: center"
+        >
+            <router-link to="/articles" style="margin-left: 25px"
+                >Consulter tous les articles</router-link
+            >
+        </section>
 
-        <router-link to="/articles" style="margin-left: 25px"
-            >Consulter tous les articles</router-link
+        <section
+            style="display: flex; justify-content: center; align-items: center"
         >
-        <router-link to="/admin" style="margin-left: 25px"
-            >Accéder à l'espace d'administration</router-link
-        >
+            <DropdownMenu>
+                <DropdownMenuTrigger as-child style="margin-right: 25px">
+                    <Button variant="outline"> Configuration </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent class="w-56">
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem>
+                            Customiser la couleur
+                            <Input
+                                type="color"
+                                v-model="selectedColor"
+                                @input="updateMainColor"
+                                @click.stop
+                                style="width: 50px"
+                            />
+                        </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
+            <router-link to="/admin">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-lock"
+                >
+                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg
+            ></router-link>
+        </section>
     </div>
 
     <div>
@@ -35,10 +70,24 @@
 
 <script>
 import { Input } from "../../src/components/ui/input";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../../src/components/ui/dropdown-menu";
 
 export default {
     name: "App",
-    components: { Input },
+    components: {
+        Input,
+        DropdownMenu,
+        DropdownMenuContent,
+        DropdownMenuGroup,
+        DropdownMenuItem,
+        DropdownMenuTrigger,
+    },
     data() {
         return {
             selectedColor: "#009f6b",

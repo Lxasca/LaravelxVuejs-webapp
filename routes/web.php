@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\ArticlesController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ExercisesController;
 use App\Http\Controllers\LevelsController;
@@ -47,6 +48,10 @@ Route::put('/admin/edit-article/{id}', [AdminArticleController::class, 'edit']);
 Route::delete('/admin/edit-article/{id}', [AdminArticleController::class, 'destroy']);
 
 Route::get('/get-vocabularies', [VocabulariesController::class, 'getAllVocabularies']);
+
+// auth
+Route::get('/connexion', [AuthController::class, 'connexion']);
+Route::post('/inscription', [AuthController::class, 'inscription']);
 
 
 Route::get('/{any}', function () {
