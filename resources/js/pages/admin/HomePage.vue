@@ -175,6 +175,7 @@
                                             v-model="password"
                                             placeholder="Mot de passe"
                                             style="margin-right: 10px"
+                                            @input="controlPassword(password)"
                                         />
                                         <span
                                             v-if="passwordVisible"
@@ -230,10 +231,15 @@
                                         </span>
                                     </section>
                                 </div>
-                                <div
-                                    class="flex-center"
-                                    style="margin-top: 10px"
+
+                                <CardDescription
+                                    style="margin-left: 3px; margin-top: 5px"
                                 >
+                                    {{ textControlPassword }}
+                                </CardDescription>
+
+                                <br />
+                                <div class="flex-center">
                                     <section class="section-password">
                                         <Input
                                             :type="
@@ -244,6 +250,12 @@
                                             v-model="confirmPassword"
                                             placeholder="Confirmer le mot de passe"
                                             style="margin-right: 10px"
+                                            @input="
+                                                controlConfirmPassword(
+                                                    confirmPassword
+                                                )
+                                            "
+                                            :disabled="!booleanControlPassword"
                                         />
                                         <span
                                             v-if="confirmPasswordVisible"
@@ -303,6 +315,12 @@
                                         </span>
                                     </section>
                                 </div>
+
+                                <CardDescription
+                                    style="margin-left: 3px; margin-top: 5px"
+                                >
+                                    {{ textControlConfirmPassword }}
+                                </CardDescription>
                             </CardContent>
                             <CardFooter
                                 style="display: flex; justify-content: center"
@@ -310,6 +328,10 @@
                                 <Button
                                     style="margin-top: 10px"
                                     @click="inscription"
+                                    :disabled="
+                                        !booleanControlPassword ||
+                                        !booleanControlConfirmPassword
+                                    "
                                     >S'inscrire</Button
                                 >
                             </CardFooter>
@@ -318,8 +340,6 @@
                 </Tabs>
             </div>
             <!-- fin refonte avec TABS -->
-
-            <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
         </div>
     </div>
 </template>
@@ -365,10 +385,14 @@ export default {
             confirmPassword: "",
             email: "",
             isAuthenticated: localStorage.getItem("isAdmin") === "true",
-            errorMessage: "",
             passwordVisible: false,
             confirmPasswordVisible: false,
             showRegister: false,
+            textControlPassword:
+                "Votre mot de passe doit contenir au moins 8 caractères, une minuscule, une majuscule, un chiffre.",
+            booleanControlPassword: false,
+            booleanControlConfirmPassword: false,
+            textControlConfirmPassword: "",
         };
     },
     methods: {
@@ -422,6 +446,62 @@ export default {
         },
         toggleConfirmPasswordVisible() {
             this.confirmPasswordVisible = !this.confirmPasswordVisible;
+        },
+        controlPassword(password) {
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasDigit = /\d/.test(password);
+
+            let conditions = [];
+
+            if (password.length < minLength) {
+                conditions.push("8 caractères");
+            }
+            if (!hasUpperCase) {
+                conditions.push("une majuscule");
+            }
+            if (!hasLowerCase) {
+                conditions.push("une minuscule");
+            }
+            if (!hasDigit) {
+                conditions.push("un chiffre");
+            }
+
+            if (conditions.length > 0) {
+                this.textControlPassword =
+                    "Votre mot de passe doit contenir au moins " +
+                    conditions.join(", ") +
+                    ".";
+            } else {
+                this.textControlPassword = "";
+            }
+
+            this.booleanControlPassword =
+                password.length >= minLength &&
+                hasUpperCase &&
+                hasLowerCase &&
+                hasDigit;
+
+            if (this.booleanControlPassword === true) {
+                this.textControlPassword =
+                    "Bravo, votre mot de passe est valide car très sécurisé.";
+            }
+        },
+        controlConfirmPassword(controlConfirmPassword) {
+            if (controlConfirmPassword == this.password) {
+                this.textControlConfirmPassword =
+                    "Super, vos mots de passe correspondent bien.";
+                this.booleanControlConfirmPassword = true;
+            } else {
+                this.textControlConfirmPassword =
+                    "Vos mots de passe ne correspondent pas.";
+                this.booleanControlConfirmPassword = false;
+            }
+        },
+        controlValidEmail(email) {
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return regex.test(email);
         },
     },
 };
