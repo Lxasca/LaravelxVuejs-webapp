@@ -43,12 +43,25 @@ class AuthController extends Controller
         $newUser = User::create([
             'email' => $email,
             'password' => Hash::make($password),
-            'name' => $email
+            'name' => $email,
+            'password_length' => strlen($password),
+
         ]);
 
         Auth::login($newUser);
 
         return response()->json(['message' => 'Inscription réussie.'], 201);
+    }
+
+    public function getLengthPassword() {
+        $email = request()->input('email');
+        $user = User::where('email', $email)->first();
+
+        if ($user && $user->password_length) {
+            return response()->json(['password_length' => $user->password_length]);
+        }
+    
+        return response()->json(['message' => 'Utilisateur non trouvé ou mot de passe manquant'], 404);
     }
 
     

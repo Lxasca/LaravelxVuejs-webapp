@@ -11,6 +11,7 @@ import ArticlesPage from "./pages/ArticlesPage.vue";
 import ArticlePage from "./pages/ArticlePage.vue";
 import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
+import AccountPage from "./pages/AccountPage.vue";
 
 const requireAdminAuth = (to, from, next) => {
     if (localStorage.getItem("isAdmin") === "true") {
@@ -67,6 +68,7 @@ const routes = [
         component: ArticlesPageAdmin,
         beforeEnter: requireAdminAuth,
     },
+    { name: "account", path: "/mon-compte", component: AccountPage },
 ];
 
 const router = createRouter({
