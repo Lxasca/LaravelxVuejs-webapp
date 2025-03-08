@@ -160,9 +160,16 @@
                                             type="email"
                                             v-model="email"
                                             placeholder="Adresse électronique"
+                                            @input="controlValidEmail(email)"
                                         />
                                     </section>
                                 </div>
+
+                                <CardDescription
+                                    style="margin-left: 3px; margin-top: 5px"
+                                >
+                                    {{ textControlEmail }}
+                                </CardDescription>
                                 <br />
                                 <div class="flex-center">
                                     <section class="section-password">
@@ -175,7 +182,12 @@
                                             v-model="password"
                                             placeholder="Mot de passe"
                                             style="margin-right: 10px"
-                                            @input="controlPassword(password)"
+                                            @input="
+                                                controlPassword(
+                                                    password,
+                                                    controlConfirmPassword
+                                                )
+                                            "
                                         />
                                         <span
                                             v-if="passwordVisible"
@@ -330,7 +342,8 @@
                                     @click="inscription"
                                     :disabled="
                                         !booleanControlPassword ||
-                                        !booleanControlConfirmPassword
+                                        !booleanControlConfirmPassword ||
+                                        !booleanControlEmail
                                     "
                                     >S'inscrire</Button
                                 >
@@ -393,6 +406,9 @@ export default {
             booleanControlPassword: false,
             booleanControlConfirmPassword: false,
             textControlConfirmPassword: "",
+            booleanControlEmail: null,
+            textControlEmail:
+                "Veuillez saisir une adresse électronique valide.",
         };
     },
     methods: {
@@ -447,7 +463,7 @@ export default {
         toggleConfirmPasswordVisible() {
             this.confirmPasswordVisible = !this.confirmPasswordVisible;
         },
-        controlPassword(password) {
+        controlPassword(password, controlConfirmPassword) {
             const minLength = 8;
             const hasUpperCase = /[A-Z]/.test(password);
             const hasLowerCase = /[a-z]/.test(password);
@@ -487,6 +503,8 @@ export default {
                 this.textControlPassword =
                     "Bravo, votre mot de passe est valide car très sécurisé.";
             }
+
+            this.controlConfirmPassword(controlConfirmPassword);
         },
         controlConfirmPassword(controlConfirmPassword) {
             if (controlConfirmPassword == this.password) {
@@ -501,7 +519,17 @@ export default {
         },
         controlValidEmail(email) {
             const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-            return regex.test(email);
+            let result = regex.test(email);
+
+            this.booleanControlEmail = result;
+
+            if (!this.booleanControlEmail) {
+                this.textControlEmail =
+                    "Attention, votre adresse électronique n'est pas valide.";
+            } else {
+                this.textControlEmail =
+                    "Parfait, votre adresse électronique est valide.";
+            }
         },
     },
 };
