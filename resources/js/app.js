@@ -13,11 +13,12 @@ import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
 import AccountPage from "./pages/AccountPage.vue";
 
+// isUser, isClient, isAdmin
 const requireAdminAuth = (to, from, next) => {
     if (localStorage.getItem("isAdmin") === "true") {
-        next(); // ici ok, l'utilisateur est admin
+        next();
     } else {
-        next({ name: "admin" }); // on redirige vers la page admin principale (avec input du mdp)
+        next({ name: "admin" });
     }
 };
 

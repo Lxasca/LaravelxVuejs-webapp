@@ -443,7 +443,11 @@ export default {
             password: "",
             confirmPassword: "",
             email: "",
-            isAuthenticated: localStorage.getItem("isAdmin") === "true",
+            //isAuthenticated: localStorage.getItem("isAdmin") === "true",
+            isAuthenticated:
+                (localStorage.getItem("isUser") ||
+                    localStorage.getItem("isClient") ||
+                    localStorage.getItem("isAdmin")) === "true",
             passwordVisible: false,
             confirmPasswordVisible: false,
             showRegister: false,
