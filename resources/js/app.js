@@ -12,18 +12,44 @@ import ArticlePage from "./pages/ArticlePage.vue";
 import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
 import AccountPage from "./pages/AccountPage.vue";
+import AuthentificationPage from "./pages/AuthentificationPage.vue";
 
 // isUser, isClient, isAdmin
 const requireAdminAuth = (to, from, next) => {
-    if (localStorage.getItem("isAdmin") === "true") {
+    if (localStorage.getItem("isAdmin")) {
         next();
     } else {
-        next({ name: "admin" });
+        next({ name: "home" });
+    }
+};
+
+const requireAuth = (to, from, next) => {
+    if (
+        localStorage.getItem("isAdmin") ||
+        localStorage.getItem("isClient") ||
+        localStorage.getItem("isUser")
+    ) {
+        next();
+    } else {
+        next({ name: "authentification" });
+    }
+};
+
+const requireNoAuth = (to, from, next) => {
+    if (
+        localStorage.getItem("isAdmin") ||
+        localStorage.getItem("isClient") ||
+        localStorage.getItem("isUser")
+    ) {
+        // si déjà connecté, il peut pas accéder aux pages d'auth, on le renvoie sur son compte
+        next({ name: "account" });
+    } else {
+        next();
     }
 };
 
 const routes = [
-    { path: "/", component: HomePage },
+    { path: "/", name: "home", component: HomePage },
     { path: "/start", component: StartPage },
     {
         name: "course",
@@ -61,15 +87,33 @@ const routes = [
         component: ArticlePage,
     },
 
+    // AUTH
+    {
+        name: "authentification",
+        path: "/authentification",
+        component: AuthentificationPage,
+        beforeEnter: requireNoAuth,
+    },
+
     // ADMIN
-    { name: "admin", path: "/admin", component: HomePageAdmin },
+    {
+        name: "admin",
+        path: "/admin",
+        component: HomePageAdmin,
+        beforeEnter: requireAdminAuth,
+    },
     {
         name: "admin-articles",
         path: "/admin/articles",
         component: ArticlesPageAdmin,
         beforeEnter: requireAdminAuth,
     },
-    { name: "account", path: "/mon-compte", component: AccountPage },
+    {
+        name: "account",
+        path: "/mon-compte",
+        component: AccountPage,
+        beforeEnter: requireAuth,
+    },
 ];
 
 const router = createRouter({

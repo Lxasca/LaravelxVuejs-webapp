@@ -20,13 +20,28 @@ class AuthController extends Controller
         if ($user) {
             if (Hash::check($password, $user->password)) {
                 Auth::login($user);
-                return response()->json(['message' => 'Authentification réussie.'], 200);
+
+                if (is_null($user->roles)) {
+                    $this->setRoleUser($user);
+                }
+
+                return response()->json(
+                    [
+                        'message' => 'Authentification réussie.',
+                        'role' => $user->roles,
+                    ],
+                    200);
             } else {
                 return response()->json(['message' => 'Le mot de passe que vous avez saisi est incorrect.'], 401);
             }
         } else {
             return response()->json(['message' => 'Aucun compte n\'est lié à cette adresse électronique.'], 404);
         }
+    }
+
+    public function setRoleUser($user) {
+        $user->roles = ['ROLE_USER'];
+        $user->save();
     }
 
     public function inscription()
@@ -45,12 +60,18 @@ class AuthController extends Controller
             'password' => Hash::make($password),
             'name' => $email,
             'password_length' => strlen($password),
-
         ]);
+        
+        $this->setRoleUser($newUser);
 
         Auth::login($newUser);
 
-        return response()->json(['message' => 'Inscription réussie.'], 201);
+        return response()->json(
+            [
+                'message' => 'Inscription réussie.',
+                'role' => $user->roles,
+        ],
+            201);
     }
 
     public function getLengthPassword() {

@@ -1,5 +1,7 @@
 <template>
     <div>
+        <button @click="logout">Déconnexion</button>
+
         <h1>Mon compte</h1>
         <p><strong>Adresse e-mail :</strong> {{ email }}</p>
 
@@ -23,6 +25,7 @@ export default {
         return {
             email: localStorage.getItem("email") || "",
             passwordLength: 0,
+            isAuthenticated: true,
         };
     },
     mounted() {
@@ -42,6 +45,15 @@ export default {
                 .catch((error) => {
                     console.error(error);
                 });
+        },
+        logout() {
+            localStorage.removeItem("isAdmin");
+            localStorage.removeItem("isClient");
+            localStorage.removeItem("isUser");
+            localStorage.removeItem("email");
+            this.isAuthenticated = false;
+
+            this.$router.push({ name: "authentification" });
         },
     },
 };

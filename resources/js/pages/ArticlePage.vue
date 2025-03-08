@@ -341,7 +341,7 @@ export default {
 
 <style lang="scss">
 #article-page {
-    padding-left: 5%;
+    padding-left: 4%;
     padding-right: 5%;
 
     padding-top: 0px;

@@ -7,6 +7,8 @@
             color: #262626;
 
             padding-bottom: 50px;
+            padding-left: 90px;
+            padding-right: 100px;
 
             display: flex;
             justify-content: space-between;
@@ -16,9 +18,7 @@
         <section
             style="display: flex; justify-content: center; align-items: center"
         >
-            <router-link to="/articles" style="margin-left: 25px"
-                >Consulter tous les articles</router-link
-            >
+            <router-link to="/articles">Articles</router-link>
         </section>
 
         <section
@@ -44,7 +44,7 @@
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            <router-link to="/admin">
+            <router-link to="/authentification">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -55,11 +55,12 @@
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    class="lucide lucide-lock"
+                    class="lucide lucide-user-round"
                 >
-                    <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg
-            ></router-link>
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M20 21a8 8 0 0 0-16 0" />
+                </svg>
+            </router-link>
         </section>
     </div>
 
