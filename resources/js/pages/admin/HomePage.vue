@@ -36,9 +36,20 @@
                         <Card>
                             <CardHeader>
                                 <CardTitle>Connexion</CardTitle>
-                                <CardDescription>
+                                <CardDescription
+                                    v-if="textControlConnexion == null"
+                                >
                                     Connectez-vous pour accéder à votre espace
                                     personnel.
+                                </CardDescription>
+                                <CardDescription v-else>
+                                    <Alert variant="destructive" class="mt-4">
+                                        <AlertCircle class="w-4 h-4" />
+                                        <AlertTitle>Oup's ...</AlertTitle>
+                                        <AlertDescription>
+                                            {{ textControlConnexion }}
+                                        </AlertDescription>
+                                    </Alert>
                                 </CardDescription>
                             </CardHeader>
                             <CardContent>
@@ -55,9 +66,17 @@
                                             type="email"
                                             v-model="email"
                                             placeholder="Adresse électronique"
+                                            @blur="controlValidEmail(email)"
                                         />
                                     </section>
                                 </div>
+
+                                <CardDescription
+                                    style="margin-left: 3px; margin-top: 5px"
+                                >
+                                    {{ textControlEmail }}
+                                </CardDescription>
+
                                 <br />
                                 <div class="flex-center">
                                     <section class="section-password">
@@ -132,6 +151,10 @@
                                 <Button
                                     style="margin-top: 10px"
                                     @click="connexion"
+                                    :disabled="
+                                        !booleanControlEmail ||
+                                        password.length == 0
+                                    "
                                     >Se connecter</Button
                                 >
                             </CardFooter>
@@ -141,9 +164,20 @@
                         <Card>
                             <CardHeader>
                                 <CardTitle>Inscription</CardTitle>
-                                <CardDescription>
+                                <CardDescription
+                                    v-if="textControlInscription == null"
+                                >
                                     Inscrivez-vous et rejoigner plus de 1500
                                     apprenants.
+                                </CardDescription>
+                                <CardDescription v-else>
+                                    <Alert variant="destructive" class="mt-4">
+                                        <AlertCircle class="w-4 h-4" />
+                                        <AlertTitle>Oup's ...</AlertTitle>
+                                        <AlertDescription>
+                                            {{ textControlInscription }}
+                                        </AlertDescription>
+                                    </Alert>
                                 </CardDescription>
                             </CardHeader>
                             <CardContent class="space-y-2">
@@ -160,7 +194,7 @@
                                             type="email"
                                             v-model="email"
                                             placeholder="Adresse électronique"
-                                            @input="controlValidEmail(email)"
+                                            @blur="controlValidEmail(email)"
                                         />
                                     </section>
                                 </div>
@@ -377,6 +411,14 @@ import {
     CardFooter,
 } from "../../../../src/components/ui/card";
 
+import {
+    Alert,
+    AlertDescription,
+    AlertTitle,
+} from "../../../../src/components/ui/alert";
+
+import { AlertCircle } from "lucide-vue-next";
+
 export default {
     components: {
         Input,
@@ -391,6 +433,10 @@ export default {
         CardDescription,
         CardContent,
         CardFooter,
+        Alert,
+        AlertDescription,
+        AlertTitle,
+        AlertCircle,
     },
     data() {
         return {
@@ -407,8 +453,9 @@ export default {
             booleanControlConfirmPassword: false,
             textControlConfirmPassword: "",
             booleanControlEmail: null,
-            textControlEmail:
-                "Veuillez saisir une adresse électronique valide.",
+            textControlEmail: "",
+            textControlConnexion: null,
+            textControlInscription: null,
         };
     },
     methods: {
@@ -431,7 +478,15 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+                    if (error.response) {
+                        this.textControlInscription =
+                            error.response.data.message;
+                    } else {
+                        this.textControlInscription =
+                            "Une erreur s'est produite.";
+                    }
+
+                    this.textControlInscription += " 😔";
                 });
         },
         connexion() {
@@ -440,16 +495,23 @@ export default {
                     params: { email: this.email, password: this.password },
                 })
                 .then((response) => {
-                    console.log(response.data.message);
-
                     if (response.data.message === "Authentification réussie.") {
                         this.isAuthenticated = true;
                         localStorage.setItem("isAdmin", "true");
                         localStorage.setItem("email", this.email);
                     }
+
+                    this.textControlConnexion = response.data.message;
                 })
                 .catch((error) => {
-                    console.log(error);
+                    if (error.response) {
+                        this.textControlConnexion = error.response.data.message;
+                    } else {
+                        this.textControlConnexion =
+                            "Une erreur s'est produite.";
+                    }
+
+                    this.textControlConnexion += " 😔";
                 });
         },
         logout() {

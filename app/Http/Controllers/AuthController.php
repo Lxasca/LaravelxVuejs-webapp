@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
 
-    public function connexion()
+    public function connexion(Request $request)
     {
         $email = request()->query('email');
         $password = request()->query('password');
@@ -22,10 +22,10 @@ class AuthController extends Controller
                 Auth::login($user);
                 return response()->json(['message' => 'Authentification réussie.'], 200);
             } else {
-                return response()->json(['message' => 'Mot de passe incorrect.'], 401);
+                return response()->json(['message' => 'Le mot de passe que vous avez saisi est incorrect.'], 401);
             }
         } else {
-            return response()->json(['message' => 'Aucun utilisateur trouvé avec cette adresse e-mail.'], 404);
+            return response()->json(['message' => 'Aucun compte n\'est lié à cette adresse électronique.'], 404);
         }
     }
 
