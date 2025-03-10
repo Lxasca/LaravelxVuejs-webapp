@@ -258,4 +258,9 @@ div[class^="choice"] input[type="radio"]:checked + span {
 .color-style-main {
     color: #ffc300;
 }
+h1 {
+    text-align: center;
+    font-size: 70px;
+    font-weight: bold;
+}
 </style>

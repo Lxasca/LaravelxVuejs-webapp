@@ -1,16 +1,47 @@
 <template>
     <div>
+        <h1>
+            Mon <span style="color: #ffc300; font-weight: bold">compte</span>
+        </h1>
+
         <button @click="logout">Déconnexion</button>
 
-        <h1>Mon compte</h1>
-        <p><strong>Adresse e-mail :</strong> {{ email }}</p>
+        <div style="display: flex; justify-content: center">
+            <div style="width: 372.5px">
+                <Input type="email" :placeholder="email" readonly />
+                <br />
+                <Input
+                    v-if="!isShowModifPassword"
+                    type="password"
+                    :value="passwordLength"
+                    readonly
+                />
 
-        <label>Mot de passe</label>
-        <Input type="password" :value="passwordLength" readonly />
-        <label>Nouveau mot de passe</label>
-        <Input type="password" />
+                <Input
+                    v-else
+                    type="password"
+                    placeholder="Nouveau mot de passe"
+                />
+            </div>
+        </div>
 
-        <Button>Sauvegarder</Button>
+        <p
+            style="
+                text-align: center;
+                color: black;
+                margin-top: 10px;
+                cursor: pointer;
+            "
+            @click="showModifPassword"
+        >
+            <span v-if="!isShowModifPassword">Modifier mon mot de passe</span>
+            <div style="display:flex">
+                <Button v-if="isShowModifPassword">Sauvegarder</Button>
+            <p v-if="isShowModifPassword" @click="showModifPassword"
+                >Annuler</p
+            >
+            </div>
+        </p>
     </div>
 </template>
 <script>
@@ -26,12 +57,16 @@ export default {
             email: localStorage.getItem("email") || "",
             passwordLength: 0,
             isAuthenticated: true,
+            isShowModifPassword: false,
         };
     },
     mounted() {
         this.getLengthPassword();
     },
     methods: {
+        showModifPassword() {
+            this.isShowModifPassword = !this.isShowModifPassword;
+        },
         getLengthPassword() {
             axios
                 .get("/get-length-password", {

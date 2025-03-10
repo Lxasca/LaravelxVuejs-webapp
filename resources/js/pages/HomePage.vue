@@ -49,11 +49,6 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-    text-align: center;
-    font-size: 70px;
-    font-weight: bold;
-}
 span {
     color: #ffc300;
 }
