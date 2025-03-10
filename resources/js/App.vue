@@ -3,7 +3,6 @@
         style="
             /**box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);**/
             padding: 25px;
-            background-color: white;
             color: #262626;
 
             padding-bottom: 50px;
@@ -18,14 +17,38 @@
         <section
             style="display: flex; justify-content: center; align-items: center"
         >
-            <router-link to="/articles">Articles</router-link>
+            <router-link style="margin-right: 40px" to="/">Accueil</router-link>
+            <router-link to="/articles" style="margin-right: 20px">
+                <Button class="btn-duo-main"
+                    >Commencer à apprendre l'arabe
+                </Button>
+            </router-link>
+            <span style="display: flex; align-items: center"
+                ><svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="lucide lucide-move-left"
+                >
+                    <path d="M6 8L2 12L6 16" />
+                    <path d="M2 12H22" /></svg
+                ><span style="margin-left: 15px; margin-top: -1.5px"
+                    >gratuitement et sans inscription</span
+                ></span
+            >
         </section>
 
         <section
             style="display: flex; justify-content: center; align-items: center"
         >
             <DropdownMenu>
-                <DropdownMenuTrigger as-child style="margin-right: 25px">
+                <DropdownMenuTrigger as-child style="margin-right: 40px">
                     <Button variant="outline"> Configuration </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent class="w-56">
@@ -71,6 +94,7 @@
 
 <script>
 import { Input } from "../../src/components/ui/input";
+import { Button } from "../../src/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -83,6 +107,7 @@ export default {
     name: "App",
     components: {
         Input,
+        Button,
         DropdownMenu,
         DropdownMenuContent,
         DropdownMenuGroup,
@@ -91,7 +116,7 @@ export default {
     },
     data() {
         return {
-            selectedColor: "#009f6b",
+            selectedColor: "#ffc300",
         };
     },
     methods: {
@@ -228,5 +253,9 @@ div[class^="choice"] input[type="radio"]:checked + span {
 
 .direction-text-right {
     direction: rtl;
+}
+
+.color-style-main {
+    color: #ffc300;
 }
 </style>

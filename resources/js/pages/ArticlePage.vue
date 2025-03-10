@@ -353,7 +353,7 @@ export default {
 }
 .section-article {
     padding-left: 0px;
-    padding-right: 20px;
+    padding-right: 35px;
 
     margin-top: 40px;
 
@@ -389,8 +389,8 @@ h5 {
     }
 }
 .content-translate {
-    font-size: 19.5px;
-    line-height: 40px;
+    font-size: 20px;
+    line-height: 30px;
     text-align: left;
 
     padding-left: 25px;
