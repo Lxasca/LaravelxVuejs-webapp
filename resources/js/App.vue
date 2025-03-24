@@ -54,7 +54,7 @@
                 <DropdownMenuContent class="w-56">
                     <DropdownMenuGroup>
                         <DropdownMenuItem>
-                            Customiser la couleur
+                            Couleur
                             <Input
                                 type="color"
                                 v-model="selectedColor"
@@ -66,6 +66,14 @@
                     </DropdownMenuGroup>
                 </DropdownMenuContent>
             </DropdownMenu>
+
+            <router-link
+                v-if="isAdminBoolean"
+                to="/admin"
+                style="margin-right: 32.5px"
+            >
+                <Button> Administration </Button>
+            </router-link>
 
             <router-link to="/authentification">
                 <svg
@@ -117,18 +125,25 @@ export default {
     data() {
         return {
             selectedColor: "#ffc300",
+            isAdminBoolean: false,
         };
     },
+    mounted() {
+        this.isAdmin();
+        this.updateMainColor(); // Met à jour la couleur au chargement
+    },
     methods: {
+        isAdmin() {
+            if (localStorage.getItem("isAdmin")) {
+                this.isAdminBoolean = true;
+            }
+        },
         updateMainColor() {
             document.documentElement.style.setProperty(
                 "--main-color",
                 this.selectedColor
             );
         },
-    },
-    mounted() {
-        this.updateMainColor(); // Met à jour la couleur au chargement
     },
 };
 </script>

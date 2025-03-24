@@ -85,6 +85,18 @@ class AuthController extends Controller
         return response()->json(['message' => 'Utilisateur non trouvé ou mot de passe manquant'], 404);
     }
 
+    public function comparePassword(Request $request)
+    {
+        $user = Auth::user();  // Récupère l'utilisateur connecté
     
+        if ($user && !Hash::check($request->newPassword, $user->password)) {
+            $user->password = Hash::make($request->newPassword);  // Hash le nouveau mot de passe
+            $user->save();
+    
+            return response()->json(['message' => 'Mot de passe mis à jour avec succès !']);
+        }
+    
+        return response()->json(['message' => 'Les mots de passe sont identiques. Aucune mise à jour effectuée.']);
+    }
 
 }

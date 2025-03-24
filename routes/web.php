@@ -53,6 +53,7 @@ Route::get('/get-vocabularies', [VocabulariesController::class, 'getAllVocabular
 Route::get('/connexion', [AuthController::class, 'connexion']);
 Route::post('/inscription', [AuthController::class, 'inscription']);
 Route::get('/get-length-password', [AuthController::class, 'getLengthPassword']);
+Route::post('/compare-password', [AuthController::class, 'comparePassword']);
 
 
 Route::get('/{any}', function () {
