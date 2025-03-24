@@ -3,9 +3,6 @@
 use App\Http\Controllers\Admin\AdminArticleController;
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CoursesController;
-use App\Http\Controllers\ExercisesController;
-use App\Http\Controllers\LevelsController;
 use App\Http\Controllers\VocabulariesController;
 use Illuminate\Support\Facades\Route;
 

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercises;
 use App\Models\Vocabularies;
-use Illuminate\Http\Request;
 
 class VocabulariesController extends Controller
 {
