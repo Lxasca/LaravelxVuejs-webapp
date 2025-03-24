@@ -133,7 +133,7 @@
                                                     >
                                                         {{
                                                             value?.label ??
-                                                            "Selectionner un mot"
+                                                            "Sélectionner un mot"
                                                         }}
 
                                                         <ChevronsUpDown
@@ -307,7 +307,7 @@
                                                     >
                                                         {{
                                                             value?.label ??
-                                                            "Selectionner un mot"
+                                                            "Sélectionner un mot"
                                                         }}
 
                                                         <ChevronsUpDown
