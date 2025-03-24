@@ -16,6 +16,8 @@ Route::get('/get-article/{id}', [ArticlesController::class, 'getArticle']);
 Route::post('/admin/create-article', [AdminArticleController::class, 'store']);
 Route::put('/admin/edit-article/{id}', [AdminArticleController::class, 'edit']);
 Route::delete('/admin/edit-article/{id}', [AdminArticleController::class, 'destroy']);
+Route::put('/admin/update-status-article/{id}', [AdminArticleController::class, 'updateStatus']);
+
 
 Route::get('/get-vocabularies', [VocabulariesController::class, 'getAllVocabularies']);
 Route::get('/get-vocabulary/{id}', [VocabulariesController::class, 'getVocabulary']);

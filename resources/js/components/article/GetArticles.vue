@@ -104,7 +104,24 @@
                                                 </DropdownMenuItem>
                                                 <DropdownMenuSeparator />
                                                 <DropdownMenuItem>
-                                                    <span>More...</span>
+                                                    <span
+                                                        @click="
+                                                            changeStatus(
+                                                                article
+                                                            )
+                                                        "
+                                                    >
+                                                        <span
+                                                            v-if="
+                                                                article.status ==
+                                                                'unpublished'
+                                                            "
+                                                            >Publier</span
+                                                        >
+                                                        <span v-else
+                                                            >Dépublier</span
+                                                        >
+                                                    </span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuSubContent>
                                         </DropdownMenuPortal>
@@ -227,6 +244,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import { Button } from "../../../../src/components/ui/button";
 import {
     DropdownMenu,
@@ -314,6 +332,24 @@ export default {
         },
         formDelete(article) {
             this.$emit("form-delete", article.id);
+        },
+        changeStatus(article) {
+            // Passe le champ status de 'published' / 'unpublished'
+
+            axios
+                .put(`/admin/update-status-article/${article.id}`)
+                .then((response) => {
+                    article.status =
+                        article.status === "published"
+                            ? "unpublished"
+                            : "published";
+                })
+                .catch((error) => {
+                    console.error(
+                        "Error changement status de l'article",
+                        error
+                    );
+                });
         },
         formatDate(dateString) {
             const date = new Date(dateString);

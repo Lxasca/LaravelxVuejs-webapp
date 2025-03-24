@@ -1,5 +1,5 @@
 <template>
-    <div
+    <!--<div
         style="
             /**box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);**/
             padding: 25px;
@@ -93,7 +93,9 @@
                 </svg>
             </router-link>
         </section>
-    </div>
+    </div>-->
+
+    <navbar-admin v-if="isAdminBoolean"></navbar-admin>
 
     <div>
         <router-view></router-view>
@@ -103,24 +105,14 @@
 <script>
 import { Input } from "../../src/components/ui/input";
 import { Button } from "../../src/components/ui/button";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../../src/components/ui/dropdown-menu";
+import NavbarAdmin from "@/components/navbar/NavbarAdmin.vue";
 
 export default {
     name: "App",
     components: {
         Input,
         Button,
-        DropdownMenu,
-        DropdownMenuContent,
-        DropdownMenuGroup,
-        DropdownMenuItem,
-        DropdownMenuTrigger,
+        NavbarAdmin,
     },
     data() {
         return {

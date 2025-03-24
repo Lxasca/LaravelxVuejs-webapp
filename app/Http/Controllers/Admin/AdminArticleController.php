@@ -17,6 +17,7 @@ class AdminArticleController extends Controller
             'content_french' => 'nullable|string',
             'content_2' => 'nullable|string',
             'content_2_french' => 'nullable|string',
+            'status' => 'nullable|string'
         ]);
 
         $article = Articles::create($validatedData);
@@ -62,5 +63,15 @@ class AdminArticleController extends Controller
 
         return response()->json(['message' => 'Article supprimé avec succès']);
     }
+
+    public function updateStatus($id) {
+        $article = Articles::find($id);
+        
+        if ($article) {
+            $article->status = $article->status === 'published' ? 'unpublished' : 'published';
+            $article->save();
+        }
+    }
+    
 
 }

@@ -17,4 +17,11 @@ class ArticlesController extends Controller
         $article = Articles::find($id);
         return response()->json($article);
     }
+
+    public function updateStatus($id) {
+        $article = Articles::find($id);
+
+        
+
+    }
 }
