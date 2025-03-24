@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('vocabularies', function (Blueprint $table) {
+        Schema::create('vocabularies', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+
+            $table->string('word_opposite_1')->nullable();
+            $table->string('image')->nullable();
+            $table->string('audio_arabic')->nullable();
             $table->string('traduction_arabic')->nullable();
+            $table->string('transcription_arabic')->nullable();
         });
     }
 
@@ -21,8 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('vocabularies', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('vocabularies');
     }
 };

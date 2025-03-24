@@ -16,6 +16,14 @@ return new class extends Migration
             $table->timestamps();
             $table->text('content')->nullable();
             $table->string('language')->nullable();
+
+            $table->string('title')->nullable();
+            $table->string('title_french')->nullable();
+            $table->text('content_french')->nullable();
+            $table->text('content_2')->nullable();
+            $table->text('content_2_french')->nullable();
+            $table->text('content_3')->nullable();
+            $table->text('content_3_french')->nullable();
         });
     }
 
