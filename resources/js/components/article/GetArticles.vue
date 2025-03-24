@@ -3,12 +3,15 @@
         <Table>
             <TableHeader>
                 <TableRow>
+                    <TableHead class="text-center" style="width: 5%">
+                        <!--Statut-->
+                    </TableHead>
                     <TableHead class="text-center" style="width: 15%">
-                        Publié le
+                        Date de création
                     </TableHead>
-                    <TableHead class="text-center" style="width: 10%">
+                    <!--<TableHead class="text-center" style="width: 10%">
                         Par
-                    </TableHead>
+                    </TableHead>-->
                     <TableHead class="text-center" style="width: 45%"
                         >Titre</TableHead
                     >
@@ -24,6 +27,10 @@
             <br />
             <TableBody>
                 <TableRow v-for="article in articles" :key="article.id">
+                    <TableCell style="width: 5%">
+                        <span v-if="article.status == 'published'">Publié</span>
+                        <span v-else>Dépublié</span>
+                    </TableCell>
                     <TableCell style="width: 15%">
                         <Button
                             :variant="
@@ -49,7 +56,7 @@
                             </span>
                         </Button>
                     </TableCell>
-                    <TableCell style="width: 10%"> John Doe</TableCell>
+                    <!--<TableCell style="width: 10%"> John Doe</TableCell>-->
                     <TableCell style="width: 45%">
                         <span style="font-size: 30px">
                             {{ article.title }}
@@ -127,7 +134,7 @@
                                         </DropdownMenuPortal>
                                     </DropdownMenuSub>
                                     <DropdownMenuItem>
-                                        <span>New Team</span>
+                                        <span>Pack CM</span>
                                         <DropdownMenuShortcut
                                             >⌘+T</DropdownMenuShortcut
                                         >
