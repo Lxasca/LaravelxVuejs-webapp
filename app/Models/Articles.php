@@ -16,7 +16,7 @@ class Articles extends Model
         'content_french',
         'content_2',
         'content_2_french',
-        'level_id'
+        'level_id', 'category_id'
     ];
 
     public $timestamps = true;
@@ -24,5 +24,10 @@ class Articles extends Model
     public function level()
     {
         return $this->belongsTo(Level::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 }

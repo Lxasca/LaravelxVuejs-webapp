@@ -77,7 +77,7 @@
                         </span>
                     </TableCell>
                     <TableCell style="width: 30%; text-align: left">
-                        <Button>RI</Button>
+                        <Button>{{ article.category.name }}</Button>
                         <Button variant="secondary" style="margin-left: 12.5px">
                             {{ article.level.name }}
                         </Button>
