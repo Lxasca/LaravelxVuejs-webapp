@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ArticlesController extends Controller
 {
     public function getArticles() {
-        $articles = Articles::orderBy('created_at', 'desc')->get();
+        $articles = Articles::with('level')->orderBy('created_at', 'desc')->get();
 
         return response()->json($articles);
     }

@@ -15,8 +15,7 @@
                     <TableHead class="text-center" style="width: 45%"
                         >Titre</TableHead
                     >
-                    <TableHead class="text-center" style="width: 25%">
-                        Catégorie
+                    <TableHead class="text-center" style="width: 30%">
                     </TableHead>
                     <TableHead
                         class="text-center"
@@ -28,8 +27,23 @@
             <TableBody>
                 <TableRow v-for="article in articles" :key="article.id">
                     <TableCell style="width: 5%">
-                        <span v-if="article.status == 'published'">Publié</span>
-                        <span v-else>Dépublié</span>
+                        <span v-if="article.status == 'published'">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="18"
+                                height="18"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="lucide lucide-circle-check-big-icon lucide-circle-check-big"
+                            >
+                                <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                <path d="m9 11 3 3L22 4" />
+                            </svg>
+                        </span>
                     </TableCell>
                     <TableCell style="width: 15%">
                         <Button
@@ -62,10 +76,10 @@
                             {{ article.title }}
                         </span>
                     </TableCell>
-                    <TableCell style="width: 25%">
-                        <Button>Relations internationales</Button>
+                    <TableCell style="width: 30%; text-align: left">
+                        <Button>RI</Button>
                         <Button variant="secondary" style="margin-left: 12.5px">
-                            Débutant
+                            {{ article.level.name }}
                         </Button>
                     </TableCell>
                     <TableCell style="width: 10%">
