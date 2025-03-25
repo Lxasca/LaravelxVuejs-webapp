@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/get-articles', [ArticlesController::class, 'getArticles']);
 Route::get('/get-article/{id}', [ArticlesController::class, 'getArticle']);
 
+Route::get('/get-levels', [ArticlesController::class, 'getLevels']);
+Route::get('/get-categories', [ArticlesController::class, 'getCategories']);
+
 // ADMIN
 Route::post('/admin/create-article', [AdminArticleController::class, 'store']);
 Route::put('/admin/edit-article/{id}', [AdminArticleController::class, 'edit']);

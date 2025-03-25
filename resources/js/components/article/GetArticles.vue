@@ -228,12 +228,12 @@
                         }"
                     >
                         <CardContent>
-                            <Button> Relations internationales </Button>
+                            <Button>{{ article.category.name }}</Button>
                             <Button
                                 variant="secondary"
                                 style="margin-left: 12.5px"
                             >
-                                Débutant
+                                {{ article.level.name }}
                             </Button>
 
                             <!--<div

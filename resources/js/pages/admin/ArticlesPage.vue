@@ -11,23 +11,137 @@
                     justify-content: space-between;
                 "
             >
-                <section>
-                    <Select v-model="sortOrder">
-                        <SelectTrigger style="width: 225px">
-                            <SelectValue placeholder="Trier par date" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                                <SelectItem value="asc">
-                                    Du plus ancien au plus récent
-                                </SelectItem>
-                                <SelectItem value="desc">
-                                    Du plus récent au plus ancien
-                                </SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                </section>
+                <div
+                    style="
+                        display: flex;
+                        justify-content: space-between;
+                        gap: 15px;
+                    "
+                >
+                    <section>
+                        <Select v-model="sortOrder">
+                            <SelectTrigger style="width: 225px">
+                                <SelectValue placeholder="Trier par date" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectGroup>
+                                    <SelectItem value="asc">
+                                        Du plus ancien au plus récent
+                                    </SelectItem>
+                                    <SelectItem value="desc">
+                                        Du plus récent au plus ancien
+                                    </SelectItem>
+                                </SelectGroup>
+                            </SelectContent>
+                        </Select>
+                    </section>
+                    <!-- Champs de sélection des levels -->
+                    <section>
+                        <Combobox
+                            by="label"
+                            v-model="selectedLevel"
+                            @update:modelValue="handleSelectionLevel"
+                            style="margin-right: 5px"
+                        >
+                            <ComboboxAnchor as-child>
+                                <ComboboxTrigger as-child>
+                                    <Button
+                                        variant="outline"
+                                        class="justify-between"
+                                    >
+                                        {{ selectedLevel ?? "Niveau" }}
+
+                                        <ChevronsUpDown
+                                            class="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                        />
+                                    </Button>
+                                </ComboboxTrigger>
+                            </ComboboxAnchor>
+
+                            <ComboboxList>
+                                <div
+                                    class="relative w-full max-w-sm items-center"
+                                >
+                                    <ComboboxInput
+                                        class="pl-9 focus-visible:ring-0 border-0 border-b rounded-none h-10"
+                                        placeholder="Rechercher ..."
+                                    />
+                                </div>
+
+                                <ComboboxEmpty> Aucun résultat. </ComboboxEmpty>
+
+                                <ComboboxGroup>
+                                    <ComboboxItem
+                                        v-for="level in levels"
+                                        :key="level.name"
+                                        :value="level.name"
+                                    >
+                                        <div style="font-size: 16px">
+                                            {{ level.name }}
+                                        </div>
+
+                                        <ComboboxItemIndicator>
+                                            <Check class="ml-auto h-4 w-4" />
+                                        </ComboboxItemIndicator>
+                                    </ComboboxItem>
+                                </ComboboxGroup>
+                            </ComboboxList>
+                        </Combobox>
+                    </section>
+                    <!-- Champs de sélection des categories -->
+                    <section>
+                        <Combobox
+                            by="label"
+                            v-model="selectedCategory"
+                            @update:modelValue="handleSelectionCategory"
+                            style="margin-right: 5px"
+                        >
+                            <ComboboxAnchor as-child>
+                                <ComboboxTrigger as-child>
+                                    <Button
+                                        variant="outline"
+                                        class="justify-between"
+                                    >
+                                        {{ selectedCategory ?? "Catégorie" }}
+
+                                        <ChevronsUpDown
+                                            class="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                        />
+                                    </Button>
+                                </ComboboxTrigger>
+                            </ComboboxAnchor>
+
+                            <ComboboxList>
+                                <div
+                                    class="relative w-full max-w-sm items-center"
+                                >
+                                    <ComboboxInput
+                                        class="pl-9 focus-visible:ring-0 border-0 border-b rounded-none h-10"
+                                        placeholder="Rechercher ..."
+                                    />
+                                </div>
+
+                                <ComboboxEmpty> Aucun résultat. </ComboboxEmpty>
+
+                                <ComboboxGroup>
+                                    <ComboboxItem
+                                        v-for="category in categories"
+                                        :key="category.name"
+                                        :value="category.name"
+                                    >
+                                        <div style="font-size: 16px">
+                                            {{ category.name }}
+                                        </div>
+
+                                        <ComboboxItemIndicator>
+                                            <Check class="ml-auto h-4 w-4" />
+                                        </ComboboxItemIndicator>
+                                    </ComboboxItem>
+                                </ComboboxGroup>
+                            </ComboboxList>
+                        </Combobox>
+                    </section>
+                </div>
 
                 <section>
                     <Button @click="toggleForm">Créer un article</Button>
@@ -532,7 +646,11 @@ export default {
             ],
             value: null,
             selectedVocabularyId: null,
+            selectedLevelId: null,
+            selectedCategoryId: null,
             sortOrder: "desc",
+            levels: {},
+            categories: {},
         };
     },
     mounted() {
@@ -542,6 +660,8 @@ export default {
         if (textarea) {
             textarea.addEventListener("select", this.captureSelection);
         }
+        this.getLevels();
+        this.getCategories();
     },
     watch: {
         // lorsque sortOrder change, on relance le tri
@@ -556,8 +676,24 @@ export default {
         }
     },
     methods: {
+        getLevels() {
+            axios.get("/get-levels").then((response) => {
+                this.levels = response.data;
+            });
+        },
+        handleSelectionLevel(selected) {
+            this.selectedLevelId = selected.id;
+        },
+        handleSelectionCategory(selected) {
+            this.selectedCategoryId = selected.id;
+        },
         handleSelection(selected) {
             this.selectedVocabularyId = selected.id;
+        },
+        getCategories() {
+            axios.get(`/get-categories`).then((response) => {
+                this.categories = response.data;
+            });
         },
         getVocabularies() {
             // requête axios pour récupérer toutes les instances de Vocabularies
