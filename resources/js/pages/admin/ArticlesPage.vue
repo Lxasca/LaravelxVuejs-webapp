@@ -84,6 +84,20 @@
                                             <Check class="ml-auto h-4 w-4" />
                                         </ComboboxItemIndicator>
                                     </ComboboxItem>
+
+                                    <ComboboxItem
+                                        :value="null"
+                                        v-if="selectedLevelName"
+                                        style="
+                                            background-color: hsl(
+                                                var(--secondary)
+                                            );
+                                        "
+                                    >
+                                        <div style="font-size: 16px">
+                                            Supprimer le filtre
+                                        </div>
+                                    </ComboboxItem>
                                 </ComboboxGroup>
                             </ComboboxList>
                         </Combobox>
@@ -128,7 +142,7 @@
                                 <ComboboxGroup>
                                     <ComboboxItem
                                         v-for="category in categories"
-                                        :key="category.name"
+                                        :key="category.id"
                                         :value="category.name"
                                     >
                                         <div style="font-size: 16px">
@@ -138,6 +152,20 @@
                                         <ComboboxItemIndicator>
                                             <Check class="ml-auto h-4 w-4" />
                                         </ComboboxItemIndicator>
+                                    </ComboboxItem>
+
+                                    <ComboboxItem
+                                        :value="null"
+                                        v-if="selectedCategoryName"
+                                        style="
+                                            background-color: hsl(
+                                                var(--secondary)
+                                            );
+                                        "
+                                    >
+                                        <div style="font-size: 16px">
+                                            Supprimer le filtre
+                                        </div>
                                     </ComboboxItem>
                                 </ComboboxGroup>
                             </ComboboxList>
@@ -673,6 +701,9 @@ export default {
         selectedLevelName() {
             this.getArticles();
         },
+        selectedCategoryName() {
+            this.getArticles();
+        },
     },
     beforeDestroy() {
         const textarea = this.$refs.textarea;
@@ -1015,13 +1046,15 @@ export default {
         },
         sortArticles() {
             this.articles = this.articles
-                .filter(
-                    (article) =>
-                        (!this.selectedLevelName ||
-                            article.level.name === this.selectedLevelName) &&
-                        (!this.selectedCategoryName ||
-                            article.category.name === this.selectedCategoryName)
-                )
+                .filter((article) => {
+                    const matchesLevel =
+                        !this.selectedLevelName ||
+                        article.level.name === this.selectedLevelName;
+                    const matchesCategory =
+                        !this.selectedCategoryName ||
+                        article.category.name === this.selectedCategoryName;
+                    return matchesLevel && matchesCategory;
+                })
                 .sort((a, b) => {
                     const dateA = new Date(a.created_at);
                     const dateB = new Date(b.created_at);
