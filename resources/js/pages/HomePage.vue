@@ -7,7 +7,7 @@
             transform: translate(-50%, -50%);
         "
     >
-        <h1>Kal<span style="color: #ffc300; font-weight: bold">ymz</span></h1>
+        <h1>Kal<span style="color: #58ca60; font-weight: bold">ymz</span></h1>
 
         <div style="display: flex; justify-content: center">
             <section>
@@ -30,7 +30,7 @@
             <router-link to="/articles" style="margin-right: 20px">
                 <Button
                     style="
-                        background-color: #ffc300;
+                        background-color: #58ca60;
                         color: black;
                         padding-left: 25px;
                         padding-right: 25px;
@@ -53,6 +53,6 @@ export default {
 
 <style scoped>
 span {
-    color: #ffc300;
+    color: #58ca60;
 }
 </style>

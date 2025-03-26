@@ -116,7 +116,7 @@ export default {
     },
     data() {
         return {
-            selectedColor: "#ffc300",
+            selectedColor: "#58ca60",
             isAdminBoolean: false,
         };
     },
@@ -203,7 +203,7 @@ input:focus {
     width: 796px;
     height: 50px;
     border-radius: 10px;
-    border: solid 2px #f8da61;
+    border: solid 2px #58ca60;
 
     font-size: 22px;
 }
@@ -232,7 +232,7 @@ div[class^="choice"] input[type="radio"] + span {
     border: solid 2px #fbfbfb;
 }
 div[class^="choice"] input[type="radio"]:checked + span {
-    border: solid 2px #f8da61;
+    border: solid 2px #58ca60;
 }
 
 /** disabled un exercice pour ne pas que l'user puisse changer sa réponse **/
@@ -263,7 +263,7 @@ div[class^="choice"] input[type="radio"]:checked + span {
 }
 
 .color-style-main {
-    color: #ffc300;
+    color: #58ca60;
 }
 h1 {
     text-align: center;

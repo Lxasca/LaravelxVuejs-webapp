@@ -1,7 +1,7 @@
 <template>
     <div style="padding-left: 6.75%; padding-right: 6.75%">
         <h1>
-            Mon <span style="color: #ffc300; font-weight: bold">compte</span>
+            Mon <span style="color: #58ca60; font-weight: bold">compte</span>
         </h1>
 
         <section

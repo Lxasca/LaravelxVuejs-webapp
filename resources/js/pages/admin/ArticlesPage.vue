@@ -39,7 +39,7 @@
                     <section>
                         <Combobox
                             by="label"
-                            v-model="selectedLevel"
+                            v-model="selectedLevelName"
                             @update:modelValue="handleSelectionLevel"
                             style="margin-right: 5px"
                         >
@@ -49,7 +49,7 @@
                                         variant="outline"
                                         class="justify-between"
                                     >
-                                        {{ selectedLevel ?? "Niveau" }}
+                                        {{ selectedLevelName || "Niveau" }}
 
                                         <ChevronsUpDown
                                             class="ml-2 h-4 w-4 shrink-0 opacity-50"
@@ -73,7 +73,7 @@
                                 <ComboboxGroup>
                                     <ComboboxItem
                                         v-for="level in levels"
-                                        :key="level.name"
+                                        :key="level.id"
                                         :value="level.name"
                                     >
                                         <div style="font-size: 16px">
@@ -646,7 +646,7 @@ export default {
             ],
             value: null,
             selectedVocabularyId: null,
-            selectedLevelId: null,
+            selectedLevelName: "",
             selectedCategoryId: null,
             sortOrder: "desc",
             levels: {},
@@ -668,6 +668,9 @@ export default {
         sortOrder() {
             this.getArticles();
         },
+        selectedLevelName() {
+            this.getArticles();
+        },
     },
     beforeDestroy() {
         const textarea = this.$refs.textarea;
@@ -682,7 +685,7 @@ export default {
             });
         },
         handleSelectionLevel(selected) {
-            this.selectedLevelId = selected.id;
+            this.selectedLevelName = selected;
         },
         handleSelectionCategory(selected) {
             this.selectedCategoryId = selected.id;
@@ -1009,17 +1012,22 @@ export default {
             });
         },
         sortArticles() {
-            this.articles.sort((a, b) => {
-                const dateA = new Date(a.created_at);
-                const dateB = new Date(b.created_at);
+            this.articles = this.articles
+                .filter(
+                    (article) =>
+                        !this.selectedLevelName ||
+                        article.level.name === this.selectedLevelName
+                )
+                .sort((a, b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
 
-                if (this.sortOrder === "asc") {
-                    return dateA - dateB; // du plus ancien au plus récent
-                } else {
-                    return dateB - dateA; // du plus récent au plus ancien
-                }
-            });
+                    return this.sortOrder === "asc"
+                        ? dateA - dateB
+                        : dateB - dateA;
+                });
         },
+
         ////
     },
 };
