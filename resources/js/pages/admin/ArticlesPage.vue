@@ -92,7 +92,7 @@
                     <section>
                         <Combobox
                             by="label"
-                            v-model="selectedCategory"
+                            v-model="selectedCategoryName"
                             @update:modelValue="handleSelectionCategory"
                             style="margin-right: 5px"
                         >
@@ -102,7 +102,9 @@
                                         variant="outline"
                                         class="justify-between"
                                     >
-                                        {{ selectedCategory ?? "Catégorie" }}
+                                        {{
+                                            selectedCategoryName ?? "Catégorie"
+                                        }}
 
                                         <ChevronsUpDown
                                             class="ml-2 h-4 w-4 shrink-0 opacity-50"
@@ -647,7 +649,7 @@ export default {
             value: null,
             selectedVocabularyId: null,
             selectedLevelName: "",
-            selectedCategoryId: null,
+            selectedCategoryName: null,
             sortOrder: "desc",
             levels: {},
             categories: {},
@@ -688,7 +690,7 @@ export default {
             this.selectedLevelName = selected;
         },
         handleSelectionCategory(selected) {
-            this.selectedCategoryId = selected.id;
+            this.selectedCategoryName = selected;
         },
         handleSelection(selected) {
             this.selectedVocabularyId = selected.id;
@@ -1015,8 +1017,10 @@ export default {
             this.articles = this.articles
                 .filter(
                     (article) =>
-                        !this.selectedLevelName ||
-                        article.level.name === this.selectedLevelName
+                        (!this.selectedLevelName ||
+                            article.level.name === this.selectedLevelName) &&
+                        (!this.selectedCategoryName ||
+                            article.category.name === this.selectedCategoryName)
                 )
                 .sort((a, b) => {
                     const dateA = new Date(a.created_at);
