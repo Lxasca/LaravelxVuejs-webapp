@@ -1,8 +1,6 @@
 <template>
     <div id="articles-page">
         <div>
-            <!-- les filtres -->
-
             <div
                 v-if="!isForm && !isFormEdit"
                 style="
@@ -12,6 +10,7 @@
                     justify-content: space-between;
                 "
             >
+                <!-- les filtres -->
                 <article-filter
                     @update:filters="updateFilters"
                 ></article-filter>

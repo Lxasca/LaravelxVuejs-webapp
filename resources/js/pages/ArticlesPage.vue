@@ -1,24 +1,15 @@
 <template>
     <div id="articles-page">
         <!-- les filtres -->
-        <div style="margin-left: 2.5%">
-            <section>
-                <Select v-model="sortOrder">
-                    <SelectTrigger style="width: 225px">
-                        <SelectValue placeholder="Trier par date" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value="asc">
-                                Du plus ancien au plus récent
-                            </SelectItem>
-                            <SelectItem value="desc">
-                                Du plus récent au plus ancien
-                            </SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            </section>
+        <div
+            style="
+                margin-left: 2.5%;
+                margin-right: 3.5%;
+                display: flex;
+                justify-content: space-between;
+            "
+        >
+            <article-filter @update:filters="updateFilters"></article-filter>
         </div>
 
         <get-articles :articles="articles"></get-articles>
@@ -38,6 +29,8 @@ import {
     SelectValue,
 } from "../../../src/components/ui/select";
 
+import ArticleFilter from "@/components/filters/ArticleFilter.vue";
+
 export default {
     name: "ArticlesPage",
     components: {
@@ -49,11 +42,14 @@ export default {
         SelectLabel,
         SelectTrigger,
         SelectValue,
+        ArticleFilter,
     },
     data() {
         return {
             articles: [],
             sortOrder: "desc",
+            selectedLevelName: null,
+            selectedCategoryName: null,
         };
     },
     watch: {
@@ -78,16 +74,31 @@ export default {
             });
         },
         sortArticles() {
-            this.articles.sort((a, b) => {
-                const dateA = new Date(a.created_at);
-                const dateB = new Date(b.created_at);
+            this.articles = this.articles
+                .filter((article) => {
+                    const matchesLevel =
+                        !this.selectedLevelName ||
+                        article.level.name === this.selectedLevelName;
+                    const matchesCategory =
+                        !this.selectedCategoryName ||
+                        article.category.name === this.selectedCategoryName;
+                    return matchesLevel && matchesCategory;
+                })
+                .sort((a, b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
 
-                if (this.sortOrder === "asc") {
-                    return dateA - dateB; // du plus ancien au plus récent
-                } else {
-                    return dateB - dateA; // du plus récent au plus ancien
-                }
-            });
+                    return this.sortOrder === "asc"
+                        ? dateA - dateB
+                        : dateB - dateA;
+                });
+        },
+        updateFilters(filters) {
+            this.selectedLevelName = filters.level;
+            this.selectedCategoryName = filters.category;
+            this.sortOrder = filters.sortOrder;
+
+            this.getArticles();
         },
         changeLanguage(articleId) {
             this.articles = this.articles.map((article) => {

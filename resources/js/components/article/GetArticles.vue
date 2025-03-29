@@ -1,6 +1,6 @@
 <template>
     <div class="div-content" v-if="isAdmin">
-        <Table>
+        <Table style="margin-top: 35px">
             <TableHeader>
                 <TableRow>
                     <TableHead class="text-center" style="width: 5%">
@@ -15,8 +15,8 @@
                     <TableHead class="text-center" style="width: 45%"
                         >Titre</TableHead
                     >
-                    <TableHead class="text-center" style="width: 30%">
-                    </TableHead>
+                    <TableHead style="width: 10%"> </TableHead>
+                    <TableHead style="width: 10%"> </TableHead>
                     <TableHead
                         class="text-center"
                         style="width: 10%"
@@ -76,9 +76,11 @@
                             {{ article.title }}
                         </span>
                     </TableCell>
-                    <TableCell style="width: 30%; text-align: left">
+                    <TableCell style="width: 10%; text-align: center">
                         <Button>{{ article.category.name }}</Button>
-                        <Button variant="secondary" style="margin-left: 12.5px">
+                    </TableCell>
+                    <TableCell style="width: 10%; text-align: center">
+                        <Button variant="secondary">
                             {{ article.level.name }}
                         </Button>
                     </TableCell>
@@ -161,7 +163,7 @@
             </TableBody>
         </Table>
     </div>
-    <div v-else>
+    <div style="margin-top: 25px" v-else>
         <div class="card-grid">
             <div v-for="article in articles" :key="article.id">
                 <Card>
