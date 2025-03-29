@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Articles
-Route::get('/get-articles', [ArticlesController::class, 'getArticles']);
+Route::get('/get-articles/{withUnpublished?}', [ArticlesController::class, 'getArticles']);
 Route::get('/get-article/{id}', [ArticlesController::class, 'getArticle']);
 
 Route::get('/get-levels', [ArticlesController::class, 'getLevels']);

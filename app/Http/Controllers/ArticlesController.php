@@ -9,8 +9,16 @@ use Illuminate\Http\Request;
 
 class ArticlesController extends Controller
 {
-    public function getArticles() {
-        $articles = Articles::with(['level', 'category'])->orderBy('created_at', 'desc')->get();
+    public function getArticles($withUnpublished = null) {
+        $query = Articles::with(['level', 'category'])->orderBy('created_at', 'desc');
+
+        // $withUnpublished vaut non null depuis la requête de l'admin, car en admin on veut voir les articles publiés et non publiés
+        // et il est null depuis l'user, car les utilisateurs ne doivent pas accéder aux articles non publiés
+        if (is_null($withUnpublished)) {
+            $query->where('status', 'published');
+        }
+
+        $articles = $query->get();
 
         return response()->json($articles);
     }

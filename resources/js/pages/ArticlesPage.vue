@@ -63,7 +63,7 @@ export default {
     },
     methods: {
         getArticles() {
-            axios.get("/get-articles").then((response) => {
+            axios.get(`/get-articles`).then((response) => {
                 this.articles = Array.isArray(response.data)
                     ? response.data.map((article) => ({
                           ...article,

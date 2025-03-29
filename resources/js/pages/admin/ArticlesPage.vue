@@ -523,6 +523,7 @@ export default {
             selectedLevelName: "",
             selectedCategoryName: null,
             sortOrder: "desc",
+            withUnpublished: 1,
         };
     },
     mounted() {
@@ -849,12 +850,14 @@ export default {
             this.switchLanguage = !this.switchLanguage;
         },
         getArticles() {
-            axios.get("/get-articles").then((response) => {
-                this.articles = Array.isArray(response.data)
-                    ? response.data
-                    : [];
-                this.sortArticles();
-            });
+            axios
+                .get(`/get-articles/${this.withUnpublished}`)
+                .then((response) => {
+                    this.articles = Array.isArray(response.data)
+                        ? response.data
+                        : [];
+                    this.sortArticles();
+                });
         },
         sortArticles() {
             this.articles = this.articles
