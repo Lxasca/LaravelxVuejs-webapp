@@ -180,7 +180,7 @@ export default {
     data() {
         return {
             numberOfContent: 2,
-            fontSize: 38,
+            fontSize: 34,
             article: {},
             showTranslation: false,
             traductionArabic: "",

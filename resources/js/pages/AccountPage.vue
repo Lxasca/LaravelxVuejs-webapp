@@ -4,24 +4,44 @@
             Mon <span style="color: #58ca60; font-weight: bold">compte</span>
         </h1>
 
-        <section
-            style="text-align: center; margin-top: -25px; margin-right: -75px"
-        >
-            <button @click="logout" style="font-style: italic">
-                Déconnexion
-            </button>
-        </section>
-
-        <div style="display: flex; justify-content: center; margin-top: 50px">
+        <div style="display: flex; justify-content: center; margin-top: 25px">
             <div style="width: 372.5px">
-                <Input type="email" :placeholder="email" readonly />
+                <Input type="email" :placeholder="email" disabled />
                 <br />
-                <Input
-                    v-if="!isShowModifPassword"
-                    type="password"
-                    :value="passwordLength"
-                    readonly
-                />
+
+                <section style="display: flex; justify-content: space-between">
+                    <Input
+                        type="password"
+                        :value="passwordLength"
+                        disabled
+                        style="width: 85%"
+                    />
+                    <p @click="showModifPassword">
+                        <span style="display: flex; align-items: center">
+                            <Button type="submit">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="lucide lucide-square-pen-icon lucide-square-pen"
+                                >
+                                    <path
+                                        d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                                    />
+                                    <path
+                                        d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z"
+                                    />
+                                </svg>
+                            </Button>
+                        </span>
+                    </p>
+                </section>
 
                 <form @submit.prevent="comparePassword">
                     <Input
@@ -29,26 +49,13 @@
                         type="password"
                         placeholder="Nouveau mot de passe"
                         v-model="newPassword"
+                        style="margin-top: 15px"
                     />
                 </form>
             </div>
         </div>
 
         <div style="display: flex; justify-content: center">
-            <p
-                style="
-                    text-align: center;
-                    color: black;
-                    margin-top: 10px;
-                    cursor: pointer;
-                "
-                @click="showModifPassword"
-            >
-                <span v-if="!isShowModifPassword"
-                    >Modifier mon mot de passe</span
-                >
-            </p>
-
             <div
                 v-if="isShowModifPassword"
                 style="display: flex; margin-top: 20px"
@@ -129,15 +136,6 @@ export default {
                 .catch((error) => {
                     console.error(error);
                 });
-        },
-        logout() {
-            localStorage.removeItem("isAdmin");
-            localStorage.removeItem("isClient");
-            localStorage.removeItem("isUser");
-            localStorage.removeItem("email");
-            this.isAuthenticated = false;
-
-            this.$router.push({ name: "authentification" });
         },
     },
 };

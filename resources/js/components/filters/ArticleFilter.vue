@@ -3,7 +3,7 @@
         <div style="display: flex; justify-content: space-between; gap: 15px">
             <section>
                 <Select v-model="sortOrder">
-                    <SelectTrigger style="width: 225px">
+                    <SelectTrigger style="width: 250px">
                         <SelectValue placeholder="Trier par date" />
                     </SelectTrigger>
                     <SelectContent>
