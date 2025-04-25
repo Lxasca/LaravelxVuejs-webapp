@@ -99,4 +99,20 @@ class AuthController extends Controller
         return response()->json(['message' => 'Les mots de passe sont identiques. Aucune mise à jour effectuée.']);
     }
 
+    public function updatePassword(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Utilisateur non trouvé'], 404);
+        }
+
+        $user->password = Hash::make($request->newPassword);
+        $user->password_length = strlen($request->newPassword);
+        $user->save();
+
+        return response()->json(['message' => 'Mot de passe mis à jour avec succès.']);
+    }
+
+
 }

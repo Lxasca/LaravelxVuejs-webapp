@@ -30,6 +30,8 @@ Route::get('/connexion', [AuthController::class, 'connexion']);
 Route::post('/inscription', [AuthController::class, 'inscription']);
 Route::get('/get-length-password', [AuthController::class, 'getLengthPassword']);
 Route::post('/compare-password', [AuthController::class, 'comparePassword']);
+Route::put('/update-password', [AuthController::class, 'updatePassword']);
+
 
 
 Route::get('/{any}', function () {
