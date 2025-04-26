@@ -24,7 +24,7 @@
             >
 
             <router-link to="/admin/articles" style="margin-right: 32.5px">
-                <Button> Administration Articles </Button>
+                <Button> Administration articles </Button>
             </router-link>
         </section>
 

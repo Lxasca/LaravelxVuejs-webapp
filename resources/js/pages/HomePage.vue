@@ -30,12 +30,13 @@
             <router-link to="/articles" style="margin-right: 20px">
                 <Button
                     style="
-                        background-color: black;
+                        background-color: #58ca60;
                         color: white;
                         padding-left: 25px;
                         padding-right: 25px;
+                        font-size: 17px;
                     "
-                    >Je veux apprendre l'arabe !</Button
+                    >Je veux apprendre l'arabe</Button
                 >
             </router-link>
         </div>

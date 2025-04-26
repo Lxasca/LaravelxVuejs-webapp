@@ -374,15 +374,15 @@
 
 <script>
 import axios from "axios";
-import { Input } from "../../../src/components/ui/input";
-import { Label } from "../../../src/components/ui/label";
-import { Button } from "../../../src/components/ui/button";
+import { Input } from "../../../../src/components/ui/input";
+import { Label } from "../../../../src/components/ui/label";
+import { Button } from "../../../../src/components/ui/button";
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "../../../src/components/ui/tabs";
+} from "../../../../src/components/ui/tabs";
 import {
     Card,
     CardHeader,
@@ -390,13 +390,13 @@ import {
     CardDescription,
     CardContent,
     CardFooter,
-} from "../../../src/components/ui/card";
+} from "../../../../src/components/ui/card";
 
 import {
     Alert,
     AlertDescription,
     AlertTitle,
-} from "../../../src/components/ui/alert";
+} from "../../../../src/components/ui/alert";
 
 import { AlertCircle } from "lucide-vue-next";
 

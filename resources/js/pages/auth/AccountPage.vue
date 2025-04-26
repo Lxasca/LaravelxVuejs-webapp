@@ -4,6 +4,12 @@
             Mon <span style="color: #58ca60; font-weight: bold">compte</span>
         </h1>
 
+        <div style="text-align: center">
+            <span v-if="boolComparePassword == 'success'">Bravo ! </span>
+            <span v-else-if="boolComparePassword == 'error'">Oup's ! </span>
+            <span> {{ returnComparePassword }}</span>
+        </div>
+
         <form @submit.prevent="comparePassword">
             <div
                 style="display: flex; justify-content: center; margin-top: 25px"
@@ -88,8 +94,8 @@
 </template>
 <script>
 import axios from "axios";
-import { Input } from "../../../src/components/ui/input";
-import { Button } from "../../../src/components/ui/button";
+import { Input } from "../../../../src/components/ui/input";
+import { Button } from "../../../../src/components/ui/button";
 
 export default {
     name: "AccountPage",
@@ -103,6 +109,8 @@ export default {
             newPassword: "",
             booleanControlPassword: false,
             textControlPassword: "",
+            boolComparePassword: "",
+            returnComparePassword: "",
         };
     },
     mounted() {
@@ -155,12 +163,10 @@ export default {
                 .post("/compare-password", { newPassword: this.newPassword })
                 .then((response) => {
                     if (response.data.match) {
-                        console.log("Les mots de passe sont identiques.");
+                        this.boolComparePassword = "error";
+                        this.returnComparePassword =
+                            "Le nouveau mot de passe saisi est identique au premier.";
                     } else {
-                        console.log(
-                            "Compare password passée avec succès.",
-                            this.email
-                        );
                         if (this.booleanControlPassword === true) {
                             axios
                                 .put("/update-password", {
@@ -168,36 +174,27 @@ export default {
                                     newPassword: this.newPassword,
                                 })
                                 .then((response) => {
-                                    console.log(
-                                        "Mot de passe mis à jour avec succès !"
-                                    );
+                                    this.boolComparePassword = "success";
+                                    this.returnComparePassword =
+                                        "Votre mot de passe a été modifié avec succès.";
 
                                     // Je vide le champ newPassword, je le cache, et j'upadte le champ password
                                     this.newPassword = "";
                                     this.isShowModifPassword = false;
-                                    this.passwordLength = 3;
-
-                                    axios
-                                        .get("/get-length-password", {
-                                            params: { email: this.email },
-                                        })
-                                        .then((response) => {
-                                            this.passwordLength = "•".repeat(
-                                                response.data.password_length
-                                            );
-                                        })
-                                        .catch((error) => {
-                                            console.error(error);
-                                        });
+                                    this.getLengthPassword();
                                 })
                                 .catch((error) => {
-                                    console.error("Erreur :", error);
+                                    this.boolComparePassword = "error";
+                                    this.returnComparePassword =
+                                        "Une erreur est survenue lors du changement de votre mot de passe.";
                                 });
                         }
                     }
                 })
                 .catch((error) => {
-                    console.error("Erreur :", error);
+                    this.boolComparePassword = "error";
+                    this.returnComparePassword =
+                        "Une erreur est survenue lors du changement de votre mot de passe.";
                 });
         },
         showModifPassword() {

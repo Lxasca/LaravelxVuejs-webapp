@@ -6,8 +6,8 @@ import ArticlesPage from "./pages/ArticlesPage.vue";
 import ArticlePage from "./pages/ArticlePage.vue";
 import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
-import AccountPage from "./pages/AccountPage.vue";
-import AuthentificationPage from "./pages/AuthentificationPage.vue";
+import AccountPage from "./pages/auth/AccountPage.vue";
+import AuthentificationPage from "./pages/auth/AuthentificationPage.vue";
 
 // isUser, isClient, isAdmin
 const requireAdminAuth = (to, from, next) => {
