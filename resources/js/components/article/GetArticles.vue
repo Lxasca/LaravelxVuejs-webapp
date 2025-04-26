@@ -156,7 +156,9 @@
                                         </DropdownMenuPortal>
                                     </DropdownMenuSub>
                                     <DropdownMenuItem>
-                                        <span>Pack CM</span>
+                                        <span @click="packCM(article)"
+                                            >Pack CM</span
+                                        >
                                         <DropdownMenuShortcut
                                             >⌘+T</DropdownMenuShortcut
                                         >
@@ -360,6 +362,30 @@ export default {
         },
     },
     methods: {
+        packCM(article) {
+            //
+            const articleId = article.id;
+            console.log("pack cm pour l'article :", articleId);
+
+            const canvas = document.createElement("canvas");
+            canvas.width = 1080;
+            canvas.height = 1080;
+
+            const ctx = canvas.getContext("2d");
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `pack_cm_${article.id}.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }, "image/png");
+        },
         formEdit(article) {
             this.$emit("is-form-edit", article);
         },
