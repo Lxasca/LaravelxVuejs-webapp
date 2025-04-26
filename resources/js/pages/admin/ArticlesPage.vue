@@ -37,6 +37,7 @@
             <get-articles
                 v-if="!isForm && !isFormEdit"
                 :articles="articles"
+                :articlesEmpty="articlesEmpty"
                 :isAdmin="isAdmin"
                 @is-form-edit="toggleForm('edit', $event)"
                 @form-delete="formDelete($event)"
@@ -524,6 +525,8 @@ export default {
             selectedCategoryName: null,
             sortOrder: "desc",
             withUnpublished: 1,
+
+            articlesEmpty: "",
         };
     },
     mounted() {
@@ -878,6 +881,13 @@ export default {
                         ? dateA - dateB
                         : dateB - dateA;
                 });
+
+            if (this.articles.length == 0) {
+                this.articlesEmpty =
+                    "Oup's, aucun article ne correspond à votre recherche.";
+            } else {
+                this.articlesEmpty = "";
+            }
         },
         updateFilters(filters) {
             this.selectedLevelName = filters.level;

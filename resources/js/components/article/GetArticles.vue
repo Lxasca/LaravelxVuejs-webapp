@@ -1,6 +1,12 @@
 <template>
+    <p
+        v-if="articlesEmpty !== ''"
+        style="margin-left: 37.5px; margin-top: 25px"
+    >
+        {{ articlesEmpty }}
+    </p>
     <div class="div-content" v-if="isAdmin">
-        <Table style="margin-top: 35px">
+        <Table v-if="articlesEmpty == ''" style="margin-top: 35px">
             <TableHeader>
                 <TableRow>
                     <TableHead class="text-center" style="width: 5%">
@@ -346,6 +352,10 @@ export default {
         },
         isAdmin: {
             type: Boolean,
+            required: false,
+        },
+        articlesEmpty: {
+            type: String,
             required: false,
         },
     },

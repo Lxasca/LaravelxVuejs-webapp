@@ -12,7 +12,10 @@
             <article-filter @update:filters="updateFilters"></article-filter>
         </div>
 
-        <get-articles :articles="articles"></get-articles>
+        <get-articles
+            :articles="articles"
+            :articlesEmpty="articlesEmpty"
+        ></get-articles>
     </div>
 </template>
 
@@ -50,6 +53,7 @@ export default {
             sortOrder: "desc",
             selectedLevelName: null,
             selectedCategoryName: null,
+            articlesEmpty: "",
         };
     },
     watch: {
@@ -92,6 +96,13 @@ export default {
                         ? dateA - dateB
                         : dateB - dateA;
                 });
+
+            if (this.articles.length == 0) {
+                this.articlesEmpty =
+                    "Oup's, aucun article ne correspond à votre recherche.";
+            } else {
+                this.articlesEmpty = "";
+            }
         },
         updateFilters(filters) {
             this.selectedLevelName = filters.level;
