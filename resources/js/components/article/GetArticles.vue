@@ -315,6 +315,11 @@ import { Badge } from "../../../../src/components/ui/badge";
 
 export default {
     name: "GetArticles",
+    data() {
+        return {
+            article: [],
+        };
+    },
     components: {
         Button,
         DropdownMenu,
@@ -365,26 +370,131 @@ export default {
         packCM(article) {
             //
             const articleId = article.id;
-            console.log("pack cm pour l'article :", articleId);
 
-            const canvas = document.createElement("canvas");
-            canvas.width = 1080;
-            canvas.height = 1080;
+            axios
+                .get(`/get-article/${articleId}`)
+                .then((response) => {
+                    // 1. Récupération des informations à afficher dans l'image
+                    this.article = response.data;
+                    console.log("pack cm pour l'article :", this.article);
 
-            const ctx = canvas.getContext("2d");
-            ctx.fillStyle = "white";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    const title_arabic = this.article.title;
+                    const title_french = this.article.title_french;
 
-            canvas.toBlob((blob) => {
-                const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = `pack_cm_${article.id}.png`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                URL.revokeObjectURL(url);
-            }, "image/png");
+                    // 2. Génération de l'image
+                    const imageUrl = new URL(
+                        "../../../images/cm.png",
+                        import.meta.url
+                    ).href;
+                    fetch(imageUrl)
+                        .then((res) => res.blob())
+                        .then((blob) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement("canvas");
+                                const ctx = canvas.getContext("2d");
+                                canvas.width = img.width;
+                                canvas.height = img.height;
+                                ctx.drawImage(img, 0, 0);
+
+                                ctx.font = "175px 'Roboto Condensed'";
+                                ctx.fillStyle = "black";
+                                title_arabic
+                                    .split(/(.{1,20})(\s|$)/g)
+                                    .filter(Boolean)
+                                    .forEach((line, i) =>
+                                        ctx.fillText(
+                                            line.trim(),
+                                            (canvas.width -
+                                                ctx.measureText(line.trim())
+                                                    .width) /
+                                                2,
+                                            1400 + i * 125
+                                        )
+                                    );
+
+                                ctx.font = "60px 'Roboto Condensed'";
+                                ctx.fillStyle = "black";
+                                title_french
+                                    .split(/(.{1,50})(\s|$)/g)
+                                    .filter(Boolean)
+                                    .forEach((line, i) =>
+                                        ctx.fillText(
+                                            line.trim(),
+                                            (canvas.width -
+                                                ctx.measureText(line.trim())
+                                                    .width) /
+                                                2,
+                                            1175 + i * 50
+                                        )
+                                    );
+
+                                canvas.toBlob((canvasBlob) => {
+                                    const blobUrl =
+                                        URL.createObjectURL(canvasBlob);
+                                    const link = document.createElement("a");
+                                    link.href = blobUrl;
+                                    link.download = "pack_cm.png";
+                                    document.body.appendChild(link);
+                                    link.click();
+                                    document.body.removeChild(link);
+                                    URL.revokeObjectURL(blobUrl);
+                                });
+                            };
+                            img.src = URL.createObjectURL(blob);
+                        });
+
+                    // 3. Ajout du contenu sur le fond blanc
+                    // 3.a Affichage du titre en arabe
+                    /**ctx.fillStyle = "black";
+                    ctx.font = "55px 'Roboto Condensed', serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "top";
+                    ctx.fillText(title_arabic, canvas.width / 2, 150);
+                    // 3.b Affichage du titre en français
+                    ctx.fillStyle = "#58ca60";
+                    //ctx.font = "80px sans-serif bold";
+                    ctx.font = "80px 'Roboto Condensed', serif";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "top";
+
+                    const maxWidth = 800;
+                    const lineHeight = 90;
+                    const words = title_french.split(" ");
+                    let line = "";
+                    let y = 250;
+
+                    for (let n = 0; n < words.length; n++) {
+                        const testLine = line + words[n] + " ";
+                        const metrics = ctx.measureText(testLine);
+                        const testWidth = metrics.width;
+
+                        if (testWidth > maxWidth && n > 0) {
+                            ctx.fillText(line, canvas.width / 2, y);
+                            line = words[n] + " ";
+                            y += lineHeight;
+                        } else {
+                            line = testLine;
+                        }
+                    }
+                    ctx.fillText(line, canvas.width / 2, y);
+
+                    ///
+
+                    canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement("a");
+                        link.href = url;
+                        link.download = `pack_cm_${article.id}.png`;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    }, "image/png");**/
+                })
+                .catch((error) => {
+                    console.log("erreur : ", error);
+                });
         },
         formEdit(article) {
             this.$emit("is-form-edit", article);
