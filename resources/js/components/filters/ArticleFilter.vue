@@ -1,9 +1,9 @@
 <template>
     <div>
-        <div style="display: flex; justify-content: space-between; gap: 15px">
+        <div class="responsive-container">
             <section>
                 <Select v-model="sortOrder">
-                    <SelectTrigger style="width: 250px">
+                    <SelectTrigger style="width: 280px">
                         <SelectValue placeholder="Trier par date" />
                     </SelectTrigger>
                     <SelectContent>
@@ -26,7 +26,7 @@
                     @update:modelValue="handleSelectionLevel"
                     style="margin-right: 5px"
                 >
-                    <ComboboxAnchor as-child>
+                    <ComboboxAnchor as-child style="width: 130px">
                         <ComboboxTrigger as-child>
                             <Button variant="outline" class="justify-between">
                                 {{ selectedLevelName || "Niveau" }}
@@ -85,7 +85,7 @@
                     style="margin-right: 5px"
                 >
                     <ComboboxAnchor as-child>
-                        <ComboboxTrigger as-child>
+                        <ComboboxTrigger as-child style="width: 130px">
                             <Button variant="outline" class="justify-between">
                                 {{ selectedCategoryName ?? "Catégorie" }}
 
@@ -247,3 +247,16 @@ export default {
     },
 };
 </script>
+<style scoped>
+.responsive-container {
+    display: flex;
+    gap: 15px;
+}
+
+@media (max-width: 767px) {
+    .responsive-container {
+        flex-wrap: wrap;
+        padding-left: 20px;
+    }
+}
+</style>

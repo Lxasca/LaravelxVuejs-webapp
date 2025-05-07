@@ -52,7 +52,7 @@ section {
     width: 550px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 767px) {
     p {
         font-size: 16px;
     }
