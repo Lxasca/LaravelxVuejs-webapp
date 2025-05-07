@@ -1,27 +1,13 @@
 <template>
-    <div
-        style="
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        "
-    >
+    <div style="margin-top: 9%; left: 50%">
         <h1>Kal<span style="color: #58ca60; font-weight: bold">ymz</span></h1>
 
         <div style="display: flex; justify-content: center">
             <section>
-                <p
-                    style="
-                        font-size: 21px;
-                        font-weight: normal;
-                        text-align: center;
-                    "
-                >
+                <p>
                     Chaque jour, lisez des articles arabe / français sur des
-                    sujets variés
-                    <br />
-                    avec des aides interactives pour enrichir votre vocabulaire.
+                    sujets variés avec des aides interactives pour enrichir
+                    votre vocabulaire.
                 </p>
             </section>
         </div>
@@ -55,5 +41,23 @@ export default {
 <style scoped>
 span {
     color: #58ca60;
+}
+
+p {
+    font-size: 21px;
+    font-weight: normal;
+    text-align: center;
+}
+section {
+    width: 550px;
+}
+
+@media (max-width: 640px) {
+    p {
+        font-size: 16px;
+    }
+    section {
+        width: 350px;
+    }
 }
 </style>
