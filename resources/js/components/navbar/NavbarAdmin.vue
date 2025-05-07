@@ -1,16 +1,13 @@
 <template>
     <div
         style="
-            /**box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);**/
             padding: 25px;
             color: #262626;
 
             padding-bottom: 50px;
-            padding-left: 90px;
-            padding-right: 100px;
 
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         "
     >
@@ -24,33 +21,13 @@
             >
 
             <router-link to="/admin/articles" style="margin-right: 32.5px">
-                <Button> Administration articles </Button>
+                <Button> Administration </Button>
             </router-link>
         </section>
 
         <section
             style="display: flex; justify-content: center; align-items: center"
         >
-            <!--<DropdownMenu>
-                <DropdownMenuTrigger as-child style="margin-right: 40px">
-                    <Button variant="outline"> Configuration </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent class="w-56">
-                    <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                            Couleur
-                            <Input
-                                type="color"
-                                v-model="selectedColor"
-                                @input="updateMainColor"
-                                @click.stop
-                                style="width: 50px"
-                            />
-                        </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                </DropdownMenuContent>
-            </DropdownMenu>-->
-
             <router-link to="/authentification">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
