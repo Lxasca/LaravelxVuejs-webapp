@@ -1,101 +1,12 @@
 <template>
-    <!--<div
-        style="
-            /**box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);**/
-            padding: 25px;
-            color: #262626;
-
-            padding-bottom: 50px;
-            padding-left: 90px;
-            padding-right: 100px;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        "
-    >
-        <section
-            style="display: flex; justify-content: center; align-items: center"
-        >
-            <router-link style="margin-right: 40px" to="/">Accueil</router-link>
-            <router-link to="/articles" style="margin-right: 20px">
-                <Button class="btn-duo-main"
-                    >Commencer à apprendre l'arabe
-                </Button>
-            </router-link>
-            <span style="display: flex; align-items: center"
-                ><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-move-left"
-                >
-                    <path d="M6 8L2 12L6 16" />
-                    <path d="M2 12H22" /></svg
-                ><span style="margin-left: 15px; margin-top: -1.5px"
-                    >gratuitement et sans inscription</span
-                ></span
-            >
-        </section>
-
-        <section
-            style="display: flex; justify-content: center; align-items: center"
-        >
-            <DropdownMenu>
-                <DropdownMenuTrigger as-child style="margin-right: 40px">
-                    <Button variant="outline"> Configuration </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent class="w-56">
-                    <DropdownMenuGroup>
-                        <DropdownMenuItem>
-                            Couleur
-                            <Input
-                                type="color"
-                                v-model="selectedColor"
-                                @input="updateMainColor"
-                                @click.stop
-                                style="width: 50px"
-                            />
-                        </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                </DropdownMenuContent>
-            </DropdownMenu>
-
-            <router-link
-                v-if="isAdminBoolean"
-                to="/admin"
-                style="margin-right: 32.5px"
-            >
-                <Button> Administration </Button>
-            </router-link>
-
-            <router-link to="/authentification">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-user-round"
-                >
-                    <circle cx="12" cy="8" r="5" />
-                    <path d="M20 21a8 8 0 0 0-16 0" />
-                </svg>
-            </router-link>
-        </section>
-    </div>-->
-
+    <!-- si connecté & admin -->
     <navbar-admin v-if="isAdminBoolean"></navbar-admin>
+    <!-- si connecté & client -->
+    <navbar-client v-else-if="isClientBoolean"></navbar-client>
+    <!-- si connecté mais pas client -->
+    <navbar-user v-else-if="isUserBoolean"></navbar-user>
+    <!-- si pas connecté (visiteur) -->
+    <navbar-visitor v-else></navbar-visitor>
 
     <div>
         <router-view></router-view>
@@ -106,6 +17,9 @@
 import { Input } from "../../src/components/ui/input";
 import { Button } from "../../src/components/ui/button";
 import NavbarAdmin from "@/components/navbar/NavbarAdmin.vue";
+import NavbarClient from "./components/navbar/NavbarClient.vue";
+import NavbarUser from "./components/navbar/NavbarUser.vue";
+import NavbarVisitor from "./components/navbar/NavbarVisitor.vue";
 
 export default {
     name: "App",
@@ -113,21 +27,38 @@ export default {
         Input,
         Button,
         NavbarAdmin,
+        NavbarClient,
+        NavbarUser,
+        NavbarVisitor,
     },
     data() {
         return {
             selectedColor: "#58ca60",
             isAdminBoolean: false,
+            isClientBoolean: false,
+            isUserBoolean: false,
         };
     },
     mounted() {
         this.isAdmin();
+        this.isClient();
+        this.isUser();
         this.updateMainColor(); // Met à jour la couleur au chargement
     },
     methods: {
         isAdmin() {
             if (localStorage.getItem("isAdmin")) {
                 this.isAdminBoolean = true;
+            }
+        },
+        isClient() {
+            if (localStorage.getItem("isClient")) {
+                this.isClientBoolean = true;
+            }
+        },
+        isUser() {
+            if (localStorage.getItem("isUser")) {
+                this.isUserBoolean = true;
             }
         },
         updateMainColor() {

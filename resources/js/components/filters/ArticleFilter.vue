@@ -3,7 +3,7 @@
         <div class="responsive-container">
             <section>
                 <Select v-model="sortOrder">
-                    <SelectTrigger style="width: 280px">
+                    <SelectTrigger style="width: 315px">
                         <SelectValue placeholder="Trier par date" />
                     </SelectTrigger>
                     <SelectContent>
@@ -26,7 +26,7 @@
                     @update:modelValue="handleSelectionLevel"
                     style="margin-right: 5px"
                 >
-                    <ComboboxAnchor as-child style="width: 130px">
+                    <ComboboxAnchor as-child style="width: 147px">
                         <ComboboxTrigger as-child>
                             <Button variant="outline" class="justify-between">
                                 {{ selectedLevelName || "Niveau" }}
@@ -85,7 +85,7 @@
                     style="margin-right: 5px"
                 >
                     <ComboboxAnchor as-child>
-                        <ComboboxTrigger as-child style="width: 130px">
+                        <ComboboxTrigger as-child style="width: 147px">
                             <Button variant="outline" class="justify-between">
                                 {{ selectedCategoryName ?? "Catégorie" }}
 

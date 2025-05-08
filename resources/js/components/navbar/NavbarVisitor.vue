@@ -55,7 +55,7 @@ import {
 } from "../../../../src/components/ui/dropdown-menu";
 
 export default {
-    name: "NavbarUser",
+    name: "NavbarVisitor",
     components: {
         DropdownMenu,
         DropdownMenuContent,

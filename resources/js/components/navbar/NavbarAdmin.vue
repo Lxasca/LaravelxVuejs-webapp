@@ -45,25 +45,6 @@
                     <path d="M20 21a8 8 0 0 0-16 0" />
                 </svg>
             </router-link>
-
-            <button @click="logout" style="margin-left: 20px">
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="lucide lucide-log-out-icon lucide-log-out"
-                >
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" x2="9" y1="12" y2="12" />
-                </svg>
-            </button>
         </section>
     </div>
 </template>
@@ -85,17 +66,6 @@ export default {
         DropdownMenuGroup,
         DropdownMenuItem,
         DropdownMenuTrigger,
-    },
-    methods: {
-        logout() {
-            localStorage.removeItem("isAdmin");
-            localStorage.removeItem("isClient");
-            localStorage.removeItem("isUser");
-            localStorage.removeItem("email");
-            this.isAuthenticated = false;
-
-            this.$router.push({ name: "authentification" });
-        },
     },
 };
 </script>

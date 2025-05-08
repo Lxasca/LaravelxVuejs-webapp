@@ -124,8 +124,10 @@ export default {
 </script>
 
 <style scoped>
-#articles-page {
-    padding-left: 50px;
-    padding-right: 50px;
+@media (min-width: 767px) {
+    #articles-page {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
 }
 </style>
