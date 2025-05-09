@@ -24,21 +24,17 @@ export default {
     padding-bottom: 10px;
 }
 
-/** responsive **/
 @media (max-width: 767px) {
     #head-article {
-        height: 80px;
-        display: block;
+        padding-right: 0px;
+        padding: 0px;
     }
     h5 {
-        font-size: 25px;
+        font-size: 45px;
         white-space: normal;
         word-wrap: break-word;
-        line-height: 1.2;
-        text-align: right;
-        direction: rtl;
-
-        margin-top: -50px;
+        line-height: 1.5;
+        text-align: center;
     }
     .btn-0 {
         margin-left: -15px;
