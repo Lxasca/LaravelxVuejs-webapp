@@ -24,10 +24,13 @@ export default {
     padding-bottom: 10px;
 }
 
+h5 {
+    font-size: 50px;
+}
+
 @media (max-width: 767px) {
     #head-article {
-        padding-right: 0px;
-        padding: 0px;
+        padding-right: 15px;
     }
     h5 {
         font-size: 45px;

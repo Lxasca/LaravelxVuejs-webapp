@@ -340,6 +340,17 @@ export default {
 </script>
 
 <style lang="scss">
+@media (max-width: 767px) {
+    .direction-text-right {
+        font-size: 35px;
+        line-height: 50px;
+    }
+
+    #article-page {
+        padding-left: 3% !important;
+        padding-right: 0% !important;
+    }
+}
 #article-page {
     padding-left: 4%;
     padding-right: 5%;
