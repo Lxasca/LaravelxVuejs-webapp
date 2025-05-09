@@ -8,6 +8,7 @@
                             <Button
                                 variant="outline"
                                 style="margin-right: 10px; margin-top: 10px"
+                                class="btn-policy"
                             >
                                 Taille de la police
                                 <input
@@ -155,6 +156,10 @@ export default {
     .section-langue {
         display: flex;
         justify-content: left;
+    }
+
+    .btn-policy {
+        display: none;
     }
 }
 

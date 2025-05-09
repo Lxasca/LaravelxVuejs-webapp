@@ -188,9 +188,9 @@ export default {
             transcriptionArabic: "",
             currentId: null,
             isSwitchedContent: true,
-            highlightPropositionsEnabled: false,
-            highlightLieuEnabled: false,
-            highlightAdjectifEnabled: false,
+            highlightPropositionsEnabled: true,
+            highlightLieuEnabled: true,
+            highlightAdjectifEnabled: true,
             isShowHelp: true,
             buttonConfig: [
                 {

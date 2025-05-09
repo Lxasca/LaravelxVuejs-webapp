@@ -30,7 +30,8 @@ h5 {
 
 @media (max-width: 767px) {
     #head-article {
-        padding-right: 15px;
+        padding-right: 20px;
+        padding-left: 5px;
     }
     h5 {
         font-size: 45px;
