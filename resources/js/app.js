@@ -8,6 +8,8 @@ import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
 import AccountPage from "./pages/auth/AccountPage.vue";
 import AuthentificationPage from "./pages/auth/AuthentificationPage.vue";
+import MentionsPage from "./pages/footer/MentionsPage.vue";
+import PolitiquePage from "./pages/footer/PolitiquePage.vue";
 
 // isUser, isClient, isAdmin
 const requireAdminAuth = (to, from, next) => {
@@ -44,6 +46,14 @@ const requireNoAuth = (to, from, next) => {
 };
 
 const routes = [
+    { path: "/mentions-legales", name: "mentions", component: MentionsPage },
+    ,
+    {
+        path: "/politique-de-confidentialité",
+        name: "politique",
+        component: PolitiquePage,
+    },
+    ,
     { path: "/", name: "home", component: HomePage },
     // lecture - compréhension écrite : artiles
     {

@@ -1,15 +1,50 @@
 <template>
-    <!-- si connecté & admin -->
-    <navbar-admin v-if="isAdminBoolean"></navbar-admin>
-    <!-- si connecté & client -->
-    <navbar-client v-else-if="isClientBoolean"></navbar-client>
-    <!-- si connecté mais pas client -->
-    <navbar-user v-else-if="isUserBoolean"></navbar-user>
-    <!-- si pas connecté (visiteur) -->
-    <navbar-visitor v-else></navbar-visitor>
+    <div>
+        <!-- si connecté & admin -->
+        <navbar-admin v-if="isAdminBoolean"></navbar-admin>
+        <!-- si connecté & client -->
+        <navbar-client v-else-if="isClientBoolean"></navbar-client>
+        <!-- si connecté mais pas client -->
+        <navbar-user v-else-if="isUserBoolean"></navbar-user>
+        <!-- si pas connecté (visiteur) -->
+        <navbar-visitor v-else></navbar-visitor>
+    </div>
 
     <div>
         <router-view></router-view>
+    </div>
+
+    <div id="footer">
+        <router-link :to="{ name: 'mentions' }" class="footer-item"
+            >Mentions légales</router-link
+        >
+
+        <router-link :to="{ name: 'politique' }" class="footer-item"
+            >Po. de confidentialité</router-link
+        >
+
+        <a
+            class="footer-item"
+            href="https://www.instagram.com/kaly.mz"
+            target="_BLANK"
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-instagram-icon lucide-instagram"
+            >
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+            </svg>
+        </a>
     </div>
 </template>
 
@@ -200,5 +235,53 @@ h1 {
     text-align: center;
     font-size: 70px;
     font-weight: bold;
+}
+.page-footer {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 1%;
+
+    h1 {
+        padding-bottom: 2.5%;
+        color: #58ca60;
+    }
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#app {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#footer {
+    margin-top: auto;
+    padding: 1rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 14px;
+
+    .footer-item {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    .footer-item:hover {
+        color: #58ca60;
+        transition-duration: 0.3s;
+    }
+}
+
+@media (max-width: 767px) {
+    #footer {
+        font-size: 12.5px;
+    }
 }
 </style>

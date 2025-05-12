@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-top: 9%; left: 50%">
+    <div style="margin-top: 8.5%; left: 50%">
         <h1>Kal<span style="color: #58ca60; font-weight: bold">ymz</span></h1>
 
         <div style="display: flex; justify-content: center">
