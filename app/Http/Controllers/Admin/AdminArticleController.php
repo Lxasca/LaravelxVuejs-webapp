@@ -41,15 +41,25 @@ class AdminArticleController extends Controller
     
         $article = Articles::find($id);
     
-        $article->update([
-            'title' => $validatedData['title'] ?? $article->title,
-            'title_french' => $validatedData['title_french'] ?? $article->title_french,
-            'content' => $validatedData['content'] ?? $article->content,
-            'content_french' => $validatedData['content_french'] ?? $article->content_french,
-            'content_2' => $validatedData['content_2'] ?? $article->content_2,
-            'content_2_french' => $validatedData['content_2_french'] ?? $article->content_2_french,
-        ]);
-    
+        $fields = [
+            'title',
+            'title_french',
+            'content',
+            'content_french',
+            'content_2',
+            'content_2_french',
+        ];
+
+        $dataToUpdate = [];
+
+        foreach ($fields as $field) {
+            if (array_key_exists($field, $validatedData)) {
+                $dataToUpdate[$field] = $validatedData[$field];
+            }
+        }
+
+        $article->update($dataToUpdate);
+
         return response()->json([
             'message' => 'Article mis à jour avec succès',
             'article' => $article

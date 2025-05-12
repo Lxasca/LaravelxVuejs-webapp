@@ -84,10 +84,12 @@
                             </span>
                         </TableCell>
                         <TableCell style="width: 10%; text-align: center">
-                            <Button>{{ article.category.name }}</Button>
+                            <Button v-if="article.category">{{
+                                article.category.name
+                            }}</Button>
                         </TableCell>
                         <TableCell style="width: 10%; text-align: center">
-                            <Button variant="secondary">
+                            <Button v-if="article.level" variant="secondary">
                                 {{ article.level.name }}
                             </Button>
                         </TableCell>
@@ -244,8 +246,11 @@
                             }"
                         >
                             <CardContent>
-                                <Button>{{ article.category.name }}</Button>
+                                <Button v-if="article.category">{{
+                                    article.category.name
+                                }}</Button>
                                 <Button
+                                    v-if="article.level"
                                     variant="secondary"
                                     style="margin-left: 12.5px"
                                 >
