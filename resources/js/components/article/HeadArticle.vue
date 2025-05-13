@@ -25,7 +25,7 @@ export default {
 }
 
 h5 {
-    font-size: 45px;
+    font-size: 42.5px;
 }
 
 @media (max-width: 767px) {

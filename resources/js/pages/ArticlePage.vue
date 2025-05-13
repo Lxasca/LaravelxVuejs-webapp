@@ -45,8 +45,8 @@
                                             <Button>
                                                 <svg
                                                     style="
-                                                        margin-right: -5px;
-                                                        margin-left: 5px;
+                                                        margin-left: 2.5px;
+                                                        margin-right: 2.5px;
                                                     "
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="16"
@@ -266,7 +266,7 @@ export default {
             if (this.highlightLieuEnabled) {
                 text = text.replace(
                     /<lieu>(.*?)<\/lieu>/g,
-                    '<span style="padding-left:7.5px;padding-right:7.5px;background-color: var(--main-color);border-radius:10px;color:white;">$1</span>'
+                    '<span style="padding-left:8.5px;padding-right:8.5px;padding-top:4.5px;padding-bottom:4.5px;background-color: var(--main-color);border-radius:10px;color:white;">$1</span>'
                 );
             }
 

@@ -220,7 +220,8 @@
                                     id="message-2"
                                     class="direction-text-right input-learn"
                                     v-model="formData.content"
-                                    @mouseup="captureSelection"
+                                    data-field="content"
+                                    @mouseup="captureSelection('content')"
                                 />
                             </div>
                         </section>
@@ -393,7 +394,8 @@
                                     id="message-2"
                                     class="direction-text-right input-learn"
                                     v-model="formData.content_2"
-                                    @mouseup="captureSelection"
+                                    data-field="content_2"
+                                    @mouseup="captureSelection('content_2')"
                                 />
                             </div>
                         </section>
@@ -555,48 +557,48 @@ export default {
                 this.frameworks = response.data;
             });
         },
-        captureSelection() {
-            const textarea = this.$refs.textarea.$el || this.$refs.textarea;
+        captureSelection(fieldName) {
+            const refName = "textarea_" + fieldName;
+            const textarea = this.$refs[refName]?.$el || this.$refs[refName];
+            if (!textarea) return;
+
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
             const selectedText = textarea.value.substring(start, end);
-            //console.log(selectedText);
+
+            if (selectedText) {
+                this.selectionData = {
+                    start,
+                    end,
+                    fieldName,
+                    value: textarea.value,
+                };
+            }
         },
         wrapSelectionWithPP() {
-            // selectionne tous les textarea avec la classe .input-learn
             const textareas = document.querySelectorAll(".input-learn");
 
             textareas.forEach((textarea) => {
-                const selection = window.getSelection();
-                const selectedText = selection.toString();
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
 
                 if (selectedText) {
-                    const cursorPosition = textarea.selectionStart;
-                    const textBefore = textarea.value.substring(
-                        0,
-                        cursorPosition
-                    );
-                    const textAfter = textarea.value.substring(
-                        textarea.selectionEnd
-                    );
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}<pp>${selectedText}</pp>${textAfter}`;
 
-                    // Ajouter les balises <pp> autour du texte sélectionné
-                    const newText =
-                        textBefore +
-                        "<pp>" +
-                        selectedText +
-                        "</pp>" +
-                        textAfter;
-
-                    // Mettre à jour la valeur du textarea
                     textarea.value = newText;
 
-                    // Mettre à jour le v-model
-                    this.formData.content = newText;
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
 
-                    // Réinitialiser la sélection
                     const newCursorPosition =
-                        cursorPosition +
+                        start +
                         "<pp>".length +
                         selectedText.length +
                         "</pp>".length;
@@ -608,40 +610,29 @@ export default {
             });
         },
         wrapSelectionWithLieu() {
-            // selectionne tous les textarea avec la classe .input-learn
             const textareas = document.querySelectorAll(".input-learn");
 
             textareas.forEach((textarea) => {
-                const selection = window.getSelection();
-                const selectedText = selection.toString();
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
 
                 if (selectedText) {
-                    const cursorPosition = textarea.selectionStart;
-                    const textBefore = textarea.value.substring(
-                        0,
-                        cursorPosition
-                    );
-                    const textAfter = textarea.value.substring(
-                        textarea.selectionEnd
-                    );
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}<lieu>${selectedText}</lieu>${textAfter}`;
 
-                    // Ajouter les balises <pp> autour du texte sélectionné
-                    const newText =
-                        textBefore +
-                        "<lieu>" +
-                        selectedText +
-                        "</lieu>" +
-                        textAfter;
-
-                    // Mettre à jour la valeur du textarea
                     textarea.value = newText;
 
-                    // Mettre à jour le v-model
-                    this.formData.content = newText;
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
 
-                    // Réinitialiser la sélection
                     const newCursorPosition =
-                        cursorPosition +
+                        start +
                         "<lieu>".length +
                         selectedText.length +
                         "</lieu>".length;
@@ -653,40 +644,29 @@ export default {
             });
         },
         wrapSelectionWithAdj() {
-            // selectionne tous les textarea avec la classe .input-learn
             const textareas = document.querySelectorAll(".input-learn");
 
             textareas.forEach((textarea) => {
-                const selection = window.getSelection();
-                const selectedText = selection.toString();
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
 
                 if (selectedText) {
-                    const cursorPosition = textarea.selectionStart;
-                    const textBefore = textarea.value.substring(
-                        0,
-                        cursorPosition
-                    );
-                    const textAfter = textarea.value.substring(
-                        textarea.selectionEnd
-                    );
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}<adj>${selectedText}</adj>${textAfter}`;
 
-                    // Ajouter les balises <pp> autour du texte sélectionné
-                    const newText =
-                        textBefore +
-                        "<adj>" +
-                        selectedText +
-                        "</adj>" +
-                        textAfter;
-
-                    // Mettre à jour la valeur du textarea
                     textarea.value = newText;
 
-                    // Mettre à jour le v-model
-                    this.formData.content = newText;
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
 
-                    // Réinitialiser la sélection
                     const newCursorPosition =
-                        cursorPosition +
+                        start +
                         "<adj>".length +
                         selectedText.length +
                         "</adj>".length;
@@ -698,40 +678,29 @@ export default {
             });
         },
         wrapSelectionWithAdjNom() {
-            // selectionne tous les textarea avec la classe .input-learn
             const textareas = document.querySelectorAll(".input-learn");
 
             textareas.forEach((textarea) => {
-                const selection = window.getSelection();
-                const selectedText = selection.toString();
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
 
                 if (selectedText) {
-                    const cursorPosition = textarea.selectionStart;
-                    const textBefore = textarea.value.substring(
-                        0,
-                        cursorPosition
-                    );
-                    const textAfter = textarea.value.substring(
-                        textarea.selectionEnd
-                    );
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}<adj-nom>${selectedText}</adj-nom>${textAfter}`;
 
-                    // Ajouter les balises <pp> autour du texte sélectionné
-                    const newText =
-                        textBefore +
-                        "<adj-nom>" +
-                        selectedText +
-                        "</adj-nom>" +
-                        textAfter;
-
-                    // Mettre à jour la valeur du textarea
                     textarea.value = newText;
 
-                    // Mettre à jour le v-model
-                    this.formData.content = newText;
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
 
-                    // Réinitialiser la sélection
                     const newCursorPosition =
-                        cursorPosition +
+                        start +
                         "<adj-nom>".length +
                         selectedText.length +
                         "</adj-nom>".length;
@@ -750,30 +719,27 @@ export default {
             const textareas = document.querySelectorAll(".input-learn");
 
             textareas.forEach((textarea) => {
-                const selection = window.getSelection();
-                const selectedText = selection.toString();
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
 
                 if (selectedText) {
-                    const cursorPosition = textarea.selectionStart;
-                    const textBefore = textarea.value.substring(
-                        0,
-                        cursorPosition
-                    );
-                    const textAfter = textarea.value.substring(
-                        textarea.selectionEnd
-                    );
-
-                    const newText =
-                        textBefore +
-                        selectedText +
-                        `<${this.selectedVocabularyId}>` +
-                        textAfter;
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}${selectedText}<${this.selectedVocabularyId}>${textAfter}`;
 
                     textarea.value = newText;
-                    this.formData.content = newText;
+
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
 
                     const newCursorPosition =
-                        cursorPosition +
+                        start +
                         selectedText.length +
                         `<${this.selectedVocabularyId}>`.length;
                     textarea.setSelectionRange(
