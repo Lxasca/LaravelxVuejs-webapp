@@ -150,7 +150,9 @@
                                                             <span
                                                                 v-if="
                                                                     article.status ==
-                                                                    'unpublished'
+                                                                        'unpublished' ||
+                                                                    article.status ==
+                                                                        null
                                                                 "
                                                                 >Publier</span
                                                             >
@@ -181,10 +183,7 @@
         <div style="margin-top: 25px" v-else>
             <div class="card-grid">
                 <div v-for="article in articles" :key="article.id">
-                    <Card
-                        class="shadow border-input rounded-md"
-                        style="background-color: #fbfbfb"
-                    >
+                    <Card class="shadow border-input rounded-md">
                         <CardHeader>
                             <CardDescription
                                 style="
@@ -240,6 +239,7 @@
                                     style="
                                         font-size: 17.5px;
                                         margin-top: -5px;
+                                        margin-left: 2px;
                                         color: black;
                                     "
                                 >

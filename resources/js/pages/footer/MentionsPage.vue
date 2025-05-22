@@ -14,10 +14,25 @@
             <h2>Éditeur du site</h2>
             <p>Nom : Kalymz</p>
             <p>Email : kalymzcorp@gmail.com</p>
-            <p>Hébergement : Nom de l’hébergeur</p>
-            <p>Adresse : [adresse de l’hébergeur]</p>
-            <p>Téléphone : [numéro de l’hébergeur]</p>
-            <p>Site web : [https://www.infomaniak.com]</p>
+            <p>Hébergement : DigitalOcean, LLC</p>
+            <p>
+                Adresse : 101 Avenue of the Americas, 10th Floor, New York, NY
+                10013, États-Unis
+            </p>
+            <p>Téléphone : +1 888-890-6714</p>
+            <p>
+                Site web :
+                <a href="https://www.digitalocean.com" target="_blank"
+                    >https://www.digitalocean.com</a
+                >
+            </p>
+
+            <p>
+                Site web :
+                <a href="http://kalymz.com/" target="_blank"
+                    >http://kalymz.com/</a
+                >
+            </p>
             <p>Directeur de publication : kalymzcorp@gmail.com</p>
         </div>
     </div>

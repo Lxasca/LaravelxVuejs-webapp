@@ -69,7 +69,7 @@ class AuthController extends Controller
         return response()->json(
             [
                 'message' => 'Inscription réussie.',
-                'role' => $user->roles,
+                'role' => $newUser->roles,
         ],
             201);
     }
