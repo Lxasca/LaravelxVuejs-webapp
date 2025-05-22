@@ -343,7 +343,7 @@ export default {
 @media (max-width: 767px) {
     .direction-text-right {
         font-size: 35px;
-        line-height: 50px;
+        line-height: 57.5px;
     }
 
     #article-page {

@@ -143,7 +143,7 @@ export default {
 
 @media (max-width: 767px) {
     #actions-article {
-        margin-top: 50px;
+        margin-top: 20px !important;
 
         display: flex;
         flex-wrap: wrap;

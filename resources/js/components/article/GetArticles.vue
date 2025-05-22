@@ -181,7 +181,10 @@
         <div style="margin-top: 25px" v-else>
             <div class="card-grid">
                 <div v-for="article in articles" :key="article.id">
-                    <Card>
+                    <Card
+                        class="shadow border-input rounded-md"
+                        style="background-color: #fbfbfb"
+                    >
                         <CardHeader>
                             <CardDescription
                                 style="
@@ -213,7 +216,7 @@
                                         }}
                                     </span>
                                 </Button>
-                                <Switch />
+                                <!--<Switch />-->
                             </CardDescription>
 
                             <router-link
@@ -233,7 +236,13 @@
                                     "
                                     >{{ article.title }}</CardTitle
                                 >
-                                <CardDescription style="font-size: 15px">
+                                <CardDescription
+                                    style="
+                                        font-size: 17.5px;
+                                        margin-top: -5px;
+                                        color: black;
+                                    "
+                                >
                                     {{ article.title_french }}
                                 </CardDescription>
                             </router-link>
@@ -506,9 +515,9 @@ span {
 .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 75px;
-    margin-left: 0.9%;
-    margin-right: 0.9%;
+    gap: 35px;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
 }
 
 @media (max-width: 1000px) {

@@ -13,7 +13,7 @@
         </div>
 
         <div style="display: flex; justify-content: center; margin-top: 20px">
-            <router-link to="/articles" style="margin-right: 20px">
+            <router-link to="/articles">
                 <Button
                     style="
                         background-color: #58ca60;
