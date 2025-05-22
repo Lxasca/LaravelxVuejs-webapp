@@ -137,10 +137,8 @@ export default {
 
 <style scoped>
 #actions-article {
-    border-radius: 7.5px;
+    margin-top: 20px !important;
     margin: 25px;
-
-    margin-top: -7.5px;
 }
 
 @media (max-width: 767px) {

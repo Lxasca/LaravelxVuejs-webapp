@@ -1,9 +1,15 @@
 <template>
-    <div id="head-article" class="direction-text-right">
-        <section>
+    <div id="head-article">
+        <section class="direction-text-right">
             <h5>
                 <span>{{ article.title }}</span>
             </h5>
+        </section>
+
+        <section>
+            <h6>
+                <span>{{ article.title_french }}</span>
+            </h6>
         </section>
     </div>
 </template>
@@ -20,25 +26,31 @@ export default {
 </script>
 <style scoped>
 #head-article {
-    padding-right: 28px;
-    padding-bottom: 10px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 h5 {
     font-size: 42.5px;
 }
+h6 {
+    font-size: 28px;
+}
 
 @media (max-width: 767px) {
     #head-article {
-        padding-right: 20px;
-        padding-left: 5px;
+        margin-left: 25px;
+        margin-right: 35px;
     }
     h5 {
-        font-size: 45px;
+        font-size: 35px;
         white-space: normal;
         word-wrap: break-word;
         line-height: 1.5;
         text-align: center;
+    }
+    h6 {
+        font-size: 20px;
     }
     .btn-0 {
         margin-left: -15px;

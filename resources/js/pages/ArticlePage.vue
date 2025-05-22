@@ -363,7 +363,7 @@ export default {
     transform: rotate(0deg);
 }
 .section-article {
-    padding-left: 0px;
+    padding-left: 10px;
     padding-right: 35px;
 
     margin-top: 40px;
