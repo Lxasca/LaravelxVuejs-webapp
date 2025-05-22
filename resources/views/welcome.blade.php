@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel SPA x Vue Router</title>
+    <title>Kalymz - Apprendre l'arabe</title>
     @vite(['resources/js/app.js'])
 </head>
 
