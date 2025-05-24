@@ -49,20 +49,27 @@
                                                         margin-right: 2.5px;
                                                     "
                                                     xmlns="http://www.w3.org/2000/svg"
-                                                    width="16"
-                                                    height="16"
+                                                    width="15"
+                                                    height="15"
                                                     viewBox="0 0 24 24"
                                                     fill="none"
                                                     stroke="var(--main-color)"
                                                     stroke-width="2"
                                                     stroke-linecap="round"
                                                     stroke-linejoin="round"
-                                                    class="lucide lucide-external-link"
+                                                    class="lucide lucide-hand-icon lucide-hand"
                                                 >
-                                                    <path d="M15 3h6v6" />
-                                                    <path d="M10 14 21 3" />
                                                     <path
-                                                        d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                                                        d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"
+                                                    />
+                                                    <path
+                                                        d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"
+                                                    />
+                                                    <path
+                                                        d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"
+                                                    />
+                                                    <path
+                                                        d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"
                                                     />
                                                 </svg>
                                             </Button>
@@ -217,13 +224,15 @@ export default {
                     label: "Verbes",
                     action: () => this.highlightVerbe(),
                     enabled: () => this.highlightVerbeEnabled,
-                    tooltip: "Entourer les verbes",
+                    tooltip: "Entourer les verbes avec des pointillés.",
                 },
             ],
+            vocabularies: {},
         };
     },
     mounted() {
         this.getArticle();
+        this.getMatches();
     },
     computed: {
         numberOfContent() {
@@ -314,6 +323,7 @@ export default {
             let match;
             const matches = [];
             let lastIndex = 0;
+            const ids = [];
 
             while ((match = regex.exec(content)) !== null) {
                 if (match.index > lastIndex) {
@@ -321,6 +331,11 @@ export default {
                         text: content.slice(lastIndex, match.index),
                     });
                 }
+
+                if (!ids.includes(match[1])) {
+                    ids.push(match[1]);
+                }
+
                 matches.push({ text: match[1], type: "number", id: match[1] });
 
                 lastIndex = regex.lastIndex;
@@ -330,6 +345,21 @@ export default {
                 matches.push({ text: content.slice(lastIndex) });
             }
 
+            // requetes axios pour stocker dans this.vocabularies les data, pour éviter de requete à chaque ouverte de la modale
+            ids.forEach((id) => {
+                axios.get(`/get-vocabulary/${id}`).then((response) => {
+                    this.vocabularies[id] = {
+                        traductionArabic: response.data.traduction_arabic,
+                        traductionFrancais:
+                            response.data.word.charAt(0).toLowerCase() +
+                            response.data.word.slice(1),
+                        transcriptionArabic: response.data.transcription_arabic,
+                        currentId: id,
+                        showTranslation: true,
+                    };
+                });
+            });
+
             return matches;
         },
         handleClick(id) {
@@ -338,15 +368,14 @@ export default {
                 return;
             }
 
-            axios.get(`/get-vocabulary/${id}`).then((response) => {
-                this.traductionArabic = response.data.traduction_arabic;
-                this.traductionFrancais =
-                    response.data.word.charAt(0).toLowerCase() +
-                    response.data.word.slice(1);
-                this.transcriptionArabic = response.data.transcription_arabic;
+            const vocab = this.vocabularies[id];
+            if (vocab) {
+                this.traductionArabic = vocab.traductionArabic;
+                this.traductionFrancais = vocab.traductionFrancais;
+                this.transcriptionArabic = vocab.transcriptionArabic;
                 this.currentId = id;
                 this.showTranslation = true;
-            });
+            }
         },
         showHelp() {
             this.isShowHelp = !this.isShowHelp;
