@@ -212,6 +212,13 @@
                                         >
                                             Nom
                                         </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="verbe"
+                                            @click="wrapSelectionWithVerbe"
+                                        >
+                                            Verbe
+                                        </ToggleGroupItem>
                                     </ToggleGroup>
                                 </div>
 
@@ -386,6 +393,13 @@
                                             @click="wrapSelectionWithAdjNom"
                                         >
                                             Nom
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="verbe"
+                                            @click="wrapSelectionWithVerbe"
+                                        >
+                                            Verbe
                                         </ToggleGroupItem>
                                     </ToggleGroup>
                                 </div>
@@ -704,6 +718,40 @@ export default {
                         "<adj-nom>".length +
                         selectedText.length +
                         "</adj-nom>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        wrapSelectionWithVerbe() {
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
+
+                if (selectedText) {
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}<verbe>${selectedText}</verbe>${textAfter}`;
+
+                    textarea.value = newText;
+
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
+
+                    const newCursorPosition =
+                        start +
+                        "<verbe>".length +
+                        selectedText.length +
+                        "</verbe>".length;
                     textarea.setSelectionRange(
                         newCursorPosition,
                         newCursorPosition

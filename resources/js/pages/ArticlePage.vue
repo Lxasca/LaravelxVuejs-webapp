@@ -191,6 +191,7 @@ export default {
             highlightPropositionsEnabled: true,
             highlightLieuEnabled: true,
             highlightAdjectifEnabled: true,
+            highlightVerbeEnabled: true,
             isShowHelp: true,
             buttonConfig: [
                 {
@@ -211,6 +212,12 @@ export default {
                     enabled: () => this.highlightAdjectifEnabled,
                     tooltip:
                         "Souligner les adjectifs avec des pointillés et les noms qui s'y réfèrent avec une ligne",
+                },
+                {
+                    label: "Verbes",
+                    action: () => this.highlightVerbe(),
+                    enabled: () => this.highlightVerbeEnabled,
+                    tooltip: "Entourer les verbes",
                 },
             ],
         };
@@ -282,6 +289,13 @@ export default {
                 );
             }
 
+            if (this.highlightVerbeEnabled) {
+                text = text.replace(
+                    /<verbe>(.*?)<\/verbe>/g,
+                    '<span style="padding-left:5px;padding-right:5px;border:dotted 2px black;;border-radius:10px;">$1</span>'
+                );
+            }
+
             return text;
         },
         highlightLieu() {
@@ -289,6 +303,9 @@ export default {
         },
         highlightAdjectif() {
             this.highlightAdjectifEnabled = !this.highlightAdjectifEnabled;
+        },
+        highlightVerbe() {
+            this.highlightVerbeEnabled = !this.highlightVerbeEnabled;
         },
         getMatches(content) {
             if (!content) return [];
