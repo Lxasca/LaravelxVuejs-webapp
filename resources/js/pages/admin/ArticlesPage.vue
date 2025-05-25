@@ -219,6 +219,13 @@
                                         >
                                             Verbe
                                         </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="annexion"
+                                            @click="wrapSelectionWithAnnexion"
+                                        >
+                                            Annexions
+                                        </ToggleGroupItem>
                                     </ToggleGroup>
                                 </div>
 
@@ -400,6 +407,13 @@
                                             @click="wrapSelectionWithVerbe"
                                         >
                                             Verbe
+                                        </ToggleGroupItem>
+                                        <ToggleGroupItem
+                                            class="toggle-group-item"
+                                            value="annexion"
+                                            @click="wrapSelectionWithAnnexion"
+                                        >
+                                            Annexions
                                         </ToggleGroupItem>
                                     </ToggleGroup>
                                 </div>
@@ -752,6 +766,40 @@ export default {
                         "<verbe>".length +
                         selectedText.length +
                         "</verbe>".length;
+                    textarea.setSelectionRange(
+                        newCursorPosition,
+                        newCursorPosition
+                    );
+                }
+            });
+        },
+        wrapSelectionWithAnnexion() {
+            const textareas = document.querySelectorAll(".input-learn");
+
+            textareas.forEach((textarea) => {
+                const start = textarea.selectionStart;
+                const end = textarea.selectionEnd;
+                const selectedText = textarea.value.substring(start, end);
+
+                if (selectedText) {
+                    const textBefore = textarea.value.substring(0, start);
+                    const textAfter = textarea.value.substring(end);
+                    const newText = `${textBefore}<annexion>${selectedText}</annexion>${textAfter}`;
+
+                    textarea.value = newText;
+
+                    const fieldName =
+                        textarea.getAttribute("v-model") ||
+                        textarea.getAttribute("data-field");
+                    if (fieldName && this.formData[fieldName] !== undefined) {
+                        this.formData[fieldName] = newText;
+                    }
+
+                    const newCursorPosition =
+                        start +
+                        "<annexion>".length +
+                        selectedText.length +
+                        "</annexion>".length;
                     textarea.setSelectionRange(
                         newCursorPosition,
                         newCursorPosition

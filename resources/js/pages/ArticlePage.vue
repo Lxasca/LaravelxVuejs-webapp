@@ -199,6 +199,7 @@ export default {
             highlightLieuEnabled: true,
             highlightAdjectifEnabled: true,
             highlightVerbeEnabled: true,
+            highlightAnnexionEnabled: true,
             isShowHelp: true,
             buttonConfig: [
                 {
@@ -225,6 +226,12 @@ export default {
                     action: () => this.highlightVerbe(),
                     enabled: () => this.highlightVerbeEnabled,
                     tooltip: "Entourer les verbes avec des pointillés.",
+                },
+                {
+                    label: "Annexions",
+                    action: () => this.highlightAnnexion(),
+                    enabled: () => this.highlightAnnexionEnabled,
+                    tooltip: "Souligner de deux traits les annexions.",
                 },
             ],
             vocabularies: {},
@@ -305,6 +312,13 @@ export default {
                 );
             }
 
+            if (this.highlightAnnexionEnabled) {
+                text = text.replace(
+                    /<annexion>(.*?)<\/annexion>/g,
+                    '<span style="text-decoration-line:underline;text-decoration-style: double;text-decoration-thickness: 1px;text-underline-offset: 10px;">$1</span>'
+                );
+            }
+
             return text;
         },
         highlightLieu() {
@@ -315,6 +329,9 @@ export default {
         },
         highlightVerbe() {
             this.highlightVerbeEnabled = !this.highlightVerbeEnabled;
+        },
+        highlightAnnexion() {
+            this.highlightAnnexionEnabled = !this.highlightAnnexionEnabled;
         },
         getMatches(content) {
             if (!content) return [];
