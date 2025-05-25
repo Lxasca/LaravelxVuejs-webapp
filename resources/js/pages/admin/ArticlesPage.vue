@@ -91,7 +91,7 @@
                             <!-- Sélection de la catégorie -->
                             <Combobox
                                 by="label"
-                                v-model="value"
+                                v-model="valueCategory"
                                 @update:modelValue="handleSelectionCategory"
                                 style="margin-right: 5px"
                             >
@@ -102,8 +102,8 @@
                                             class="justify-between"
                                         >
                                             {{
-                                                value
-                                                    ? value.name
+                                                valueCategory
+                                                    ? valueCategory.name
                                                     : "Sélectionner la catégorie"
                                             }}
 
@@ -135,7 +135,6 @@
                                             :value="category"
                                         >
                                             <div style="font-size: 16px">
-                                                {{ category.value }}
                                                 {{ category.name }}
                                             </div>
 
@@ -152,8 +151,8 @@
                             <!-- Sélection du niveau -->
                             <Combobox
                                 by="label"
-                                v-model="value"
-                                @update:modelValue="handleSelection"
+                                v-model="valueLevel"
+                                @update:modelValue="handleSelectionLevel"
                                 style="margin-right: 5px"
                             >
                                 <ComboboxAnchor as-child>
@@ -163,8 +162,9 @@
                                             class="justify-between"
                                         >
                                             {{
-                                                value?.label ??
-                                                "Sélectionner le niveau"
+                                                valueLevel
+                                                    ? valueLevel.name
+                                                    : "Sélectionner le niveau"
                                             }}
 
                                             <ChevronsUpDown
@@ -190,13 +190,12 @@
 
                                     <ComboboxGroup>
                                         <ComboboxItem
-                                            v-for="framework in frameworks"
-                                            :key="framework.value"
-                                            :value="framework"
+                                            v-for="level in levels"
+                                            :key="level.id"
+                                            :value="level"
                                         >
                                             <div style="font-size: 16px">
-                                                {{ framework.value }}
-                                                {{ framework.label }}
+                                                {{ level.name }}
                                             </div>
 
                                             <ComboboxItemIndicator>
@@ -674,6 +673,9 @@ export default {
             ],
             value: null,
             selectedVocabularyId: null,
+
+            levels: {},
+            selectedLevelId: null,
             selectedLevelName: "",
 
             categories: {},
@@ -690,6 +692,7 @@ export default {
         this.getArticles();
         this.getVocabularies();
         this.getCategories();
+        this.getLevels();
         const textarea = this.$refs.textarea;
         if (textarea) {
             textarea.addEventListener("select", this.captureSelection);
@@ -706,12 +709,19 @@ export default {
             this.selectedVocabularyId = selected.id;
         },
         handleSelectionCategory(selected) {
-            console.log(selected, " selected");
             this.selectedCategoryId = selected.id;
+        },
+        handleSelectionLevel(selected) {
+            this.selectedLevelId = selected.id;
         },
         getCategories() {
             axios.get(`/get-categories`).then((response) => {
                 this.categories = response.data;
+            });
+        },
+        getLevels() {
+            axios.get(`/get-levels`).then((response) => {
+                this.levels = response.data;
             });
         },
         getVocabularies() {
