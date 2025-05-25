@@ -92,7 +92,7 @@
                             <Combobox
                                 by="label"
                                 v-model="value"
-                                @update:modelValue="handleSelection"
+                                @update:modelValue="handleSelectionCategory"
                                 style="margin-right: 5px"
                             >
                                 <ComboboxAnchor as-child>
@@ -102,8 +102,9 @@
                                             class="justify-between"
                                         >
                                             {{
-                                                value?.label ??
-                                                "Sélectionner la catégorie"
+                                                value
+                                                    ? value.name
+                                                    : "Sélectionner la catégorie"
                                             }}
 
                                             <ChevronsUpDown
@@ -129,13 +130,13 @@
 
                                     <ComboboxGroup>
                                         <ComboboxItem
-                                            v-for="framework in frameworks"
-                                            :key="framework.value"
-                                            :value="framework"
+                                            v-for="category in categories"
+                                            :key="category.id"
+                                            :value="category"
                                         >
                                             <div style="font-size: 16px">
-                                                {{ framework.value }}
-                                                {{ framework.label }}
+                                                {{ category.value }}
+                                                {{ category.name }}
                                             </div>
 
                                             <ComboboxItemIndicator>
@@ -674,7 +675,11 @@ export default {
             value: null,
             selectedVocabularyId: null,
             selectedLevelName: "",
+
+            categories: {},
+            selectedCategoryId: null,
             selectedCategoryName: null,
+
             sortOrder: "desc",
             withUnpublished: 1,
 
@@ -684,6 +689,7 @@ export default {
     mounted() {
         this.getArticles();
         this.getVocabularies();
+        this.getCategories();
         const textarea = this.$refs.textarea;
         if (textarea) {
             textarea.addEventListener("select", this.captureSelection);
@@ -698,6 +704,15 @@ export default {
     methods: {
         handleSelection(selected) {
             this.selectedVocabularyId = selected.id;
+        },
+        handleSelectionCategory(selected) {
+            console.log(selected, " selected");
+            this.selectedCategoryId = selected.id;
+        },
+        getCategories() {
+            axios.get(`/get-categories`).then((response) => {
+                this.categories = response.data;
+            });
         },
         getVocabularies() {
             // requête axios pour récupérer toutes les instances de Vocabularies

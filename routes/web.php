@@ -25,6 +25,7 @@ Route::put('/admin/update-status-article/{id}', [AdminArticleController::class, 
 Route::get('/get-vocabularies', [VocabulariesController::class, 'getAllVocabularies']);
 Route::get('/get-vocabulary/{id}', [VocabulariesController::class, 'getVocabulary']);
 
+
 // auth
 Route::get('/connexion', [AuthController::class, 'connexion']);
 Route::post('/inscription', [AuthController::class, 'inscription']);
