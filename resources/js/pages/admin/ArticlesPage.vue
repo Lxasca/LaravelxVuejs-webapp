@@ -87,6 +87,128 @@
                     </div>
 
                     <div class="section-article">
+                        <div style="display: flex; margin-bottom: 32.5px">
+                            <!-- Sélection de la catégorie -->
+                            <Combobox
+                                by="label"
+                                v-model="value"
+                                @update:modelValue="handleSelection"
+                                style="margin-right: 5px"
+                            >
+                                <ComboboxAnchor as-child>
+                                    <ComboboxTrigger as-child>
+                                        <Button
+                                            variant="outline"
+                                            class="justify-between"
+                                        >
+                                            {{
+                                                value?.label ??
+                                                "Sélectionner la catégorie"
+                                            }}
+
+                                            <ChevronsUpDown
+                                                class="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                            />
+                                        </Button>
+                                    </ComboboxTrigger>
+                                </ComboboxAnchor>
+
+                                <ComboboxList>
+                                    <div
+                                        class="relative w-full max-w-sm items-center"
+                                    >
+                                        <ComboboxInput
+                                            class="pl-9 focus-visible:ring-0 border-0 border-b rounded-none h-10"
+                                            placeholder="Rechercher ..."
+                                        />
+                                    </div>
+
+                                    <ComboboxEmpty>
+                                        Aucun résultat.
+                                    </ComboboxEmpty>
+
+                                    <ComboboxGroup>
+                                        <ComboboxItem
+                                            v-for="framework in frameworks"
+                                            :key="framework.value"
+                                            :value="framework"
+                                        >
+                                            <div style="font-size: 16px">
+                                                {{ framework.value }}
+                                                {{ framework.label }}
+                                            </div>
+
+                                            <ComboboxItemIndicator>
+                                                <Check
+                                                    class="ml-auto h-4 w-4"
+                                                />
+                                            </ComboboxItemIndicator>
+                                        </ComboboxItem>
+                                    </ComboboxGroup>
+                                </ComboboxList>
+                            </Combobox>
+
+                            <!-- Sélection du niveau -->
+                            <Combobox
+                                by="label"
+                                v-model="value"
+                                @update:modelValue="handleSelection"
+                                style="margin-right: 5px"
+                            >
+                                <ComboboxAnchor as-child>
+                                    <ComboboxTrigger as-child>
+                                        <Button
+                                            variant="outline"
+                                            class="justify-between"
+                                        >
+                                            {{
+                                                value?.label ??
+                                                "Sélectionner le niveau"
+                                            }}
+
+                                            <ChevronsUpDown
+                                                class="ml-2 h-4 w-4 shrink-0 opacity-50"
+                                            />
+                                        </Button>
+                                    </ComboboxTrigger>
+                                </ComboboxAnchor>
+
+                                <ComboboxList>
+                                    <div
+                                        class="relative w-full max-w-sm items-center"
+                                    >
+                                        <ComboboxInput
+                                            class="pl-9 focus-visible:ring-0 border-0 border-b rounded-none h-10"
+                                            placeholder="Rechercher ..."
+                                        />
+                                    </div>
+
+                                    <ComboboxEmpty>
+                                        Aucun résultat.
+                                    </ComboboxEmpty>
+
+                                    <ComboboxGroup>
+                                        <ComboboxItem
+                                            v-for="framework in frameworks"
+                                            :key="framework.value"
+                                            :value="framework"
+                                        >
+                                            <div style="font-size: 16px">
+                                                {{ framework.value }}
+                                                {{ framework.label }}
+                                            </div>
+
+                                            <ComboboxItemIndicator>
+                                                <Check
+                                                    class="ml-auto h-4 w-4"
+                                                />
+                                            </ComboboxItemIndicator>
+                                        </ComboboxItem>
+                                    </ComboboxGroup>
+                                </ComboboxList>
+                            </Combobox>
+                        </div>
+
                         <section>
                             <div class="grid w-full gap-1.5">
                                 <Label for="message-2"
