@@ -17,7 +17,9 @@ class AdminArticleController extends Controller
             'content_french' => 'nullable|string',
             'content_2' => 'nullable|string',
             'content_2_french' => 'nullable|string',
-            'status' => 'nullable|string'
+            'status' => 'nullable|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'level_id' => 'nullable|exists:levels,id',
         ]);
 
         $article = Articles::create($validatedData);
@@ -37,6 +39,8 @@ class AdminArticleController extends Controller
             'content_french' => 'nullable|string',
             'content_2' => 'nullable|string',
             'content_2_french' => 'nullable|string',
+            'category_id' => 'nullable|exists:categories,id',
+            'level_id' => 'nullable|exists:levels,id',
         ]);
     
         $article = Articles::find($id);
@@ -48,6 +52,8 @@ class AdminArticleController extends Controller
             'content_french',
             'content_2',
             'content_2_french',
+            'category_id',
+            'level_id',
         ];
 
         $dataToUpdate = [];

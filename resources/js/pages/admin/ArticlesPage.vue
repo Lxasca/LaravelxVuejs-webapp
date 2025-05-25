@@ -102,9 +102,10 @@
                                             class="justify-between"
                                         >
                                             {{
-                                                valueCategory
+                                                valueCategory?.name
                                                     ? valueCategory.name
-                                                    : "Sélectionner la catégorie"
+                                                    : formData.category?.name ??
+                                                      "Sélectionner la catégorie"
                                             }}
 
                                             <ChevronsUpDown
@@ -162,9 +163,10 @@
                                             class="justify-between"
                                         >
                                             {{
-                                                valueLevel
+                                                valueLevel?.name
                                                     ? valueLevel.name
-                                                    : "Sélectionner le niveau"
+                                                    : formData.level?.name ??
+                                                      "Sélectionner le niveau"
                                             }}
 
                                             <ChevronsUpDown
@@ -664,6 +666,8 @@ export default {
                 content_french: "",
                 content_2: "",
                 content_2_french: "",
+                level_id: null,
+                category_id: null,
             },
             articles: {},
             isAdmin: true,
@@ -710,9 +714,11 @@ export default {
         },
         handleSelectionCategory(selected) {
             this.selectedCategoryId = selected.id;
+            this.formData.category_id = this.selectedCategoryId;
         },
         handleSelectionLevel(selected) {
             this.selectedLevelId = selected.id;
+            this.formData.level_id = this.selectedLevelId;
         },
         getCategories() {
             axios.get(`/get-categories`).then((response) => {
@@ -1032,6 +1038,8 @@ export default {
                                 content_french: "",
                                 content_2: "",
                                 content_2_french: "",
+                                category_id: null,
+                                level_id: null,
                             };
 
                             this.isForm = false;
