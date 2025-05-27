@@ -374,9 +374,9 @@ export default {
             axios
                 .get(`/get-article/${articleId}`)
                 .then((response) => {
+                    // IMAGE 1
                     // 1. Récupération des informations à afficher dans l'image
                     this.article = response.data;
-                    console.log("pack cm pour l'article :", this.article);
 
                     const title_arabic = this.article.title;
                     const title_french = this.article.title_french;
@@ -443,6 +443,117 @@ export default {
                             };
                             img.src = URL.createObjectURL(blob);
                         });
+
+                    // IMAGE 2
+                    axios.get("/get-vocabularies").then((res) => {
+                        const vocabulaires = res.data.map((v) => ({
+                            value: v.value,
+                            label: v.label,
+                            phonetique: v.phonetique,
+                            id: v.id,
+                            day: v.day,
+                        }));
+
+                        const imageUrl2 = new URL(
+                            "../../../images/cm2.png",
+                            import.meta.url
+                        ).href;
+
+                        fetch(imageUrl2)
+                            .then((res) => res.blob())
+                            .then((blob) => {
+                                const img2 = new Image();
+                                img2.onload = () => {
+                                    vocabulaires.forEach((vocab) => {
+                                        const canvas =
+                                            document.createElement("canvas");
+                                        const ctx = canvas.getContext("2d");
+                                        canvas.width = img2.width;
+                                        canvas.height = img2.height;
+
+                                        ctx.drawImage(img2, 0, 0);
+
+                                        // D - id
+                                        ctx.font = "100px 'Roboto Condensed'";
+                                        ctx.fillStyle = "#58ca60";
+                                        const text4 = `${vocab.day}`;
+                                        const textWidth4 =
+                                            ctx.measureText(text4).width;
+                                        const x4 =
+                                            canvas.width / 2 -
+                                            textWidth4 / 2 -
+                                            8;
+                                        const y4 = canvas.height - 1190;
+                                        ctx.fillText(text4, x4, y4);
+
+                                        // B - mot arabe
+                                        ctx.font =
+                                            "bold 260px 'Roboto Condensed'";
+                                        ctx.fillStyle = "#58ca60";
+                                        const text2 = `${vocab.label}`;
+                                        const textWidth2 =
+                                            ctx.measureText(text2).width;
+                                        const x2 =
+                                            canvas.width / 2 - textWidth2 / 2;
+                                        const y2 = canvas.height - 550;
+                                        ctx.fillText(text2, x2, y2);
+
+                                        // C
+                                        ctx.font =
+                                            "italic 75px 'Roboto Condensed'";
+                                        ctx.fillStyle = "black";
+                                        const text3 = `${vocab.phonetique}`;
+                                        const textWidth3 =
+                                            ctx.measureText(text3).width;
+                                        const x3 =
+                                            canvas.width / 2 - textWidth3 / 2;
+                                        const y3 = canvas.height - 425;
+                                        ctx.fillText(text3, x3, y3);
+
+                                        // A
+                                        ctx.font =
+                                            "bold 100px 'Roboto Condensed'";
+                                        ctx.fillStyle = "black";
+                                        const text = `${vocab.value}`;
+                                        const textWidth =
+                                            ctx.measureText(text).width;
+                                        const x =
+                                            canvas.width / 2 - textWidth / 2;
+                                        const y = canvas.height - 290;
+                                        ctx.fillText(text, x, y);
+
+                                        //
+
+                                        /**ctx.fillText(
+                                            `Traduction : ${vocab.label}`,
+                                            50,
+                                            80
+                                        );
+                                        if (vocab.phonetique) {
+                                            ctx.fillText(
+                                                `Phonétique : ${vocab.phonetique}`,
+                                                50,
+                                                110
+                                            );
+                                        }**/
+
+                                        canvas.toBlob((canvasBlob) => {
+                                            const blobUrl =
+                                                URL.createObjectURL(canvasBlob);
+                                            const link =
+                                                document.createElement("a");
+                                            link.href = blobUrl;
+                                            link.download = `vocab_${vocab.value}.png`;
+                                            document.body.appendChild(link);
+                                            link.click();
+                                            document.body.removeChild(link);
+                                            URL.revokeObjectURL(blobUrl);
+                                        });
+                                    });
+                                };
+                                img2.src = URL.createObjectURL(blob);
+                            });
+                    });
                 })
                 .catch((error) => {
                     console.log("erreur : ", error);

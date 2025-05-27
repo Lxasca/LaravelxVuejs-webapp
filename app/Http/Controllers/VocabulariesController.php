@@ -16,12 +16,14 @@ class VocabulariesController extends Controller
 
     public function getAllVocabularies()
     {
-        $vocabularies = Vocabularies::all(['id', 'word', 'traduction_arabic'])
+        $vocabularies = Vocabularies::all(['id', 'word', 'traduction_arabic', 'transcription_arabic', 'day'])
             ->map(function ($vocabulary) {
                 return [
                     'value' => $vocabulary->word,
                     'label' => $vocabulary->traduction_arabic,
                     'id'    => $vocabulary->id,
+                    'phonetique' => $vocabulary->transcription_arabic,
+                    'day' => $vocabulary->day
                 ];
             });
 
