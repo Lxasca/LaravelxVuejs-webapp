@@ -313,6 +313,9 @@ import { cn } from "../../../../src/lib/utils";
 import { BellIcon, CheckIcon } from "@radix-icons/vue";
 import { Badge } from "../../../../src/components/ui/badge";
 
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
+
 export default {
     name: "GetArticles",
     data() {
@@ -368,20 +371,17 @@ export default {
     },
     methods: {
         packCM(article) {
-            //
             const articleId = article.id;
+            const zip = new JSZip();
 
             axios
                 .get(`/get-article/${articleId}`)
                 .then((response) => {
-                    // IMAGE 1
-                    // 1. Récupération des informations à afficher dans l'image
                     this.article = response.data;
 
                     const title_arabic = this.article.title;
                     const title_french = this.article.title_french;
 
-                    // 2. Génération de l'image
                     const imageUrl = new URL(
                         "../../../images/cm.png",
                         import.meta.url
@@ -397,7 +397,7 @@ export default {
                                 canvas.height = img.height;
                                 ctx.drawImage(img, 0, 0);
 
-                                ctx.font = "175px 'Roboto Condensed'";
+                                ctx.font = "250px 'Roboto Condensed'";
                                 ctx.fillStyle = "black";
                                 title_arabic
                                     .split(/(.{1,20})(\s|$)/g)
@@ -409,11 +409,11 @@ export default {
                                                 ctx.measureText(line.trim())
                                                     .width) /
                                                 2,
-                                            1400 + i * 125
+                                            1600 + i * 125
                                         )
                                     );
 
-                                ctx.font = "60px 'Roboto Condensed'";
+                                ctx.font = "100px 'Roboto Condensed'";
                                 ctx.fillStyle = "black";
                                 title_french
                                     .split(/(.{1,50})(\s|$)/g)
@@ -430,130 +430,193 @@ export default {
                                     );
 
                                 canvas.toBlob((canvasBlob) => {
-                                    const blobUrl =
-                                        URL.createObjectURL(canvasBlob);
-                                    const link = document.createElement("a");
-                                    link.href = blobUrl;
-                                    link.download = "pack_cm.png";
-                                    document.body.appendChild(link);
-                                    link.click();
-                                    document.body.removeChild(link);
-                                    URL.revokeObjectURL(blobUrl);
+                                    zip.file("minia_1.png", canvasBlob);
+
+                                    axios
+                                        .get("/get-vocabularies")
+                                        .then((res) => {
+                                            const vocabulaires = res.data.map(
+                                                (v) => ({
+                                                    value: v.value,
+                                                    label: v.label,
+                                                    phonetique: v.phonetique,
+                                                    id: v.id,
+                                                    day: v.day,
+                                                })
+                                            );
+
+                                            const imageUrl2 = new URL(
+                                                "../../../images/cm2.png",
+                                                import.meta.url
+                                            ).href;
+
+                                            fetch(imageUrl2)
+                                                .then((res) => res.blob())
+                                                .then((blob2) => {
+                                                    const img2 = new Image();
+                                                    img2.onload = () => {
+                                                        let remaining =
+                                                            vocabulaires.length;
+
+                                                        vocabulaires.forEach(
+                                                            (vocab) => {
+                                                                const canvas2 =
+                                                                    document.createElement(
+                                                                        "canvas"
+                                                                    );
+                                                                const ctx2 =
+                                                                    canvas2.getContext(
+                                                                        "2d"
+                                                                    );
+                                                                canvas2.width =
+                                                                    img2.width;
+                                                                canvas2.height =
+                                                                    img2.height;
+
+                                                                ctx2.drawImage(
+                                                                    img2,
+                                                                    0,
+                                                                    0
+                                                                );
+
+                                                                ctx2.font =
+                                                                    "100px 'Roboto Condensed'";
+                                                                ctx2.fillStyle =
+                                                                    "#58ca60";
+                                                                const text4 = `${vocab.day}`;
+                                                                const textWidth4 =
+                                                                    ctx2.measureText(
+                                                                        text4
+                                                                    ).width;
+                                                                const x4 =
+                                                                    canvas2.width /
+                                                                        2 -
+                                                                    textWidth4 /
+                                                                        2 -
+                                                                    8;
+                                                                const y4 =
+                                                                    canvas2.height -
+                                                                    1190;
+                                                                ctx2.fillText(
+                                                                    text4,
+                                                                    x4,
+                                                                    y4
+                                                                );
+
+                                                                ctx2.font =
+                                                                    "bold 260px 'Roboto Condensed'";
+                                                                ctx2.fillStyle =
+                                                                    "#58ca60";
+                                                                const text2 = `${vocab.label}`;
+                                                                const textWidth2 =
+                                                                    ctx2.measureText(
+                                                                        text2
+                                                                    ).width;
+                                                                const x2 =
+                                                                    canvas2.width /
+                                                                        2 -
+                                                                    textWidth2 /
+                                                                        2;
+                                                                const y2 =
+                                                                    canvas2.height -
+                                                                    550;
+                                                                ctx2.fillText(
+                                                                    text2,
+                                                                    x2,
+                                                                    y2
+                                                                );
+
+                                                                ctx2.font =
+                                                                    "italic 75px 'Roboto Condensed'";
+                                                                ctx2.fillStyle =
+                                                                    "black";
+                                                                const text3 = `${vocab.phonetique}`;
+                                                                const textWidth3 =
+                                                                    ctx2.measureText(
+                                                                        text3
+                                                                    ).width;
+                                                                const x3 =
+                                                                    canvas2.width /
+                                                                        2 -
+                                                                    textWidth3 /
+                                                                        2;
+                                                                const y3 =
+                                                                    canvas2.height -
+                                                                    425;
+                                                                ctx2.fillText(
+                                                                    text3,
+                                                                    x3,
+                                                                    y3
+                                                                );
+
+                                                                ctx2.font =
+                                                                    "bold 100px 'Roboto Condensed'";
+                                                                ctx2.fillStyle =
+                                                                    "black";
+                                                                const text = `${vocab.value}`;
+                                                                const textWidth =
+                                                                    ctx2.measureText(
+                                                                        text
+                                                                    ).width;
+                                                                const x =
+                                                                    canvas2.width /
+                                                                        2 -
+                                                                    textWidth /
+                                                                        2;
+                                                                const y =
+                                                                    canvas2.height -
+                                                                    290;
+                                                                ctx2.fillText(
+                                                                    text,
+                                                                    x,
+                                                                    y
+                                                                );
+
+                                                                canvas2.toBlob(
+                                                                    (
+                                                                        canvasBlob2
+                                                                    ) => {
+                                                                        zip.file(
+                                                                            `minia_vocab_${vocab.value}.png`,
+                                                                            canvasBlob2
+                                                                        );
+                                                                        remaining--;
+                                                                        if (
+                                                                            remaining ===
+                                                                            0
+                                                                        ) {
+                                                                            zip.generateAsync(
+                                                                                {
+                                                                                    type: "blob",
+                                                                                }
+                                                                            ).then(
+                                                                                (
+                                                                                    zipBlob
+                                                                                ) => {
+                                                                                    saveAs(
+                                                                                        zipBlob,
+                                                                                        "pack_CM_" +
+                                                                                            title_french +
+                                                                                            ".zip"
+                                                                                    );
+                                                                                }
+                                                                            );
+                                                                        }
+                                                                    }
+                                                                );
+                                                            }
+                                                        );
+                                                    };
+                                                    img2.src =
+                                                        URL.createObjectURL(
+                                                            blob2
+                                                        );
+                                                });
+                                        });
                                 });
                             };
                             img.src = URL.createObjectURL(blob);
                         });
-
-                    // IMAGE 2
-                    axios.get("/get-vocabularies").then((res) => {
-                        const vocabulaires = res.data.map((v) => ({
-                            value: v.value,
-                            label: v.label,
-                            phonetique: v.phonetique,
-                            id: v.id,
-                            day: v.day,
-                        }));
-
-                        const imageUrl2 = new URL(
-                            "../../../images/cm2.png",
-                            import.meta.url
-                        ).href;
-
-                        fetch(imageUrl2)
-                            .then((res) => res.blob())
-                            .then((blob) => {
-                                const img2 = new Image();
-                                img2.onload = () => {
-                                    vocabulaires.forEach((vocab) => {
-                                        const canvas =
-                                            document.createElement("canvas");
-                                        const ctx = canvas.getContext("2d");
-                                        canvas.width = img2.width;
-                                        canvas.height = img2.height;
-
-                                        ctx.drawImage(img2, 0, 0);
-
-                                        // D - id
-                                        ctx.font = "100px 'Roboto Condensed'";
-                                        ctx.fillStyle = "#58ca60";
-                                        const text4 = `${vocab.day}`;
-                                        const textWidth4 =
-                                            ctx.measureText(text4).width;
-                                        const x4 =
-                                            canvas.width / 2 -
-                                            textWidth4 / 2 -
-                                            8;
-                                        const y4 = canvas.height - 1190;
-                                        ctx.fillText(text4, x4, y4);
-
-                                        // B - mot arabe
-                                        ctx.font =
-                                            "bold 260px 'Roboto Condensed'";
-                                        ctx.fillStyle = "#58ca60";
-                                        const text2 = `${vocab.label}`;
-                                        const textWidth2 =
-                                            ctx.measureText(text2).width;
-                                        const x2 =
-                                            canvas.width / 2 - textWidth2 / 2;
-                                        const y2 = canvas.height - 550;
-                                        ctx.fillText(text2, x2, y2);
-
-                                        // C
-                                        ctx.font =
-                                            "italic 75px 'Roboto Condensed'";
-                                        ctx.fillStyle = "black";
-                                        const text3 = `${vocab.phonetique}`;
-                                        const textWidth3 =
-                                            ctx.measureText(text3).width;
-                                        const x3 =
-                                            canvas.width / 2 - textWidth3 / 2;
-                                        const y3 = canvas.height - 425;
-                                        ctx.fillText(text3, x3, y3);
-
-                                        // A
-                                        ctx.font =
-                                            "bold 100px 'Roboto Condensed'";
-                                        ctx.fillStyle = "black";
-                                        const text = `${vocab.value}`;
-                                        const textWidth =
-                                            ctx.measureText(text).width;
-                                        const x =
-                                            canvas.width / 2 - textWidth / 2;
-                                        const y = canvas.height - 290;
-                                        ctx.fillText(text, x, y);
-
-                                        //
-
-                                        /**ctx.fillText(
-                                            `Traduction : ${vocab.label}`,
-                                            50,
-                                            80
-                                        );
-                                        if (vocab.phonetique) {
-                                            ctx.fillText(
-                                                `Phonétique : ${vocab.phonetique}`,
-                                                50,
-                                                110
-                                            );
-                                        }**/
-
-                                        canvas.toBlob((canvasBlob) => {
-                                            const blobUrl =
-                                                URL.createObjectURL(canvasBlob);
-                                            const link =
-                                                document.createElement("a");
-                                            link.href = blobUrl;
-                                            link.download = `vocab_${vocab.value}.png`;
-                                            document.body.appendChild(link);
-                                            link.click();
-                                            document.body.removeChild(link);
-                                            URL.revokeObjectURL(blobUrl);
-                                        });
-                                    });
-                                };
-                                img2.src = URL.createObjectURL(blob);
-                            });
-                    });
                 })
                 .catch((error) => {
                     console.log("erreur : ", error);

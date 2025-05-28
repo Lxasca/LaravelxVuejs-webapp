@@ -315,7 +315,7 @@ export default {
             if (this.highlightAnnexionEnabled) {
                 text = text.replace(
                     /<annexion>(.*?)<\/annexion>/g,
-                    '<span style="text-decoration-line:underline;text-decoration-style: double;text-decoration-thickness: 1px;text-underline-offset: 17.5px;">$1</span>'
+                    '<span style="text-decoration-color:var(--main-color);text-decoration-line:underline;text-decoration-style: wavy;text-decoration-thickness: 1px;text-underline-offset: 17.5px;">$1</span>'
                 );
             }
 
