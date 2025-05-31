@@ -397,7 +397,7 @@ export default {
                                 canvas.height = img.height;
                                 ctx.drawImage(img, 0, 0);
 
-                                ctx.font = "250px 'Roboto Condensed'";
+                                ctx.font = "150px 'Roboto Condensed'";
                                 ctx.fillStyle = "black";
                                 title_arabic
                                     .split(/(.{1,20})(\s|$)/g)
@@ -409,11 +409,11 @@ export default {
                                                 ctx.measureText(line.trim())
                                                     .width) /
                                                 2,
-                                            1600 + i * 125
+                                            700 + i * 75
                                         )
                                     );
 
-                                ctx.font = "100px 'Roboto Condensed'";
+                                ctx.font = "bold 70px 'Roboto Condensed'";
                                 ctx.fillStyle = "black";
                                 title_french
                                     .split(/(.{1,50})(\s|$)/g)
@@ -425,7 +425,7 @@ export default {
                                                 ctx.measureText(line.trim())
                                                     .width) /
                                                 2,
-                                            1175 + i * 50
+                                            1050 + i * 50
                                         )
                                     );
 
@@ -479,8 +479,9 @@ export default {
                                                                     0
                                                                 );
 
+                                                                // jour
                                                                 ctx2.font =
-                                                                    "100px 'Roboto Condensed'";
+                                                                    "56px 'Roboto Condensed'";
                                                                 ctx2.fillStyle =
                                                                     "#58ca60";
                                                                 const text4 = `${vocab.day}`;
@@ -496,17 +497,18 @@ export default {
                                                                     8;
                                                                 const y4 =
                                                                     canvas2.height -
-                                                                    1190;
+                                                                    660;
                                                                 ctx2.fillText(
                                                                     text4,
                                                                     x4,
                                                                     y4
                                                                 );
 
+                                                                // mot arabe
                                                                 ctx2.font =
-                                                                    "bold 260px 'Roboto Condensed'";
+                                                                    "bold 220px 'Roboto Condensed'";
                                                                 ctx2.fillStyle =
-                                                                    "#58ca60";
+                                                                    "black";
                                                                 const text2 = `${vocab.label}`;
                                                                 const textWidth2 =
                                                                     ctx2.measureText(
@@ -519,15 +521,16 @@ export default {
                                                                         2;
                                                                 const y2 =
                                                                     canvas2.height -
-                                                                    550;
+                                                                    430;
                                                                 ctx2.fillText(
                                                                     text2,
                                                                     x2,
                                                                     y2
                                                                 );
 
+                                                                // transcription arabe
                                                                 ctx2.font =
-                                                                    "italic 75px 'Roboto Condensed'";
+                                                                    "italic 55px 'Roboto Condensed'";
                                                                 ctx2.fillStyle =
                                                                     "black";
                                                                 const text3 = `${vocab.phonetique}`;
@@ -542,7 +545,7 @@ export default {
                                                                         2;
                                                                 const y3 =
                                                                     canvas2.height -
-                                                                    425;
+                                                                    340;
                                                                 ctx2.fillText(
                                                                     text3,
                                                                     x3,
@@ -550,7 +553,7 @@ export default {
                                                                 );
 
                                                                 ctx2.font =
-                                                                    "bold 100px 'Roboto Condensed'";
+                                                                    "bold 80px 'Roboto Condensed'";
                                                                 ctx2.fillStyle =
                                                                     "black";
                                                                 const text = `${vocab.value}`;
@@ -565,7 +568,7 @@ export default {
                                                                         2;
                                                                 const y =
                                                                     canvas2.height -
-                                                                    290;
+                                                                    250;
                                                                 ctx2.fillText(
                                                                     text,
                                                                     x,
