@@ -579,11 +579,18 @@ export default {
                                                                     (
                                                                         canvasBlob2
                                                                     ) => {
+                                                                        const safeValue =
+                                                                            vocab.value.replace(
+                                                                                /[\/\\?%*:|"<>]/g,
+                                                                                "-"
+                                                                            );
                                                                         zip.file(
-                                                                            `minia_vocab_${vocab.value}.png`,
+                                                                            `minia_vocab_${safeValue}.png`,
                                                                             canvasBlob2
                                                                         );
+
                                                                         remaining--;
+
                                                                         if (
                                                                             remaining ===
                                                                             0
