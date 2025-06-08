@@ -1,12 +1,16 @@
 <template>
     <div>
         <h1>exercice page</h1>
-        <p>Les mots</p>
         <ul>
             <li v-for="vocab in vocabularies" :key="vocab.id">
                 <h5>{{ vocab.traduction_arabic }}</h5>
-                <Button> {{ vocab.word }}</Button>
-                <Button> {{ getRandomOtherWord(index) }}</Button>
+                <p>{{ vocab.transcription_arabic }}</p>
+                <Button
+                    v-for="(word, i) in getShuffledWords(vocab.word, index)"
+                    :key="i"
+                >
+                    {{ word }}
+                </Button>
             </li>
         </ul>
     </div>
@@ -71,6 +75,18 @@ export default {
             if (others.length === 0) return null;
             const randomIndex = Math.floor(Math.random() * others.length);
             return others[randomIndex].word;
+        },
+        getShuffledWords(correctWord, currentIndex) {
+            const otherWord = this.getRandomOtherWord(correctWord);
+            if (!otherWord) return [correctWord];
+
+            const pair = [correctWord, otherWord];
+            // on mélange le tableau
+            for (let i = pair.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [pair[i], pair[j]] = [pair[j], pair[i]];
+            }
+            return pair;
         },
     },
 };
