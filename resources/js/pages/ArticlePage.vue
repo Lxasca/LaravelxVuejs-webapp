@@ -42,7 +42,7 @@
                                 >
                                     <AlertDialog v-if="isShowHelp">
                                         <AlertDialogTrigger>
-                                            <Button>
+                                            <button>
                                                 <svg
                                                     style="
                                                         margin-left: 2.5px;
@@ -72,7 +72,7 @@
                                                         d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"
                                                     />
                                                 </svg>
-                                            </Button>
+                                            </button>
                                         </AlertDialogTrigger>
                                         <AlertDialogContent>
                                             <AlertDialogHeader
@@ -148,6 +148,26 @@
                         </p>
                     </div>
                 </section>
+
+                <!-- vers exercice -->
+                <section
+                    style="
+                        display: flex;
+                        justify-content: center;
+                        margin-bottom: 75px;
+                    "
+                >
+                    <RouterLink
+                        :to="{
+                            name: 'exercice',
+                            params: { article_id: $route.params.article_id },
+                        }"
+                    >
+                        <Button>
+                            Démarrer le quizz d'apprentissage du vocabulaire
+                        </Button>
+                    </RouterLink>
+                </section>
             </div>
         </section>
     </div>
@@ -168,6 +188,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "../../../src/components/ui/alert-dialog";
+import { Button } from "../../../src/components/ui/button";
 
 export default {
     name: "ArticlePage",
@@ -183,6 +204,7 @@ export default {
         AlertDialogHeader,
         AlertDialogTitle,
         AlertDialogTrigger,
+        Button,
     },
     data() {
         return {

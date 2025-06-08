@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomePage from "./pages/HomePage.vue";
 import ArticlesPage from "./pages/ArticlesPage.vue";
 import ArticlePage from "./pages/ArticlePage.vue";
+import ExercicePage from "./pages/exercice/ExercicePage.vue";
 import HomePageAdmin from "./pages/admin/HomePage.vue";
 import ArticlesPageAdmin from "./pages/admin/ArticlesPage.vue";
 import AccountPage from "./pages/auth/AccountPage.vue";
@@ -65,6 +66,12 @@ const routes = [
         name: "article",
         path: "/article/:article_id",
         component: ArticlePage,
+    },
+    // exercice - article
+    {
+        name: "exercice",
+        path: "/article/:article_id/exercice/quizz",
+        component: ExercicePage,
     },
     // AUTH
     {
