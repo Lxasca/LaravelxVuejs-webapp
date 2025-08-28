@@ -1,6 +1,7 @@
 <template>
     <div>
         <h1>exercice page</h1>
+        Vous avez {{  finalScore }} points
 
         <div v-if="currentVocab">
             <h5>{{ currentVocab.traduction_arabic }}</h5>
@@ -30,6 +31,7 @@
         </div>
         <div v-else>
             Fin de l'exercice
+            Vous avez {{  finalScore }} points
         </div>
 
     </div>
@@ -46,6 +48,7 @@ export default {
             article: {},
             currentIndex: 0,
             mistakes: [],
+            finalScore: 0
         };
     },
     mounted() {
@@ -63,10 +66,14 @@ export default {
 
             if (selectedWord === correctWord) {
                 vocab.feedback = 1;
+                if (!this.mistakes.includes(vocab)) {
+                    this.finalScore += this.calculateScore(1);
+                }
             } else {
                 vocab.feedback = 0;
                 if (!this.mistakes.includes(vocab)) {
                     this.mistakes.push(vocab); // ajoute dans les erreurs
+                    this.finalScore -= this.calculateScore(0);
                 }
             }
         },
@@ -143,7 +150,21 @@ export default {
                 [pair[i], pair[j]] = [pair[j], pair[i]];
             }
             return pair;
+        },
+        calculateScore(etat) {
+            const pointsPerVocab = Math.floor(50 / this.allVocabularies.length);
+            
+            let score = 0;
+
+            if (etat) {
+                score = pointsPerVocab;
+            } else {
+                score = pointsPerVocab/1.2;
+            }
+
+            return Math.floor(score);
         }
+
     },
 };
 </script>
