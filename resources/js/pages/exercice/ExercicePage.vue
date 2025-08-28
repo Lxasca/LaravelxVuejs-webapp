@@ -1,16 +1,20 @@
 <template>
     <div>
         <h1>exercice page</h1>
+
         <ul>
             <li v-for="vocab in vocabularies" :key="vocab.id">
                 <h5>{{ vocab.traduction_arabic }}</h5>
                 <p>{{ vocab.transcription_arabic }}</p>
-                <Button
+                <button
                     v-for="(word, i) in getShuffledWords(vocab.word, index)"
                     :key="i"
+                    @click="checkAnswer(word, vocab.word, vocab.id)"
                 >
                     {{ word }}
-                </Button>
+                </button>
+
+                <p v-if="vocab.feedback">{{ vocab.feedback }}</p> 
             </li>
         </ul>
     </div>
@@ -31,6 +35,12 @@ export default {
         this.getVocabularies();
     },
     methods: {
+        checkAnswer(selectedWord, correctWord, vocabId) {
+            const vocab = this.vocabularies.find(v => v.id === vocabId);
+            if (!vocab) return;
+
+            vocab.feedback = selectedWord === correctWord ? "Succès" : "Erreur";
+        },
         getVocabularies() {
             // on récupère tous les mots de vocabulaires de l'article :
 
@@ -57,12 +67,14 @@ export default {
                     axios.get(`/get-vocabulary/${id}`).then((res) => {
                         const v = res.data;
                         this.vocabularies.push({
+                            id: v.id || Number(id),
                             word_opposite_1: v.word_opposite_1,
                             image: v.image,
                             audio_arabic: v.audio_arabic,
                             traduction_arabic: v.traduction_arabic,
                             transcription_arabic: v.transcription_arabic,
                             word: v.word,
+                            feedback: null // ajout pour la vue
                         });
                     });
                 });
@@ -92,4 +104,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+button {
+    border:solid 1px black;
+    border-radius: 15px;
+    padding: 5px 20px;
+    margin: 0px 7.5px;
+}</style>
