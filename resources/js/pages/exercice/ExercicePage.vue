@@ -2,21 +2,33 @@
     <div>
         <h1>exercice page</h1>
 
-        <ul>
-            <li v-for="vocab in vocabularies" :key="vocab.id">
-                <h5>{{ vocab.traduction_arabic }}</h5>
-                <p>{{ vocab.transcription_arabic }}</p>
+        <div v-if="currentVocab">
+            <h5>{{ currentVocab.traduction_arabic }}</h5>
+            <p>{{ currentVocab.transcription_arabic }}</p>
+
+            <div v-if="currentVocab.feedback !== 1">
                 <button
-                    v-for="(word, i) in getShuffledWords(vocab.word, index)"
+                    v-for="(word, i) in getShuffledWords(currentVocab.word, currentIndex)"
                     :key="i"
-                    @click="checkAnswer(word, vocab.word, vocab.id)"
-                >
+                    :disabled="currentVocab.feedback === 1"
+                    @click="checkAnswer(word, currentVocab.word, currentVocab.id)"
+                    >
                     {{ word }}
                 </button>
+            </div>
 
-                <p v-if="vocab.feedback">{{ vocab.feedback }}</p> 
-            </li>
-        </ul>
+            <p v-if="currentVocab.feedback === 1">Succès</p>
+            <p v-else-if="currentVocab.feedback === 0">Erreur</p>
+
+            <button
+                v-if="currentVocab.feedback === 1"
+                style="background-color: #262626;color:#fbfbfb"
+                @click="nextVocab"
+            >
+                Suivant
+            </button>
+        </div>
+
     </div>
 </template>
 
@@ -29,17 +41,31 @@ export default {
         return {
             vocabularies: [],
             article: {},
+            currentIndex: 0,
         };
     },
     mounted() {
         this.getVocabularies();
+    },
+    computed: {
+        currentVocab() {
+            return this.vocabularies[this.currentIndex] || null;
+        }
     },
     methods: {
         checkAnswer(selectedWord, correctWord, vocabId) {
             const vocab = this.vocabularies.find(v => v.id === vocabId);
             if (!vocab) return;
 
-            vocab.feedback = selectedWord === correctWord ? "Succès" : "Erreur";
+            vocab.feedback = selectedWord === correctWord ? 1 : 0;
+        },
+        nextVocab() {
+            this.currentVocab.feedback = null;
+
+
+            if (this.currentIndex < this.vocabularies.length - 1) {
+                this.currentIndex++;
+            }
         },
         getVocabularies() {
             // on récupère tous les mots de vocabulaires de l'article :
