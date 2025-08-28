@@ -8,7 +8,7 @@
 
             <div v-if="currentVocab.feedback !== 1">
                 <button
-                    v-for="(word, i) in getShuffledWords(currentVocab.word, currentIndex)"
+                    v-for="(word, i) in getShuffledWords(currentVocab.word, vocabularies)"
                     :key="i"
                     :disabled="currentVocab.feedback === 1"
                     @click="checkAnswer(word, currentVocab.word, currentVocab.id)"
@@ -28,6 +28,9 @@
                 Suivant
             </button>
         </div>
+        <div v-else>
+            Fin de l'exercice
+        </div>
 
     </div>
 </template>
@@ -42,6 +45,7 @@ export default {
             vocabularies: [],
             article: {},
             currentIndex: 0,
+            mistakes: [],
         };
     },
     mounted() {
@@ -57,14 +61,28 @@ export default {
             const vocab = this.vocabularies.find(v => v.id === vocabId);
             if (!vocab) return;
 
-            vocab.feedback = selectedWord === correctWord ? 1 : 0;
+            if (selectedWord === correctWord) {
+                vocab.feedback = 1;
+            } else {
+                vocab.feedback = 0;
+                if (!this.mistakes.includes(vocab)) {
+                    this.mistakes.push(vocab); // ajoute dans les erreurs
+                }
+            }
         },
         nextVocab() {
             this.currentVocab.feedback = null;
 
-
             if (this.currentIndex < this.vocabularies.length - 1) {
                 this.currentIndex++;
+                this.currentVocab.feedback = null;
+            } else if (this.mistakes.length > 0) {
+                // on recommence avec les vocabulaires à refaire
+                this.vocabularies = [...this.mistakes];
+                this.mistakes = [];
+                this.currentIndex = 0;
+            } else {
+                this.currentIndex = this.vocabularies.length; // fin de l'exercice
             }
         },
         getVocabularies() {
@@ -89,43 +107,43 @@ export default {
 
                 this.vocabularies = [];
 
-                uniqueIds.forEach((id) => {
-                    axios.get(`/get-vocabulary/${id}`).then((res) => {
+               const requests = uniqueIds.map(id => axios.get(`/get-vocabulary/${id}`));
+
+                Promise.all(requests).then(responses => {
+                    this.vocabularies = responses.map(res => {
                         const v = res.data;
-                        this.vocabularies.push({
-                            id: v.id || Number(id),
+                        return {
+                            id: v.id || Number(v.id),
                             word_opposite_1: v.word_opposite_1,
                             image: v.image,
                             audio_arabic: v.audio_arabic,
                             traduction_arabic: v.traduction_arabic,
                             transcription_arabic: v.transcription_arabic,
                             word: v.word,
-                            feedback: null // ajout pour la vue
-                        });
+                            feedback: null
+                        };
                     });
+
+                    this.allVocabularies = [...this.vocabularies];
                 });
             });
         },
         getRandomOtherWord(currentWord) {
-            const others = this.vocabularies.filter(
-                (v) => v.word !== currentWord
-            );
+            const others = this.allVocabularies.filter(v => v.word !== currentWord);
             if (others.length === 0) return null;
             const randomIndex = Math.floor(Math.random() * others.length);
             return others[randomIndex].word;
         },
-        getShuffledWords(correctWord, currentIndex) {
-            const otherWord = this.getRandomOtherWord(correctWord);
+        getShuffledWords(correctWord, vocabArray) {
+            const otherWord = this.getRandomOtherWord(correctWord, vocabArray);
             if (!otherWord) return [correctWord];
-
             const pair = [correctWord, otherWord];
-            // on mélange le tableau
             for (let i = pair.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [pair[i], pair[j]] = [pair[j], pair[i]];
             }
             return pair;
-        },
+        }
     },
 };
 </script>
