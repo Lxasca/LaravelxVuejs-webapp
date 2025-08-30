@@ -1,8 +1,7 @@
 <template>
     <div>
         <h1>exercice page</h1>
-        Vous avez {{  finalScore }} points
-
+        
         <div v-if="currentVocab">
             <h5>{{ currentVocab.traduction_arabic }}</h5>
             <p>{{ currentVocab.transcription_arabic }}</p>
@@ -31,7 +30,7 @@
         </div>
         <div v-else>
             Fin de l'exercice
-            Vous avez {{  finalScore }} points
+            Vous avez {{  finalScore }}/50 points
         </div>
 
     </div>
